@@ -11,7 +11,7 @@
 	<meta name="description" content="Una landing page moderna creada con SvelteKit" />
 </svelte:head>
 
-<main>
+<main class="main-content">
 	<!-- Hero Section -->
 	<section class="hero">
 		<div class="container">
@@ -186,5 +186,9 @@
 		@media (min-width: 768px) {
 			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
+	}
+
+	.main-content {
+		padding-top: 70px; /* Espacio para el header fijo */
 	}
 </style>
