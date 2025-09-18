@@ -36,17 +36,20 @@
 			<nav class="nav" class:nav-open={isMenuOpen}>
 				<ul class="nav-list">
 					<li class="nav-item">
-						<a href="#inicio" class="nav-link" on:click={closeMenu}>Inicio</a>
+						<a href="/" class="nav-link" on:click={closeMenu}>Inicio</a>
 					</li>
 					<li class="nav-item">
 						<a href="/#beneficios" class="nav-link" on:click={closeMenu}>Beneficios</a>
 					</li>
 					<li class="nav-item">
-						<a href="#servicios" class="nav-link" on:click={closeMenu}>Servicios</a>
+						<a href="/#prueba-social" class="nav-link" on:click={closeMenu}>Prueba Social</a>
 					</li>
 					<li class="nav-item">
-						<a href="#contacto" class="nav-link" on:click={closeMenu}>Contacto</a>
+						<a href="/#cta-intermedio" class="nav-link" on:click={closeMenu}>CTA Intermedio</a>
 					</li>
+                <li class="nav-item">
+                    <a href="#preguntas-frecuentes" class="nav-link" on:click={closeMenu}>Preguntas</a>
+                </li>
 					<li class="nav-item mobile-cta">
 						<button class="btn btn-primary mobile-cta-btn" on:click={closeMenu}>
 							Empezar ahora
@@ -94,10 +97,10 @@
 	}
 
 	.logo {
-		flex-shrink: 0;
 		position: absolute;
 		left: 50%;
 		transform: translateX(-50%);
+		z-index: 1001;
 	}
 
 	.logo-link {
@@ -143,15 +146,17 @@
 	.nav {
 		display: flex;
 		align-items: center;
+		z-index: 1000;
 	}
 
 	.nav-list {
 		display: flex;
 		align-items: center;
-		gap: 2rem;
+		gap: 1rem;
 		list-style: none;
 		margin: 0;
 		padding: 0;
+		flex-wrap: wrap;
 	}
 
 	.nav-item {
@@ -173,12 +178,13 @@
 		font-weight: 600;
 		transition: all 0.3s ease;
 		position: relative;
-		padding: 0.5rem 1rem;
+		padding: 0.4rem 0.5rem;
 		border-radius: 0.5rem;
-		font-size: 0.9rem;
+		font-size: 0.8rem;
 		text-transform: uppercase;
-		letter-spacing: 0.5px;
+		letter-spacing: 0.3px;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		white-space: nowrap;
 	}
 
 	.nav-link:hover {
@@ -245,11 +251,12 @@
 	/* Tablet Styles */
 	@media (max-width: 1024px) {
 		.nav-list {
-			gap: 1.5rem;
+			gap: 0.8rem;
 		}
 		
 		.nav-link {
-			font-size: 0.9rem;
+			font-size: 0.75rem;
+			padding: 0.3rem 0.4rem;
 		}
 		
 		.btn-primary {
@@ -341,6 +348,10 @@
 
 		.header-cta {
 			display: none;
+		}
+		
+		.mobile-menu-btn {
+			display: flex;
 		}
 
 		.mobile-cta {

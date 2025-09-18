@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { 
 		animateHero, 
@@ -37,15 +37,22 @@
 	let isSubmitting = false;
 	let showThankYou = false;
 	
-	// Referencias para animaciones
-	let heroTitle;
-	let heroSubtitle;
-	let registrationForm;
-	let heroSection;
-	let loadingSpinner;
-	let successIcon;
+	// Estado para controlar qué FAQ está abierto
+	let openFaq: number | null = null;
+
+	function toggleFaq(index: number) {
+		openFaq = openFaq === index ? null : index;
+	}
 	
-	async function handleSubmit(event) {
+	// Referencias para animaciones
+	let heroTitle: HTMLElement;
+	let heroSubtitle: HTMLElement;
+	let registrationForm: HTMLElement;
+	let heroSection: HTMLElement;
+	let loadingSpinner: HTMLElement;
+	let successIcon: HTMLElement;
+	
+	async function handleSubmit(event: any) {
 		event.preventDefault();
 		isSubmitting = true;
 		
@@ -330,6 +337,158 @@
 					<p class="benefit-description">
 						Acceso a material exclusivo diseñado específicamente para preparar mejor a tu hijo para el proceso de admisión.
 					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Sección de Prueba Social -->
+	<section id="prueba-social" class="testimonials-section">
+		<div class="container">
+			<div class="section-header">
+				<h2 class="section-title">Lo que dicen otros padres como tú</h2>
+				<p class="section-subtitle">
+					Más de 1,200 padres y alumnos ya están dentro de ADNED recibiendo información exclusiva
+				</p>
+			</div>
+
+			<div class="testimonials-carousel">
+				<!-- Testimonio Principal -->
+				<div class="testimonial-main">
+					<div class="testimonial-content">
+						<div class="quote-icon">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1 0 1-1 2-2 2s-1-.008-1-.008V21z"/>
+								<path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1.005 0 1.005.005 1.005 1.005 0 1-.995 2-2 2s-1-.008-1-.008V21z"/>
+							</svg>
+						</div>
+						<p class="testimonial-text">
+							"Gracias al grupo estuve al pendiente de cada fecha y mi hijo logró entrar a la prepa de sus sueños."
+						</p>
+						<div class="testimonial-author">
+							<div class="author-avatar">
+								<img src="/photo_2025-09-12_15-08-29.jpg" alt="Laura M." class="author-photo">
+							</div>
+							<div class="author-info">
+								<h4 class="author-name">Laura M.</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Testimonios Adicionales -->
+				<div class="testimonials-grid">
+					<div class="testimonial-card">
+						<div class="testimonial-content">
+							<div class="author-avatar">
+								<div class="avatar-placeholder">MR</div>
+							</div>
+							<p class="testimonial-text">
+								"Los recordatorios fueron clave para no perder fechas importantes. ¡100% recomendado!"
+							</p>
+							<div class="author-info">
+								<h4 class="author-name">María R.</h4>
+							</div>
+						</div>
+					</div>
+
+					<div class="testimonial-card">
+						<div class="testimonial-content">
+							<div class="author-avatar">
+								<div class="avatar-placeholder">CL</div>
+							</div>
+							<p class="testimonial-text">
+								"El proceso era confuso, pero ADNED nos guió paso a paso. ¡Increíble servicio!"
+							</p>
+							<div class="author-info">
+								<h4 class="author-name">Carlos L.</h4>
+							</div>
+						</div>
+					</div>
+
+					<div class="testimonial-card">
+						<div class="testimonial-content">
+							<div class="author-avatar">
+								<div class="avatar-placeholder">AG</div>
+							</div>
+							<p class="testimonial-text">
+								"Los tips prácticos fueron exactamente lo que necesitábamos. ¡Gracias infinitas!"
+							</p>
+							<div class="author-info">
+								<h4 class="author-name">Ana G.</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Sección CTA Intermedio -->
+	<section id="cta-intermedio" class="cta-intermedio-section">
+		<div class="container">
+			<div class="cta-content">
+				<h2 class="cta-title">No dejes que tu hijo se quede fuera de su prepa soñada</h2>
+				<p class="cta-description">Únete ahora y recibe toda la información en tu celular</p>
+				<button class="cta-button" on:click={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+					<svg class="cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M9 12l2 2 4-4"/>
+						<path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
+						<path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
+						<path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
+						<path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
+					</svg>
+					Registrarme y entrar al grupo
+				</button>
+			</div>
+		</div>
+	</section>
+
+	<!-- Sección de Preguntas Frecuentes -->
+	<section id="preguntas-frecuentes" class="faq-section">
+		<div class="container">
+			<div class="section-header">
+				<h2 class="section-title">¿Tienes dudas? Te las resolvemos</h2>
+				<p class="section-subtitle">
+					Aquí están las respuestas a las preguntas más comunes de padres como tú
+				</p>
+			</div>
+
+			<div class="faq-container">
+				<div class="faq-item" class:open={openFaq === 0}>
+					<button class="faq-question" on:click={() => toggleFaq(0)}>
+						<span class="question-text">¿Tiene costo el grupo?</span>
+						<svg class="faq-icon" class:rotated={openFaq === 0} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<polyline points="6,9 12,15 18,9"/>
+						</svg>
+					</button>
+					<div class="faq-answer" class:open={openFaq === 0}>
+						<p>No, es 100% gratuito.</p>
+					</div>
+				</div>
+
+				<div class="faq-item" class:open={openFaq === 1}>
+					<button class="faq-question" on:click={() => toggleFaq(1)}>
+						<span class="question-text">¿Por qué piden mis datos?</span>
+						<svg class="faq-icon" class:rotated={openFaq === 1} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<polyline points="6,9 12,15 18,9"/>
+						</svg>
+					</button>
+					<div class="faq-answer" class:open={openFaq === 1}>
+						<p>Para enviarte información personalizada y asegurarnos de que recibas todo el contenido.</p>
+					</div>
+				</div>
+
+				<div class="faq-item" class:open={openFaq === 2}>
+					<button class="faq-question" on:click={() => toggleFaq(2)}>
+						<span class="question-text">¿Cuánto tiempo estaré en el grupo?</span>
+						<svg class="faq-icon" class:rotated={openFaq === 2} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<polyline points="6,9 12,15 18,9"/>
+						</svg>
+					</button>
+					<div class="faq-answer" class:open={openFaq === 2}>
+						<p>Hasta que termine el proceso de admisión ECOEMS.</p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -864,6 +1023,438 @@
 	@media (max-width: 480px) {
 		.benefit-card {
 			padding: 1.5rem 1rem;
+		}
+	}
+
+	/* Testimonials Section */
+	.testimonials-section {
+		padding: 6rem 0;
+		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.testimonials-section::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
+		pointer-events: none;
+		z-index: 1;
+		animation: backgroundShift 8s ease-in-out infinite;
+	}
+
+	.testimonials-carousel {
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+	}
+
+	.testimonial-main {
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(20px);
+		padding: 3rem 2.5rem;
+		border-radius: 2rem;
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+		transition: all 0.3s ease;
+		border: 2px solid rgba(251, 191, 36, 0.3);
+		position: relative;
+		overflow: hidden;
+		text-align: center;
+	}
+
+	.testimonial-main::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+	}
+
+	.testimonial-main:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+		border-color: rgba(251, 191, 36, 0.6);
+		background: rgba(255, 255, 255, 1);
+	}
+
+	.testimonials-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 2rem;
+	}
+
+	.testimonial-card {
+		background: rgba(255, 255, 255, 0.9);
+		backdrop-filter: blur(20px);
+		padding: 2rem 1.5rem;
+		border-radius: 1.5rem;
+		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+		transition: all 0.3s ease;
+		border: 2px solid rgba(251, 191, 36, 0.2);
+		position: relative;
+		overflow: hidden;
+		text-align: center;
+	}
+
+	.testimonial-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 3px;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+	}
+
+	.testimonial-card:hover {
+		transform: translateY(-8px);
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+		border-color: rgba(251, 191, 36, 0.5);
+		background: rgba(255, 255, 255, 1);
+	}
+
+	.testimonial-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.quote-icon {
+		width: 50px;
+		height: 50px;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+	}
+
+	.quote-icon svg {
+		width: 24px;
+		height: 24px;
+		color: white;
+	}
+
+	.testimonial-text {
+		font-size: 1.1rem;
+		line-height: 1.6;
+		color: #4a5568;
+		font-style: italic;
+		margin: 0;
+	}
+
+	.testimonial-author {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.75rem;
+	}
+
+	.author-avatar {
+		width: 60px;
+		height: 60px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+		box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+		border: 3px solid rgba(251, 191, 36, 0.3);
+	}
+
+	.author-photo {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.avatar-placeholder {
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: white;
+		font-weight: 700;
+		font-size: 1.2rem;
+	}
+
+	.author-name {
+		font-size: 1rem;
+		font-weight: 700;
+		color: #290040;
+		margin: 0;
+	}
+
+	/* Responsive para testimonios */
+	@media (max-width: 768px) {
+		.testimonials-section {
+			padding: 4rem 0;
+		}
+
+		.testimonial-main {
+			padding: 2rem 1.5rem;
+		}
+
+		.testimonials-grid {
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
+		}
+
+		.testimonial-card {
+			padding: 1.5rem 1rem;
+		}
+	}
+
+	/* CTA Intermedio Section */
+	.cta-intermedio-section {
+		background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+		padding: 6rem 0;
+		text-align: center;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.cta-intermedio-section::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+					radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+					radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.05) 0%, transparent 50%);
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	.cta-content {
+		max-width: 600px;
+		margin: 0 auto;
+		position: relative;
+		z-index: 2;
+	}
+
+	.cta-title {
+		font-size: 2.2rem;
+		font-weight: 800;
+		color: #290040;
+		margin-bottom: 1.5rem;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 25%, #fbbf24 50%, #3b82f6 75%, #8b5cf6 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		text-shadow: 0 4px 20px rgba(249, 115, 22, 0.5);
+		filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.3));
+		line-height: 1.2;
+	}
+
+	.cta-description {
+		font-size: 1.2rem;
+		color: #4a5568;
+		margin-bottom: 2.5rem;
+		line-height: 1.6;
+	}
+
+	.cta-button {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.75rem;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #f59e0b 100%);
+		color: #ffffff;
+		padding: 1.25rem 2.5rem;
+		border: none;
+		border-radius: 1rem;
+		font-weight: 700;
+		font-size: 1.1rem;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+	}
+
+	.cta-button:hover {
+		background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+		transform: translateY(-3px);
+		box-shadow: 0 12px 35px rgba(249, 115, 22, 0.6);
+		text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+	}
+
+	.cta-icon {
+		width: 24px;
+		height: 24px;
+	}
+
+	/* Responsive para CTA Intermedio */
+	@media (max-width: 768px) {
+		.cta-intermedio-section {
+			padding: 4rem 0;
+		}
+
+		.cta-title {
+			font-size: 1.8rem;
+		}
+
+		.cta-button {
+			padding: 1rem 2rem;
+			font-size: 1rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.cta-button {
+			width: 100%;
+			justify-content: center;
+		}
+	}
+
+	/* FAQ Section */
+	.faq-section {
+		padding: 6rem 0;
+		background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.faq-section::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+					radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+					radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.05) 0%, transparent 50%);
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	.faq-container {
+		max-width: 800px;
+		margin: 0 auto;
+		position: relative;
+		z-index: 2;
+	}
+
+	.faq-item {
+		background: white;
+		border-radius: 1rem;
+		margin-bottom: 1rem;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+		transition: all 0.3s ease;
+		border: 2px solid rgba(251, 191, 36, 0.2);
+		overflow: hidden;
+	}
+
+	.faq-item:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+		border-color: rgba(251, 191, 36, 0.4);
+	}
+
+	.faq-item.open {
+		border-color: rgba(251, 191, 36, 0.6);
+		box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+	}
+
+	.faq-question {
+		width: 100%;
+		padding: 1.5rem 2rem;
+		background: none;
+		border: none;
+		text-align: left;
+		cursor: pointer;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		transition: all 0.3s ease;
+	}
+
+	.faq-question:hover {
+		background: rgba(251, 191, 36, 0.05);
+	}
+
+	.question-text {
+		font-size: 1.1rem;
+		font-weight: 600;
+		color: #290040;
+		line-height: 1.4;
+		flex: 1;
+		margin-right: 1rem;
+	}
+
+	.faq-icon {
+		width: 24px;
+		height: 24px;
+		color: #f97316;
+		transition: transform 0.3s ease;
+		flex-shrink: 0;
+	}
+
+	.faq-icon.rotated {
+		transform: rotate(180deg);
+	}
+
+	.faq-answer {
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height 0.3s ease, padding 0.3s ease;
+		background: rgba(251, 191, 36, 0.02);
+	}
+
+	.faq-answer.open {
+		max-height: 200px;
+		padding: 0 2rem 1.5rem 2rem;
+	}
+
+	.faq-answer p {
+		color: #4a5568;
+		line-height: 1.6;
+		margin: 0;
+		font-size: 1rem;
+	}
+
+	/* Responsive para FAQ */
+	@media (max-width: 768px) {
+		.faq-section {
+			padding: 4rem 0;
+		}
+
+		.faq-question {
+			padding: 1.25rem 1.5rem;
+		}
+
+		.question-text {
+			font-size: 1rem;
+		}
+
+		.faq-answer.open {
+			padding: 0 1.5rem 1.25rem 1.5rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.faq-question {
+			padding: 1rem;
+		}
+
+		.faq-answer.open {
+			padding: 0 1rem 1rem 1rem;
 		}
 	}
 </style>
