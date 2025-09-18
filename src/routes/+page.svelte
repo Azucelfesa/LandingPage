@@ -172,15 +172,15 @@
 		setTimeout(() => {
 			const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]');
 			inputs.forEach(input => {
-				input.style.pointerEvents = 'auto';
-				input.style.userSelect = 'text';
-				input.style.webkitUserSelect = 'text';
-				input.style.mozUserSelect = 'text';
-				input.style.msUserSelect = 'text';
-				input.style.position = 'relative';
-				input.style.zIndex = '1000';
-				input.style.transform = 'none';
-				input.style.animation = 'none';
+				(input as HTMLInputElement).style.pointerEvents = 'auto';
+				(input as HTMLInputElement).style.userSelect = 'text';
+				(input as HTMLInputElement).style.webkitUserSelect = 'text';
+				(input as HTMLInputElement).style.mozUserSelect = 'text';
+				(input as HTMLInputElement).style.msUserSelect = 'text';
+				(input as HTMLInputElement).style.position = 'relative';
+				(input as HTMLInputElement).style.zIndex = '1000';
+				(input as HTMLInputElement).style.transform = 'none';
+				(input as HTMLInputElement).style.animation = 'none';
 			});
 		}, 100);
 		

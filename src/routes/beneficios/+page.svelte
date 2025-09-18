@@ -1,8 +1,11 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { spectacularHeroAnimation, slideInFromDirection, textGlowAnimation, add3DHoverEffect } from '$lib/animations';
 
-	let heroTitle, heroSubtitle, benefitsGrid, ctaSection;
+	let heroTitle: HTMLElement | null;
+	let heroSubtitle: HTMLElement | null;
+	let benefitsGrid: HTMLElement | null;
+	let ctaSection: HTMLElement | null;
 
 	onMount(() => {
 		// Animar elementos al cargar la página
