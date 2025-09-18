@@ -4,8 +4,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // Registrar ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
+// Tipos para los elementos DOM
+type HTMLElement = Element | null;
+type HTMLElementArray = NodeListOf<Element>;
+
 // Animaciones del Hero
-export function animateHero(heroTitle, heroSubtitle, registrationForm) {
+export function animateHero(heroTitle: HTMLElement, heroSubtitle: HTMLElement, registrationForm: HTMLElement): void {
 	// Verificar que los elementos existan antes de animar
 	if (!heroTitle || !heroSubtitle || !registrationForm) {
 		console.log('Elementos no encontrados para animar');
@@ -42,7 +46,7 @@ export function animateHero(heroTitle, heroSubtitle, registrationForm) {
 }
 
 // Animaciones de scroll
-export function animateScrollElements() {
+export function animateScrollElements(): void {
 	// Animación simple de los botones
 	setTimeout(() => {
 		gsap.from(".btn", {
@@ -67,7 +71,7 @@ export function animateScrollElements() {
 }
 
 // Animaciones de hover
-export function addHoverAnimations(registrationForm) {
+export function addHoverAnimations(registrationForm: HTMLElement): void {
 	if (!registrationForm) return;
 	
 	registrationForm.addEventListener('mouseenter', () => {
@@ -88,7 +92,7 @@ export function addHoverAnimations(registrationForm) {
 }
 
 // Animación de pulsación para botones importantes
-export function addPulseAnimation(element) {
+export function addPulseAnimation(element: HTMLElement): void {
 	if (!element) return;
 	
 	gsap.to(element, {
@@ -101,11 +105,13 @@ export function addPulseAnimation(element) {
 }
 
 // Animación de escritura para texto
-export function typewriterAnimation(element, text, speed = 0.05) {
+export function typewriterAnimation(element: HTMLElement, text: string, speed: number = 0.05): void {
+	if (!element) return;
+	
 	let i = 0;
 	element.textContent = '';
 	
-	function type() {
+	function type(): void {
 		if (i < text.length) {
 			element.textContent += text.charAt(i);
 			i++;
@@ -117,8 +123,10 @@ export function typewriterAnimation(element, text, speed = 0.05) {
 }
 
 // Animación de partículas flotantes (deshabilitada)
-export function createFloatingParticles(container) {
-	const particles = [];
+export function createFloatingParticles(container: HTMLElement): void {
+	if (!container) return;
+	
+	const particles: HTMLElement[] = [];
 	const particleCount = 20;
 	
 	for (let i = 0; i < particleCount; i++) {
@@ -154,7 +162,9 @@ export function createFloatingParticles(container) {
 }
 
 // Animación de loading spinner
-export function animateSpinner(spinner) {
+export function animateSpinner(spinner: HTMLElement): void {
+	if (!spinner) return;
+	
 	gsap.to(spinner, {
 		duration: 1,
 		rotation: 360,
@@ -164,7 +174,9 @@ export function animateSpinner(spinner) {
 }
 
 // Animación de éxito
-export function animateSuccess(element) {
+export function animateSuccess(element: HTMLElement): void {
+	if (!element) return;
+	
 	gsap.fromTo(element, 
 		{ scale: 0, opacity: 0 },
 		{ 
@@ -184,7 +196,9 @@ export function animateSuccess(element) {
 }
 
 // Animación de shake para errores
-export function shakeElement(element) {
+export function shakeElement(element: HTMLElement): void {
+	if (!element) return;
+	
 	gsap.to(element, {
 		duration: 0.1,
 		x: -10,
@@ -198,7 +212,7 @@ export function shakeElement(element) {
 }
 
 // Animación de entrada espectacular para el hero
-export function spectacularHeroAnimation(heroTitle, heroSubtitle, registrationForm) {
+export function spectacularHeroAnimation(heroTitle: HTMLElement, heroSubtitle: HTMLElement, registrationForm: HTMLElement): void {
 	if (!heroTitle || !heroSubtitle || !registrationForm) return;
 
 	const tl = gsap.timeline();
@@ -239,7 +253,7 @@ export function spectacularHeroAnimation(heroTitle, heroSubtitle, registrationFo
 }
 
 // Crear partículas de fondo animadas
-export function createBackgroundParticles() {
+export function createBackgroundParticles(): void {
 	const hero = document.querySelector('.hero');
 	if (!hero) return;
 
@@ -292,7 +306,7 @@ export function createBackgroundParticles() {
 }
 
 // Crear partículas de fondo para la sección de beneficios
-export function createBackgroundParticlesForBenefits(container) {
+export function createBackgroundParticlesForBenefits(container: HTMLElement): void {
 	if (!container) return;
 
 	// Crear contenedor de partículas
@@ -345,15 +359,15 @@ export function createBackgroundParticlesForBenefits(container) {
 }
 
 // Animación de ondas en botones
-export function addRippleEffect(button) {
+export function addRippleEffect(button: HTMLElement): void {
 	if (!button) return;
 	
-	button.addEventListener('click', function(e) {
+	button.addEventListener('click', function(e: Event) {
 		const ripple = document.createElement('span');
 		const rect = button.getBoundingClientRect();
 		const size = Math.max(rect.width, rect.height);
-		const x = e.clientX - rect.left - size / 2;
-		const y = e.clientY - rect.top - size / 2;
+		const x = (e as MouseEvent).clientX - rect.left - size / 2;
+		const y = (e as MouseEvent).clientY - rect.top - size / 2;
 		
 		ripple.style.cssText = `
 			position: absolute;
@@ -367,8 +381,8 @@ export function addRippleEffect(button) {
 			pointer-events: none;
 		`;
 		
-		button.style.position = 'relative';
-		button.style.overflow = 'hidden';
+		(button as HTMLElement).style.position = 'relative';
+		(button as HTMLElement).style.overflow = 'hidden';
 		button.appendChild(ripple);
 		
 		gsap.to(ripple, {
@@ -382,7 +396,7 @@ export function addRippleEffect(button) {
 }
 
 // Animación de entrada escalonada para elementos
-export function staggeredEntryAnimation(selector, delay = 0.1) {
+export function staggeredEntryAnimation(selector: string, delay: number = 0.1): void {
 	const elements = document.querySelectorAll(selector);
 	
 	gsap.fromTo(elements, 
@@ -404,7 +418,7 @@ export function staggeredEntryAnimation(selector, delay = 0.1) {
 }
 
 // Animación de hover mejorada para formularios
-export function enhancedFormHover(form) {
+export function enhancedFormHover(form: HTMLElement): void {
 	if (!form) return;
 	
 	form.addEventListener('mouseenter', () => {
@@ -429,13 +443,13 @@ export function enhancedFormHover(form) {
 }
 
 // Animación de typing para el título
-export function typewriterTitle(element, text, speed = 100) {
+export function typewriterTitle(element: HTMLElement, text: string, speed: number = 100): void {
 	if (!element) return;
 	
 	element.textContent = '';
 	let i = 0;
 	
-	function type() {
+	function type(): void {
 		if (i < text.length) {
 			element.textContent += text.charAt(i);
 			i++;
@@ -447,7 +461,7 @@ export function typewriterTitle(element, text, speed = 100) {
 }
 
 // Animación de pulso mejorada
-export function enhancedPulseAnimation(element) {
+export function enhancedPulseAnimation(element: HTMLElement): void {
 	if (!element) return;
 	
 	gsap.to(element, {
@@ -461,7 +475,7 @@ export function enhancedPulseAnimation(element) {
 }
 
 // Animación de entrada desde diferentes direcciones
-export function slideInFromDirection(element, direction = 'left', delay = 0) {
+export function slideInFromDirection(element: HTMLElement, direction: 'left' | 'right' | 'top' | 'bottom' = 'left', delay: number = 0): void {
 	if (!element) return;
 	
 	const directions = {
@@ -490,7 +504,7 @@ export function slideInFromDirection(element, direction = 'left', delay = 0) {
 }
 
 // Animación de resplandor en texto
-export function textGlowAnimation(element) {
+export function textGlowAnimation(element: HTMLElement): void {
 	if (!element) return;
 	
 	gsap.to(element, {
@@ -503,7 +517,7 @@ export function textGlowAnimation(element) {
 }
 
 // Animación de rotación 3D en hover
-export function add3DHoverEffect(element) {
+export function add3DHoverEffect(element: HTMLElement): void {
 	if (!element) return;
 	
 	element.addEventListener('mouseenter', () => {
