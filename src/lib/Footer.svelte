@@ -158,8 +158,8 @@
 	.footer {
 		background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
 		color: white;
-		padding: 4rem 0 0;
-		margin-top: 4rem;
+		padding: 2rem 0 0;
+		margin-top: 0;
 	}
 
 	.container {
@@ -171,8 +171,8 @@
 	.footer-main {
 		display: grid;
 		grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
-		gap: 3rem;
-		margin-bottom: 3rem;
+		gap: 2rem;
+		margin-bottom: 2rem;
 	}
 
 	.footer-section {
@@ -357,12 +357,12 @@
 
 	@media (max-width: 768px) {
 		.footer {
-			padding: 3rem 0 0;
+			padding: 1.5rem 0 0;
 		}
 
 		.footer-main {
 			grid-template-columns: 1fr;
-			gap: 2rem;
+			gap: 1.5rem;
 		}
 
 		.footer-bottom-content {

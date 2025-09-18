@@ -267,8 +267,8 @@
 	.hero {
 		background: var(--adned-purple);
 		color: var(--bg-white);
-		padding: 3rem 0;
-		min-height: 60vh;
+		padding: 1rem 0;
+		min-height: 50vh;
 		display: flex;
 		align-items: center;
 		position: relative;
@@ -317,10 +317,10 @@
 	}
 
 	.hero-title {
-		font-size: 2.5rem;
+		font-size: 2.2rem;
 		font-weight: 700;
-		line-height: 1.2;
-		margin-bottom: 1.5rem;
+		line-height: 1.1;
+		margin-bottom: 1rem;
 		color: var(--bg-white);
 		background: linear-gradient(135deg, #f97316 0%, #fbbf24 25%, #fbbf24 50%, #3b82f6 75%, #8b5cf6 100%);
 		-webkit-background-clip: text;
@@ -342,9 +342,9 @@
 
 
 	.hero-subtitle {
-		font-size: 1.2rem;
-		line-height: 1.6;
-		margin-bottom: 2rem;
+		font-size: 1.1rem;
+		line-height: 1.4;
+		margin-bottom: 1.5rem;
 		color: #ffffff;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
@@ -353,13 +353,13 @@
 	.registration-form {
 		background: rgba(255, 255, 255, 0.98);
 		backdrop-filter: blur(20px);
-		padding: 3rem;
-		border-radius: 2rem;
+		padding: 2rem;
+		border-radius: 1.5rem;
 		box-shadow: 
 			0 25px 50px rgba(0, 0, 0, 0.6),
 			0 0 0 1px rgba(255, 255, 255, 0.2),
 			0 0 0 3px rgba(251, 191, 36, 0.2);
-		margin-top: 2rem;
+		margin-top: 1rem;
 		border: 2px solid rgba(251, 191, 36, 0.3);
 		position: relative;
 		transition: all 0.3s ease;
@@ -396,7 +396,7 @@
 	}
 
 	.form-group {
-		margin-bottom: 1.5rem;
+		margin-bottom: 1rem;
 	}
 
 	.form-group label {
@@ -409,10 +409,10 @@
 
 	.form-group input {
 		width: 100%;
-		padding: 1rem 1.25rem;
+		padding: 0.75rem 1rem;
 		border: 2px solid rgba(0, 0, 0, 0.1);
-		border-radius: 1rem;
-		font-size: 1.1rem;
+		border-radius: 0.75rem;
+		font-size: 1rem;
 		transition: all 0.3s ease;
 		background: rgba(255, 255, 255, 0.95);
 		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -458,10 +458,10 @@
 		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
 		color: #000000;
 		width: 100%;
-		padding: 1.5rem 2rem;
-		font-size: 1.3rem;
+		padding: 1rem 1.5rem;
+		font-size: 1.1rem;
 		font-weight: 800;
-		border-radius: 1.5rem;
+		border-radius: 1rem;
 		position: relative;
 		overflow: hidden;
 		box-shadow: 
@@ -545,21 +545,20 @@
 	/* Responsive Design */
 	@media (max-width: 768px) {
 		.hero {
-			padding: 1.5rem 0;
+			padding: 1rem 0;
 			min-height: auto;
 		}
 
 		.hero-title {
-			font-size: 1.5rem;
+			font-size: 1.4rem;
 		}
 
-
 		.hero-subtitle {
-			font-size: 1.1rem;
+			font-size: 1rem;
 		}
 
 		.registration-form {
-			padding: 1.5rem;
+			padding: 1.25rem;
 		}
 	}
 
