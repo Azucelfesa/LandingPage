@@ -1,5 +1,6 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
+	import { saveData } from '$lib/server/savedata';
 	import { 
 		animateHero, 
 		animateScrollElements, 
@@ -7,25 +8,15 @@
 		addPulseAnimation,
 		animateSpinner,
 		animateSuccess,
-		shakeElement,
-		spectacularHeroAnimation,
-		addRippleEffect,
-		staggeredEntryAnimation,
-		enhancedFormHover,
-		typewriterTitle,
-		enhancedPulseAnimation,
-		slideInFromDirection,
-		textGlowAnimation,
-		add3DHoverEffect,
-		createBackgroundParticles,
-		createBackgroundParticlesForBenefits
-	} from '$lib/animations.js';
+		shakeElement
+	} from '$lib/animations';
+    import type { RegisterForm } from '$lib/server/types';
 	// import { 
 	// 	createRippleEffect, 
 	// 	createMouseFollower, 
 	// 	revealTextByWords,
 	// 	slideInFromDirection
-	// } from '$lib/advancedAnimations.js';
+	// } from '$lib/advancedAnimations';
 	
 	let formData = {
 		parentName: '',
@@ -38,14 +29,15 @@
 	let showThankYou = false;
 	
 	// Referencias para animaciones
-	let heroTitle;
-	let heroSubtitle;
-	let registrationForm;
-	let heroSection;
-	let loadingSpinner;
-	let successIcon;
+	let heroTitle: HTMLElement;
+	let heroSubtitle: HTMLElement;
+	let registrationForm: HTMLElement;
+	let heroSection: HTMLElement;
+	let loadingSpinner: HTMLElement;
+	let successIcon: HTMLElement;
 	
-	async function handleSubmit(event) {
+	
+	async function handleSubmit(event : Event) {
 		event.preventDefault();
 		isSubmitting = true;
 		
@@ -67,7 +59,22 @@
 		if (successIcon) {
 			animateSuccess(successIcon);
 		}
-	}
+
+		try{
+
+			
+			await saveData({
+				name: formData.parentName,
+				studentname: formData.studentName,
+				whatsapp: parseInt(formData.whatsapp.replace(/\D/g, '')),
+				email: formData.email
+			} as RegisterForm)
+		}catch(error){
+			console.error("Error saving data:", error);
+			// Aquí podrías mostrar un mensaje de error al usuario
+			shakeElement(registrationForm);
+			showThankYou = false;
+		}
 	
 	function joinGroup() {
 		// Redirigir a WhatsApp
