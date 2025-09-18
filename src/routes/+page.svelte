@@ -19,13 +19,13 @@
 		add3DHoverEffect,
 		createBackgroundParticles,
 		createBackgroundParticlesForBenefits
-	} from '$lib/animations.js';
+	} from '$lib/animations';
 	// import { 
 	// 	createRippleEffect, 
 	// 	createMouseFollower, 
 	// 	revealTextByWords,
 	// 	slideInFromDirection
-	// } from '$lib/advancedAnimations.js';
+	// } from '$lib/advancedAnimations';
 	
 	let formData = {
 		parentName: '',
@@ -365,8 +365,8 @@
 	.hero {
 		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		color: var(--bg-white);
-		padding: 1rem 0;
-		min-height: 50vh;
+		padding: 2rem 0 0 0;
+		min-height: 100vh;
 		display: flex;
 		align-items: center;
 		position: relative;
@@ -385,6 +385,18 @@
 					radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
 		pointer-events: none;
 		animation: backgroundShift 8s ease-in-out infinite;
+	}
+
+	.hero::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 4rem;
+		background: linear-gradient(to bottom, transparent 0%, rgba(41, 0, 64, 0.8) 50%, rgba(41, 0, 64, 1) 100%);
+		pointer-events: none;
+		z-index: 1;
 	}
 
 	@keyframes backgroundShift {
@@ -407,7 +419,8 @@
 		margin: 0 auto;
 		text-align: center;
 		position: relative;
-		z-index: 1;
+		z-index: 2;
+		padding-bottom: 2rem;
 	}
 
 	.hero-title {
@@ -462,6 +475,7 @@
 		display: block;
 		visibility: visible;
 		animation: formGlow 4s ease-in-out infinite;
+		z-index: 3;
 	}
 
 	@keyframes formGlow {
@@ -702,9 +716,10 @@
 	/* Sección de Beneficios */
 	.benefits-section {
 		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
-		padding: 4rem 0;
+		padding: 0;
 		position: relative;
 		overflow: hidden;
+		margin-top: -2rem;
 	}
 
 	.benefits-section::before {
@@ -726,7 +741,7 @@
 	.container {
 		max-width: 1200px;
 		margin: 0 auto;
-		padding: 0 1rem;
+		padding: 6rem 1rem 4rem 1rem;
 		position: relative;
 		z-index: 2;
 	}

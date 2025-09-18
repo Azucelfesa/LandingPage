@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { spectacularHeroAnimation, slideInFromDirection, textGlowAnimation, add3DHoverEffect } from '$lib/animations.js';
+	import { spectacularHeroAnimation, slideInFromDirection, textGlowAnimation, add3DHoverEffect } from '$lib/animations';
 
 	let heroTitle, heroSubtitle, benefitsGrid, ctaSection;
 
@@ -266,12 +266,46 @@
 		max-width: 1200px;
 		margin: 0 auto;
 		padding: 0 1rem;
+		position: relative;
+		z-index: 2;
 	}
 
 	/* Benefits Section */
 	.benefits-section {
 		padding: 6rem 0;
-		background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.benefits-section::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
+		pointer-events: none;
+		z-index: 1;
+		animation: backgroundShift 8s ease-in-out infinite;
+	}
+
+	@keyframes backgroundShift {
+		0%, 100% { 
+			background: 
+				radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+				radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+				radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
+		}
+		50% { 
+			background: 
+				radial-gradient(circle at 30% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+				radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
+				radial-gradient(circle at 60% 40%, rgba(249, 115, 22, 0.15) 0%, transparent 50%);
+		}
 	}
 
 	.section-header {
@@ -282,20 +316,23 @@
 	.section-title {
 		font-size: 2.5rem;
 		font-weight: 800;
-		color: #290040;
+		color: #ffffff;
 		margin-bottom: 1rem;
-		background: linear-gradient(135deg, #290040 0%, #3d0060 100%);
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 25%, #fbbf24 50%, #3b82f6 75%, #8b5cf6 100%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
+		text-shadow: 0 4px 20px rgba(249, 115, 22, 0.5);
+		filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.3));
 	}
 
 	.section-subtitle {
 		font-size: 1.2rem;
-		color: #64748b;
+		color: rgba(255, 255, 255, 0.9);
 		max-width: 600px;
 		margin: 0 auto;
 		line-height: 1.6;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
 
 	.benefits-grid {
@@ -306,12 +343,13 @@
 	}
 
 	.benefit-card {
-		background: white;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(20px);
 		padding: 2.5rem 2rem;
 		border-radius: 1.5rem;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 		transition: all 0.3s ease;
-		border: 2px solid transparent;
+		border: 2px solid rgba(251, 191, 36, 0.3);
 		position: relative;
 		overflow: hidden;
 	}
@@ -328,8 +366,9 @@
 
 	.benefit-card:hover {
 		transform: translateY(-10px);
-		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-		border-color: rgba(249, 115, 22, 0.3);
+		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+		border-color: rgba(251, 191, 36, 0.6);
+		background: rgba(255, 255, 255, 1);
 	}
 
 	.benefit-icon {
@@ -355,19 +394,37 @@
 		font-weight: 700;
 		color: #290040;
 		margin-bottom: 1rem;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
 	.benefit-description {
-		color: #64748b;
+		color: #4a5568;
 		line-height: 1.6;
 		font-size: 1rem;
 	}
 
 	/* Stats Section */
 	.stats-section {
-		background: #290040;
+		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		padding: 4rem 0;
 		color: white;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.stats-section::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
+		pointer-events: none;
+		z-index: 1;
+		animation: backgroundShift 8s ease-in-out infinite;
 	}
 
 	.stats-grid {
@@ -375,6 +432,8 @@
 		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 		gap: 2rem;
 		text-align: center;
+		position: relative;
+		z-index: 2;
 	}
 
 	.stat-item {
@@ -399,32 +458,54 @@
 
 	/* CTA Section */
 	.cta-section {
-		background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		padding: 6rem 0;
 		text-align: center;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.cta-section::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
+		pointer-events: none;
+		z-index: 1;
+		animation: backgroundShift 8s ease-in-out infinite;
 	}
 
 	.cta-content {
 		max-width: 600px;
 		margin: 0 auto;
+		position: relative;
+		z-index: 2;
 	}
 
 	.cta-title {
 		font-size: 2.5rem;
 		font-weight: 800;
-		color: #290040;
+		color: #ffffff;
 		margin-bottom: 1.5rem;
-		background: linear-gradient(135deg, #290040 0%, #3d0060 100%);
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 25%, #fbbf24 50%, #3b82f6 75%, #8b5cf6 100%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
+		text-shadow: 0 4px 20px rgba(249, 115, 22, 0.5);
+		filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.3));
 	}
 
 	.cta-description {
 		font-size: 1.2rem;
-		color: #64748b;
+		color: rgba(255, 255, 255, 0.9);
 		margin-bottom: 2.5rem;
 		line-height: 1.6;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
 
 	.cta-button {

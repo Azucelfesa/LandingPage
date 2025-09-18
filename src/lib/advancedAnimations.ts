@@ -4,8 +4,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // Registrar ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
+// Tipos para los elementos DOM
+type HTMLElement = Element | null;
+type HTMLElementArray = NodeListOf<Element>;
+
 // Animación de texto tipo máquina de escribir
-export function typewriterEffect(element, text, speed = 0.05) {
+export function typewriterEffect(element: HTMLElement, text: string, speed: number = 0.05): gsap.core.Timeline {
+	if (!element) return gsap.timeline();
+	
 	const tl = gsap.timeline();
 	
 	element.textContent = '';
@@ -23,13 +29,15 @@ export function typewriterEffect(element, text, speed = 0.05) {
 }
 
 // Animación de ondas expansivas
-export function createRippleEffect(button) {
-	button.addEventListener('click', (e) => {
+export function createRippleEffect(button: HTMLElement): void {
+	if (!button) return;
+	
+	button.addEventListener('click', (e: Event) => {
 		const ripple = document.createElement('span');
 		const rect = button.getBoundingClientRect();
 		const size = Math.max(rect.width, rect.height);
-		const x = e.clientX - rect.left - size / 2;
-		const y = e.clientY - rect.top - size / 2;
+		const x = (e as MouseEvent).clientX - rect.left - size / 2;
+		const y = (e as MouseEvent).clientY - rect.top - size / 2;
 		
 		ripple.style.cssText = `
 			position: absolute;
@@ -43,8 +51,8 @@ export function createRippleEffect(button) {
 			pointer-events: none;
 		`;
 		
-		button.style.position = 'relative';
-		button.style.overflow = 'hidden';
+		(button as HTMLElement).style.position = 'relative';
+		(button as HTMLElement).style.overflow = 'hidden';
 		button.appendChild(ripple);
 		
 		gsap.to(ripple, {
@@ -58,8 +66,8 @@ export function createRippleEffect(button) {
 }
 
 // Animación de parallax
-export function createParallaxEffect() {
-	gsap.utils.toArray('.parallax').forEach(element => {
+export function createParallaxEffect(): void {
+	gsap.utils.toArray('.parallax').forEach((element: Element) => {
 		gsap.to(element, {
 			yPercent: -50,
 			ease: "none",
@@ -74,7 +82,9 @@ export function createParallaxEffect() {
 }
 
 // Animación de contador numérico
-export function animateCounter(element, endValue, duration = 2) {
+export function animateCounter(element: HTMLElement, endValue: number, duration: number = 2): void {
+	if (!element) return;
+	
 	const startValue = 0;
 	const increment = endValue / (duration * 60); // 60 FPS
 	
@@ -88,7 +98,9 @@ export function animateCounter(element, endValue, duration = 2) {
 }
 
 // Animación de morphing de formas
-export function morphShape(element, fromPath, toPath, duration = 1) {
+export function morphShape(element: HTMLElement, fromPath: string, toPath: string, duration: number = 1): void {
+	if (!element) return;
+	
 	gsap.to(element, {
 		duration: duration,
 		attr: { d: toPath },
@@ -97,7 +109,9 @@ export function morphShape(element, fromPath, toPath, duration = 1) {
 }
 
 // Animación de partículas que siguen el mouse
-export function createMouseFollower(container) {
+export function createMouseFollower(container: HTMLElement): void {
+	if (!container) return;
+	
 	const follower = document.createElement('div');
 	follower.className = 'mouse-follower';
 	follower.style.cssText = `
@@ -115,7 +129,7 @@ export function createMouseFollower(container) {
 	
 	gsap.set(follower, { xPercent: -50, yPercent: -50 });
 	
-	document.addEventListener('mousemove', (e) => {
+	document.addEventListener('mousemove', (e: MouseEvent) => {
 		gsap.to(follower, {
 			duration: 0.3,
 			x: e.clientX,
@@ -126,7 +140,9 @@ export function createMouseFollower(container) {
 }
 
 // Animación de scroll horizontal
-export function createHorizontalScroll(container) {
+export function createHorizontalScroll(container: HTMLElement): void {
+	if (!container) return;
+	
 	gsap.to(container, {
 		x: () => -(container.scrollWidth - window.innerWidth),
 		ease: "none",
@@ -141,8 +157,10 @@ export function createHorizontalScroll(container) {
 }
 
 // Animación de revelado de texto por palabras
-export function revealTextByWords(element) {
-	const words = element.textContent.split(' ');
+export function revealTextByWords(element: HTMLElement): void {
+	if (!element) return;
+	
+	const words = element.textContent?.split(' ') || [];
 	element.innerHTML = words.map(word => `<span class="word">${word}</span>`).join(' ');
 	
 	gsap.fromTo('.word', 
@@ -158,8 +176,10 @@ export function revealTextByWords(element) {
 }
 
 // Animación de loading con barras
-export function createLoadingBars(container) {
-	const bars = [];
+export function createLoadingBars(container: HTMLElement): void {
+	if (!container) return;
+	
+	const bars: HTMLElement[] = [];
 	
 	for (let i = 0; i < 5; i++) {
 		const bar = document.createElement('div');
@@ -186,7 +206,9 @@ export function createLoadingBars(container) {
 }
 
 // Animación de entrada con efecto de deslizamiento
-export function slideInFromDirection(element, direction = 'left', delay = 0) {
+export function slideInFromDirection(element: HTMLElement, direction: 'left' | 'right' | 'top' | 'bottom' = 'left', delay: number = 0): void {
+	if (!element) return;
+	
 	const directions = {
 		left: { x: -100, y: 0 },
 		right: { x: 100, y: 0 },
@@ -211,7 +233,9 @@ export function slideInFromDirection(element, direction = 'left', delay = 0) {
 }
 
 // Animación de rotación 3D
-export function rotate3D(element, rotationX = 0, rotationY = 0, rotationZ = 0) {
+export function rotate3D(element: HTMLElement, rotationX: number = 0, rotationY: number = 0, rotationZ: number = 0): void {
+	if (!element) return;
+	
 	gsap.to(element, {
 		rotationX: rotationX,
 		rotationY: rotationY,
@@ -223,7 +247,9 @@ export function rotate3D(element, rotationX = 0, rotationY = 0, rotationZ = 0) {
 }
 
 // Animación de zoom con efecto de lente
-export function lensEffect(element) {
+export function lensEffect(element: HTMLElement): void {
+	if (!element) return;
+	
 	element.addEventListener('mouseenter', () => {
 		gsap.to(element, {
 			scale: 1.1,
