@@ -1,39 +1,35 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { spectacularHeroAnimation, slideInFromDirection, textGlowAnimation, add3DHoverEffect } from '$lib/animations';
+	import { spectacularHeroAnimation, slideInFromDirection, textGlowAnimation } from '$lib/animations';
 
 	let heroTitle: HTMLElement | null;
 	let heroSubtitle: HTMLElement | null;
-	let benefitsGrid: HTMLElement | null;
+	let missionSection: HTMLElement | null;
+	let visionSection: HTMLElement | null;
 	let ctaSection: HTMLElement | null;
 
 	onMount(() => {
 		// Animar elementos al cargar la página
 		if (heroTitle) spectacularHeroAnimation(heroTitle, heroSubtitle, null);
-		if (benefitsGrid) slideInFromDirection(benefitsGrid, 'bottom', 0.3);
-		if (ctaSection) slideInFromDirection(ctaSection, 'top', 0.5);
-		
-		// Agregar efectos 3D a las tarjetas de beneficios
-		const benefitCards = document.querySelectorAll('.benefit-card');
-		benefitCards.forEach(card => {
-			add3DHoverEffect(card);
-		});
+		if (missionSection) slideInFromDirection(missionSection, 'left', 0.3);
+		if (visionSection) slideInFromDirection(visionSection, 'right', 0.5);
+		if (ctaSection) slideInFromDirection(ctaSection, 'top', 0.7);
 	});
 </script>
 
 <svelte:head>
-	<title>Beneficios - ADNED</title>
-	<meta name="description" content="Descubre todos los beneficios de unirte a ADNED y asegura el ingreso de tu hijo a la prepa de sus sueños.">
+	<title>Misión y Visión - ADNED</title>
+	<meta name="description" content="Conoce la misión y visión de ADNED para asegurar el ingreso de tu hijo a la prepa de sus sueños.">
 </svelte:head>
 
 <!-- Hero Section -->
 <section class="hero">
 	<div class="hero-content">
 		<h1 class="hero-title" bind:this={heroTitle}>
-			Beneficios Exclusivos
+			Misión y Visión
 		</h1>
 		<p class="hero-subtitle" bind:this={heroSubtitle}>
-			Todo lo que necesitas para que tu hijo ingrese a la prepa de sus sueños
+			Conoce los valores y objetivos que nos impulsan a ayudarte
 		</p>
 	</div>
 	<div class="hero-decoration">
@@ -43,113 +39,45 @@
 	</div>
 </section>
 
-<!-- Benefits Grid Section -->
-<section class="benefits-section" bind:this={benefitsGrid}>
+<!-- Mission Section -->
+<section class="mission-section" bind:this={missionSection}>
 	<div class="container">
-		<div class="section-header">
-			<h2 class="section-title">¿Por qué elegir ADNED?</h2>
-			<p class="section-subtitle">
-				Somos la guía más completa y efectiva para el proceso de admisión ECOEMS 2026
-			</p>
-		</div>
-
-		<div class="benefits-grid">
-			<!-- Beneficio 1 -->
-			<div class="benefit-card">
-				<div class="benefit-icon">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M9 12l2 2 4-4"/>
-						<path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
-						<path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
-						<path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
-						<path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
-					</svg>
-				</div>
-				<h3 class="benefit-title">Información Oficial y Actualizada</h3>
-				<p class="benefit-description">
-					Recibe información oficial y actualizada del ECOEMS directamente en tu WhatsApp, sin intermediarios ni información desactualizada.
-				</p>
+		<div class="mission-content">
+			<div class="mission-icon">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+				</svg>
 			</div>
-
-			<!-- Beneficio 2 -->
-			<div class="benefit-card">
-				<div class="benefit-icon">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-					</svg>
-				</div>
-				<h3 class="benefit-title">Tips Prácticos</h3>
-				<p class="benefit-description">
-					Consejos prácticos y estrategias específicas para padres y alumnos que te ayudarán a navegar el proceso de admisión con confianza.
-				</p>
-			</div>
-
-			<!-- Beneficio 3 -->
-			<div class="benefit-card">
-				<div class="benefit-icon">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<circle cx="12" cy="12" r="10"/>
-						<polyline points="12,6 12,12 16,14"/>
-					</svg>
-				</div>
-				<h3 class="benefit-title">Recordatorios Clave</h3>
-				<p class="benefit-description">
-					Recibe recordatorios importantes para que tu hijo no pierda fechas críticas del proceso de admisión ECOEMS 2026.
-				</p>
-			</div>
-
-			<!-- Beneficio 4 -->
-			<div class="benefit-card">
-				<div class="benefit-icon">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-					</svg>
-				</div>
-				<h3 class="benefit-title">Comunicación Directa</h3>
-				<p class="benefit-description">
-					Comunicación directa con asesores especializados que resolverán todas tus dudas y te guiarán paso a paso.
-				</p>
-			</div>
-
-			<!-- Beneficio 5 -->
-			<div class="benefit-card">
-				<div class="benefit-icon">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-						<polyline points="14,2 14,8 20,8"/>
-						<line x1="16" y1="13" x2="8" y2="13"/>
-						<line x1="16" y1="17" x2="8" y2="17"/>
-						<polyline points="10,9 9,9 8,9"/>
-					</svg>
-				</div>
-				<h3 class="benefit-title">Material Exclusivo</h3>
-				<p class="benefit-description">
-					Acceso a material exclusivo diseñado específicamente para preparar mejor a tu hijo para el proceso de admisión.
+			<div class="mission-text">
+				<h2 class="mission-title">Misión</h2>
+				<p class="mission-description">
+					Ofrecer cursos innovadores, accesibles y de calidad que preparen a los 
+					estudiantes para superar los exámenes de admisión al bachillerato y la 
+					universidad, brindándoles confianza, motivación y herramientas modernas que los 
+					acerquen a lograr sus sueños académicos.
 				</p>
 			</div>
 		</div>
 	</div>
 </section>
 
-<!-- Stats Section -->
-<section class="stats-section">
+<!-- Vision Section -->
+<section class="vision-section" bind:this={visionSection}>
 	<div class="container">
-		<div class="stats-grid">
-			<div class="stat-item">
-				<div class="stat-number">95%</div>
-				<div class="stat-label">Tasa de Éxito</div>
+		<div class="vision-content">
+			<div class="vision-icon">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+					<circle cx="12" cy="12" r="3"/>
+				</svg>
 			</div>
-			<div class="stat-item">
-				<div class="stat-number">500+</div>
-				<div class="stat-label">Estudiantes Ayudados</div>
-			</div>
-			<div class="stat-item">
-				<div class="stat-number">3</div>
-				<div class="stat-label">Años de Experiencia</div>
-			</div>
-			<div class="stat-item">
-				<div class="stat-number">24/7</div>
-				<div class="stat-label">Soporte Disponible</div>
+			<div class="vision-text">
+				<h2 class="vision-title">Visión</h2>
+				<p class="vision-description">
+					Convertirse en la comunidad educativa líder en México para la preparación de 
+					exámenes de admisión, reconocida por su enfoque futurista, juvenil y motivador, 
+					que acompaña a cada alumno en su camino al éxito académico.
+				</p>
 			</div>
 		</div>
 	</div>
@@ -273,15 +201,15 @@
 		z-index: 2;
 	}
 
-	/* Benefits Section */
-	.benefits-section {
+	/* Mission Section */
+	.mission-section {
 		padding: 6rem 0;
 		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		position: relative;
 		overflow: hidden;
 	}
 
-	.benefits-section::before {
+	.mission-section::before {
 		content: '';
 		position: absolute;
 		top: 0;
@@ -294,6 +222,137 @@
 		pointer-events: none;
 		z-index: 1;
 		animation: backgroundShift 8s ease-in-out infinite;
+	}
+
+	.mission-content {
+		display: flex;
+		align-items: center;
+		gap: 3rem;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(20px);
+		padding: 3rem;
+		border-radius: 2rem;
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+		border: 2px solid rgba(251, 191, 36, 0.3);
+		position: relative;
+		z-index: 2;
+	}
+
+	.mission-icon {
+		width: 100px;
+		height: 100px;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+		border-radius: 2rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		box-shadow: 0 10px 25px rgba(249, 115, 22, 0.3);
+	}
+
+	.mission-icon svg {
+		width: 50px;
+		height: 50px;
+		color: white;
+	}
+
+	.mission-text {
+		flex: 1;
+	}
+
+	.mission-title {
+		font-size: 2.5rem;
+		font-weight: 800;
+		color: #290040;
+		margin-bottom: 1.5rem;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 25%, #fbbf24 50%, #3b82f6 75%, #8b5cf6 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.mission-description {
+		font-size: 1.2rem;
+		color: #4a5568;
+		line-height: 1.8;
+		text-align: justify;
+	}
+
+	/* Vision Section */
+	.vision-section {
+		padding: 6rem 0;
+		background: linear-gradient(135deg, #3d0060 0%, #290040 50%, #3d0060 100%);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.vision-section::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 60% 40%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
+		pointer-events: none;
+		z-index: 1;
+		animation: backgroundShift 8s ease-in-out infinite;
+	}
+
+	.vision-content {
+		display: flex;
+		align-items: center;
+		gap: 3rem;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(20px);
+		padding: 3rem;
+		border-radius: 2rem;
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+		border: 2px solid rgba(251, 191, 36, 0.3);
+		position: relative;
+		z-index: 2;
+	}
+
+	.vision-icon {
+		width: 100px;
+		height: 100px;
+		background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #f97316 100%);
+		border-radius: 2rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+	}
+
+	.vision-icon svg {
+		width: 50px;
+		height: 50px;
+		color: white;
+	}
+
+	.vision-text {
+		flex: 1;
+	}
+
+	.vision-title {
+		font-size: 2.5rem;
+		font-weight: 800;
+		color: #290040;
+		margin-bottom: 1.5rem;
+		background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 25%, #8b5cf6 50%, #f97316 75%, #fbbf24 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.vision-description {
+		font-size: 1.2rem;
+		color: #4a5568;
+		line-height: 1.8;
+		text-align: justify;
 	}
 
 	@keyframes backgroundShift {
@@ -309,154 +368,6 @@
 				radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
 				radial-gradient(circle at 60% 40%, rgba(249, 115, 22, 0.15) 0%, transparent 50%);
 		}
-	}
-
-	.section-header {
-		text-align: center;
-		margin-bottom: 4rem;
-	}
-
-	.section-title {
-		font-size: 2.5rem;
-		font-weight: 800;
-		color: #ffffff;
-		margin-bottom: 1rem;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 25%, #fbbf24 50%, #3b82f6 75%, #8b5cf6 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		text-shadow: 0 4px 20px rgba(249, 115, 22, 0.5);
-		filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.3));
-	}
-
-	.section-subtitle {
-		font-size: 1.2rem;
-		color: rgba(255, 255, 255, 0.9);
-		max-width: 600px;
-		margin: 0 auto;
-		line-height: 1.6;
-		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-	}
-
-	.benefits-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-		gap: 2rem;
-		margin-top: 3rem;
-	}
-
-	.benefit-card {
-		background: rgba(255, 255, 255, 0.95);
-		backdrop-filter: blur(20px);
-		padding: 2.5rem 2rem;
-		border-radius: 1.5rem;
-		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-		transition: all 0.3s ease;
-		border: 2px solid rgba(251, 191, 36, 0.3);
-		position: relative;
-		overflow: hidden;
-	}
-
-	.benefit-card::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 4px;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
-	}
-
-	.benefit-card:hover {
-		transform: translateY(-10px);
-		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-		border-color: rgba(251, 191, 36, 0.6);
-		background: rgba(255, 255, 255, 1);
-	}
-
-	.benefit-icon {
-		width: 60px;
-		height: 60px;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
-		border-radius: 1rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin-bottom: 1.5rem;
-		box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
-	}
-
-	.benefit-icon svg {
-		width: 30px;
-		height: 30px;
-		color: white;
-	}
-
-	.benefit-title {
-		font-size: 1.5rem;
-		font-weight: 700;
-		color: #290040;
-		margin-bottom: 1rem;
-		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	}
-
-	.benefit-description {
-		color: #4a5568;
-		line-height: 1.6;
-		font-size: 1rem;
-	}
-
-	/* Stats Section */
-	.stats-section {
-		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
-		padding: 4rem 0;
-		color: white;
-		position: relative;
-		overflow: hidden;
-	}
-
-	.stats-section::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-					radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-					radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
-		pointer-events: none;
-		z-index: 1;
-		animation: backgroundShift 8s ease-in-out infinite;
-	}
-
-	.stats-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-		gap: 2rem;
-		text-align: center;
-		position: relative;
-		z-index: 2;
-	}
-
-	.stat-item {
-		padding: 2rem 1rem;
-	}
-
-	.stat-number {
-		font-size: 3rem;
-		font-weight: 900;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		margin-bottom: 0.5rem;
-	}
-
-	.stat-label {
-		font-size: 1.1rem;
-		color: rgba(255, 255, 255, 0.8);
-		font-weight: 600;
 	}
 
 	/* CTA Section */
@@ -557,30 +468,27 @@
 			font-size: 1.1rem;
 		}
 
-		.benefits-section {
+		.mission-section,
+		.vision-section {
 			padding: 4rem 0;
 		}
 
-		.section-title {
+		.mission-content,
+		.vision-content {
+			flex-direction: column;
+			text-align: center;
+			padding: 2rem;
+			gap: 2rem;
+		}
+
+		.mission-title,
+		.vision-title {
 			font-size: 2rem;
 		}
 
-		.benefits-grid {
-			grid-template-columns: 1fr;
-			gap: 1.5rem;
-		}
-
-		.benefit-card {
-			padding: 2rem 1.5rem;
-		}
-
-		.stats-grid {
-			grid-template-columns: repeat(2, 1fr);
-			gap: 1.5rem;
-		}
-
-		.stat-number {
-			font-size: 2.5rem;
+		.mission-description,
+		.vision-description {
+			font-size: 1.1rem;
 		}
 
 		.cta-section {
@@ -602,12 +510,19 @@
 			font-size: 2rem;
 		}
 
-		.benefit-card {
-			padding: 1.5rem 1rem;
+		.mission-content,
+		.vision-content {
+			padding: 1.5rem;
 		}
 
-		.stats-grid {
-			grid-template-columns: 1fr;
+		.mission-title,
+		.vision-title {
+			font-size: 1.8rem;
+		}
+
+		.mission-description,
+		.vision-description {
+			font-size: 1rem;
 		}
 
 		.cta-button {

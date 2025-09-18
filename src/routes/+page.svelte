@@ -237,7 +237,7 @@
 				}, 1500);
 			}
 
-			// Agregar partículas a la sección de beneficios
+			// Agregar partículas a la sección de misión y visión
 			setTimeout(() => {
 				const benefitsSection = document.querySelector('.benefits-section');
 				if (benefitsSection) {
@@ -441,88 +441,46 @@
 		</section>
 	{/if}
 
-	<!-- Sección de Beneficios -->
+	<!-- Sección de Misión y Visión -->
 	<section id="beneficios" class="benefits-section">
 		<div class="container">
 			<div class="section-header">
-				<h2 class="section-title text-glow text-zoom-rotate">¿Por qué elegir ADNED?</h2>
+				<h2 class="section-title text-glow text-zoom-rotate">Misión y Visión</h2>
 				<p class="section-subtitle text-zoom-smooth">
-					Somos la guía más completa y efectiva para el proceso de admisión ECOEMS 2026
+					Conoce los valores y objetivos que nos impulsan a ayudarte
 				</p>
 			</div>
 
 			<div class="benefits-grid">
-				<!-- Beneficio 1 -->
-				<div class="benefit-card">
-					<div class="benefit-icon">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<path d="M9 12l2 2 4-4"/>
-							<path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
-							<path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
-							<path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
-							<path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
-						</svg>
-					</div>
-					<h3 class="benefit-title">Información Oficial y Actualizada</h3>
-					<p class="benefit-description">
-						Recibe información oficial y actualizada del ECOEMS directamente en tu WhatsApp, sin intermediarios ni información desactualizada.
-					</p>
-				</div>
-
-				<!-- Beneficio 2 -->
+				<!-- Misión -->
 				<div class="benefit-card">
 					<div class="benefit-icon">
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
 						</svg>
 					</div>
-					<h3 class="benefit-title">Tips Prácticos</h3>
+					<h3 class="benefit-title">Misión</h3>
 					<p class="benefit-description">
-						Consejos prácticos y estrategias específicas para padres y alumnos que te ayudarán a navegar el proceso de admisión con confianza.
+						Ofrecer cursos innovadores, accesibles y de calidad que preparen a los 
+						estudiantes para superar los exámenes de admisión al bachillerato y la 
+						universidad, brindándoles confianza, motivación y herramientas modernas que los 
+						acerquen a lograr sus sueños académicos.
 					</p>
 				</div>
 
-				<!-- Beneficio 3 -->
+				<!-- Visión -->
 				<div class="benefit-card">
 					<div class="benefit-icon">
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<circle cx="12" cy="12" r="10"/>
-							<polyline points="12,6 12,12 16,14"/>
+							<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+							<circle cx="12" cy="12" r="3"/>
 						</svg>
 					</div>
-					<h3 class="benefit-title">Recordatorios Clave</h3>
+					<h3 class="benefit-title">Visión</h3>
 					<p class="benefit-description">
-						Recibe recordatorios importantes para que tu hijo no pierda fechas críticas del proceso de admisión ECOEMS 2026.
-					</p>
-				</div>
-
-				<!-- Beneficio 4 -->
-				<div class="benefit-card">
-					<div class="benefit-icon">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-						</svg>
-					</div>
-					<h3 class="benefit-title">Comunicación Directa</h3>
-					<p class="benefit-description">
-						Comunicación directa con asesores especializados que resolverán todas tus dudas y te guiarán paso a paso.
-					</p>
-				</div>
-
-				<!-- Beneficio 5 -->
-				<div class="benefit-card">
-					<div class="benefit-icon">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-							<polyline points="14,2 14,8 20,8"/>
-							<line x1="16" y1="13" x2="8" y2="13"/>
-							<line x1="16" y1="17" x2="8" y2="17"/>
-							<polyline points="10,9 9,9 8,9"/>
-						</svg>
-					</div>
-					<h3 class="benefit-title">Material Exclusivo</h3>
-					<p class="benefit-description">
-						Acceso a material exclusivo diseñado específicamente para preparar mejor a tu hijo para el proceso de admisión.
+						Convertirse en la comunidad educativa líder en México para la preparación de 
+						exámenes de admisión, reconocida por su enfoque futurista, juvenil y motivador, 
+						que acompaña a cada alumno en su camino al éxito académico.
 					</p>
 				</div>
 			</div>
@@ -1497,7 +1455,7 @@
 		padding-bottom: 0.75rem;
 	}
 
-	/* Sección de Beneficios */
+	/* Sección de Misión y Visión */
 	.benefits-section {
 		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		padding: 0;
@@ -1625,7 +1583,7 @@
 		font-size: 1rem;
 	}
 
-	/* Responsive para beneficios */
+	/* Responsive para misión y visión */
 	@media (max-width: 768px) {
 		.benefits-section {
 			padding: 3rem 0;

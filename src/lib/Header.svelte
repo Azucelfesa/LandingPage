@@ -39,7 +39,7 @@
 						<a href="/" class="nav-link" on:click={closeMenu}>Inicio</a>
 					</li>
 					<li class="nav-item">
-						<a href="/#beneficios" class="nav-link" on:click={closeMenu}>Beneficios</a>
+						<a href="/#beneficios" class="nav-link" on:click={closeMenu}>Misión y Visión</a>
 					</li>
 					<li class="nav-item">
 						<a href="/#testimonios" class="nav-link" on:click={closeMenu}>Testimonios</a>
