@@ -361,9 +361,21 @@
 	}
 
 	.footer-bottom {
-		border-top: 2px solid rgba(251, 191, 36, 0.3);
 		padding: 1rem 0;
 		background: rgba(0, 0, 0, 0.2);
+		position: relative;
+	}
+
+	.footer-bottom::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 2px;
+		background: rgba(251, 191, 36, 0.3);
+		width: 100vw;
+		margin-left: calc(-50vw + 50%);
 	}
 
 	.footer-bottom-content {
