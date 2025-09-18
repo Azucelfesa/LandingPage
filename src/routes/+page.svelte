@@ -324,8 +324,10 @@
 </script>
 
 <svelte:head>
-	<title>ADNED - Guía para Ingreso a Prepa ECOEMS 2026</title>
+	<title>ADNED </title>
 	<meta name="description" content="La guía que todo padre necesita para que su hijo ingrese a la prepa de sus sueños. Regístrate GRATIS y recibe consejos, guías y recordatorios clave del proceso de admisión ECOEMS 2026." />
+	<link rel="icon" type="image/png" href="/photo_2025-09-12_15-08-29.jpg" />
+	<link rel="shortcut icon" type="image/png" href="/photo_2025-09-12_15-08-29.jpg" />
 </svelte:head>
 
 <main class="main-content">
@@ -445,7 +447,7 @@
 	<section id="beneficios" class="benefits-section">
 		<div class="container">
 			<div class="section-header">
-				<h2 class="section-title text-glow text-zoom-rotate">Misión y Visión</h2>
+				<h2 class="section-title text-glow text-zoom-rotate">ADNED</h2>
 				<p class="section-subtitle text-zoom-smooth">
 					Conoce los valores y objetivos que nos impulsan a ayudarte
 				</p>
