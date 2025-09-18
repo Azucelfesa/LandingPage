@@ -21,6 +21,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"gsap": "^3.13.0"
+		"@trpc/client": "^11.5.1",
+		"gsap": "^3.13.0",
+		"zod": "^4.1.9"
 	}
 }

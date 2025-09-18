@@ -1,8 +1,12 @@
-<script>
+<script lang="ts">
 	import '../app.css';
 	import Header from '$lib/Header.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import FloatingMolecules from '$lib/FloatingMolecules.svelte';
+	import type { LayoutData } from './$types';
+
+	// Props que SvelteKit puede pasar automáticamente
+	export let data: LayoutData = {} as LayoutData;
 </script>
 
 <svelte:head>

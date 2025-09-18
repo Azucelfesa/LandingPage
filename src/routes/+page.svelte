@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
 	import { 
 		animateHero, 
 		animateScrollElements, 
@@ -26,12 +27,16 @@
 		revealTextByWords,
 		slideInFromDirection as advancedSlideIn
 	} from '$lib/advancedAnimations';
+    import trpcHttpClient from '$lib/client';
 	// import { 
 	// 	createRippleEffect, 
 	// 	createMouseFollower, 
 	// 	revealTextByWords,
 	// 	slideInFromDirection
 	// } from '$lib/advancedAnimations';
+
+	// Props que SvelteKit puede pasar automáticamente
+	export let data: PageData = {} as PageData;
 	
 	let formData = {
 		parentName: '',
@@ -132,6 +137,23 @@
 	
 	async function handleSubmit(event: any) {
 		event.preventDefault();
+		
+		// Validar que todos los campos estén llenos
+		if (!formData.parentName.trim() || !formData.studentName.trim() || !formData.whatsapp.trim() || !formData.email.trim()) {
+			console.error('Todos los campos son requeridos');
+			console.log('Estado del formulario:', formData);
+			shakeElement(registrationForm);
+			return;
+		}
+		
+		// Validar el número de WhatsApp
+		const whatsappNumber = parseInt(formData.whatsapp.replace(/\D/g, ''));
+		if (isNaN(whatsappNumber) || whatsappNumber <= 0) {
+			console.error('Número de WhatsApp inválido:', formData.whatsapp);
+			shakeElement(registrationForm);
+			return;
+		}
+		
 		isSubmitting = true;
 		
 		// Animar el spinner de carga
@@ -139,18 +161,45 @@
 			animateSpinner(loadingSpinner);
 		}
 		
-		// Simular envío de datos
-		await new Promise(resolve => setTimeout(resolve, 1500));
-		
-		// Aquí iría la lógica para guardar en la base de datos
-		console.log('Datos del formulario:', formData);
-		
-		isSubmitting = false;
-		showThankYou = true;
-		
-		// Animar el ícono de éxito
-		if (successIcon) {
-			animateSuccess(successIcon);
+		try {
+			const dataToSend = {
+				fathersName: formData.parentName.trim(),
+				childName: formData.studentName.trim(),
+				whatsappNumber: whatsappNumber,
+				email: formData.email.trim()
+			};
+			
+			console.log('Enviando datos:', dataToSend);
+			
+			const response = await trpcHttpClient.registerForm.create.mutate(dataToSend);
+			
+			if (!response.success) {
+				throw new Error('Error saving form data');
+			}
+			
+			// Simular envío de datos
+			await new Promise(resolve => setTimeout(resolve, 1500));
+			
+			console.log('Datos del formulario guardados:', response);
+			
+			isSubmitting = false;
+			showThankYou = true;
+			
+			// Animar el ícono de éxito
+			if (successIcon) {
+				animateSuccess(successIcon);
+			}
+		}
+		catch (error: any) {
+			console.error('Error during form submission:', error);
+			
+			// Si es un error de validación de tRPC, mostrar detalles
+			if (error.data?.code === 'BAD_REQUEST') {
+				console.error('Errores de validación:', error.message);
+			}
+			
+			isSubmitting = false;
+			shakeElement(registrationForm);
 		}
 	}
 	
