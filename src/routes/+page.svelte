@@ -42,6 +42,7 @@
 	
 	let isSubmitting = false;
 	let showThankYou = false;
+	let isFormValid = false;
 	
 	// Estado para controlar qué FAQ está abierto
 	let openFaq: number | null = null;
@@ -49,6 +50,74 @@
 	function toggleFaq(index: number) {
 		openFaq = openFaq === index ? null : index;
 	}
+
+	// Función para validar el formulario
+	function validateForm() {
+		const { parentName, studentName, whatsapp, email } = formData;
+		
+		// Validar que todos los campos tengan contenido
+		const hasParentName = parentName.trim().length > 0;
+		const hasStudentName = studentName.trim().length > 0;
+		const hasWhatsapp = whatsapp.trim().length > 0;
+		const hasEmail = email.trim().length > 0;
+		
+		// Validar formato de email
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		const isValidEmail = emailRegex.test(email);
+		
+		// Validar formato de WhatsApp (solo números, mínimo 10 dígitos)
+		const whatsappRegex = /^[\+]?[0-9\s\-\(\)]{10,}$/;
+		const isValidWhatsapp = whatsappRegex.test(whatsapp) && whatsapp.replace(/[^0-9]/g, '').length >= 10;
+		
+		isFormValid = hasParentName && hasStudentName && hasWhatsapp && hasEmail && isValidEmail && isValidWhatsapp;
+	}
+
+	// Función para manejar cambios en los inputs
+	function handleInputChange() {
+		validateForm();
+	}
+
+	// Función específica para WhatsApp que solo permite números
+	function handleWhatsappInput(event: Event) {
+		const target = event.target as HTMLInputElement;
+		// Remover cualquier carácter que no sea número, +, -, (, ), o espacio
+		const cleanValue = target.value.replace(/[^0-9+\-\(\)\s]/g, '');
+		formData.whatsapp = cleanValue;
+		validateForm();
+	}
+
+	// Función para prevenir teclas no numéricas en WhatsApp
+	function handleWhatsappKeypress(event: KeyboardEvent) {
+		const char = event.key;
+		// Permitir: números, +, -, (, ), espacio, backspace, delete, tab, enter, escape
+		const allowedKeys = /[0-9+\-\(\)\s]|Backspace|Delete|Tab|Enter|Escape|ArrowLeft|ArrowRight|ArrowUp|ArrowDown/;
+		
+		if (!allowedKeys.test(char)) {
+			event.preventDefault();
+		}
+	}
+
+	// Variable reactiva para el progreso del formulario
+	$: formProgress = (() => {
+		const { parentName, studentName, whatsapp, email } = formData;
+		let progress = 0;
+		
+		// Verificar nombre del padre/tutor
+		if (parentName.trim().length > 0) progress += 25;
+		
+		// Verificar nombre del alumno
+		if (studentName.trim().length > 0) progress += 25;
+		
+		// Verificar WhatsApp (solo números, mínimo 10 dígitos)
+		const whatsappRegex = /^[\+]?[0-9\s\-\(\)]{10,}$/;
+		if (whatsapp.trim().length > 0 && whatsappRegex.test(whatsapp) && whatsapp.replace(/[^0-9]/g, '').length >= 10) progress += 25;
+		
+		// Verificar email (formato válido)
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (email.trim().length > 0 && emailRegex.test(email)) progress += 25;
+		
+		return progress;
+	})();
 	
 	// Referencias para animaciones
 	let heroTitle: HTMLElement;
@@ -98,6 +167,22 @@
 			registrationForm.style.display = 'block';
 			registrationForm.style.visibility = 'visible';
 		}
+
+		// Asegurar funcionalidad básica de inputs
+		setTimeout(() => {
+			const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]');
+			inputs.forEach(input => {
+				input.style.pointerEvents = 'auto';
+				input.style.userSelect = 'text';
+				input.style.webkitUserSelect = 'text';
+				input.style.mozUserSelect = 'text';
+				input.style.msUserSelect = 'text';
+				input.style.position = 'relative';
+				input.style.zIndex = '1000';
+				input.style.transform = 'none';
+				input.style.animation = 'none';
+			});
+		}, 100);
 		
 		// Fallback adicional después de un tiempo
 		setTimeout(() => {
@@ -221,9 +306,9 @@
 				});
 			}, 2000);
 
-			// Animación de ondas en elementos interactivos
+			// Animación de ondas en elementos interactivos (excluyendo formulario)
 			setTimeout(() => {
-				const interactiveElements = document.querySelectorAll('.btn, .benefit-card, .testimonial-card, .faq-item');
+				const interactiveElements = document.querySelectorAll('.btn:not(.btn-whatsapp), .benefit-card, .testimonial-card, .faq-item');
 				interactiveElements.forEach(element => {
 					createRippleEffect(element);
 				});
@@ -268,7 +353,7 @@
 		<section class="hero" bind:this={heroSection}>
 			<div class="container">
 				<div class="hero-content-centered">
-					<h1 class="hero-title text-glow text-zoom" bind:this={heroTitle}>
+					<h1 class="hero-title text-glow text-zoom-ultra" bind:this={heroTitle}>
 				
 						La guía que todo padre necesita para que su hijo ingrese a la prepa de sus sueños
 					</h1>
@@ -277,13 +362,15 @@
 					</h2>
 					
 					<!-- Formulario de registro -->
-					<form class="registration-form" bind:this={registrationForm} on:submit={handleSubmit}>
+					<div class="form-container">
+						<form class="registration-form static-form" bind:this={registrationForm} on:submit={handleSubmit}>
 							<div class="form-group">
 								<label for="parentName">Nombre del padre/tutor</label>
 								<input 
 									type="text" 
 									id="parentName" 
 									bind:value={formData.parentName}
+									on:input={handleInputChange}
 									required 
 									placeholder="Tu nombre completo"
 								>
@@ -295,6 +382,7 @@
 									type="text" 
 									id="studentName" 
 									bind:value={formData.studentName}
+									on:input={handleInputChange}
 									required 
 									placeholder="Nombre de tu hijo/a"
 								>
@@ -306,6 +394,8 @@
 									type="tel" 
 									id="whatsapp" 
 									bind:value={formData.whatsapp}
+									on:input={handleWhatsappInput}
+									on:keypress={handleWhatsappKeypress}
 									required 
 									placeholder="+52 55 1234 5678"
 								>
@@ -317,21 +407,35 @@
 									type="email" 
 									id="email" 
 									bind:value={formData.email}
+									on:input={handleInputChange}
 									required 
 									placeholder="tu@email.com"
 								>
 							</div>
 							
-							<button type="submit" class="btn btn-whatsapp" disabled={isSubmitting}>
+							<!-- Indicador de progreso -->
+							<div class="form-progress">
+								<div class="progress-bar">
+									<div class="progress-fill" style="width: {formProgress}%"></div>
+								</div>
+								<span class="progress-text">{formProgress}% completado</span>
+							</div>
+
+							<button type="submit" class="btn btn-whatsapp" disabled={isSubmitting || !isFormValid}>
 								{#if isSubmitting}
 									<span class="loading-spinner" bind:this={loadingSpinner}></span>
 									Registrando...
 								{:else}
 									<span class="whatsapp-icon">📱</span>
-									Registrarme GRATIS
+									{#if isFormValid}
+										¡Registrarme GRATIS!
+									{:else}
+										Completa todos los campos
+									{/if}
 								{/if}
 							</button>
 						</form>
+					</div>
 					</div>
 				</div>
 		</section>
@@ -511,7 +615,7 @@
 	<section id="cta-intermedio" class="cta-intermedio-section">
 		<div class="container">
 			<div class="cta-content">
-				<h2 class="cta-title text-glow text-zoom">No dejes que tu hijo se quede fuera de su prepa soñada</h2>
+				<h2 class="cta-title text-glow text-zoom-ultra">No dejes que tu hijo se quede fuera de su prepa soñada</h2>
 				<p class="cta-description text-zoom-smooth">Únete ahora y recibe toda la información en tu celular</p>
 				<button class="cta-button" on:click={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
 					<svg class="cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -663,6 +767,8 @@
 		position: relative;
 		z-index: 2;
 		padding-bottom: 2rem;
+		animation: none !important;
+		transform: none !important;
 	}
 
 	.hero-title {
@@ -822,9 +928,9 @@
 		75% { transform: translateY(-5px); }
 	}
 
-	/* Animación de zoom continuo - ACERCAR Y ALEJAR */
+	/* Animación de zoom continuo - ACERCAR Y ALEJAR - RÁPIDA */
 	.text-zoom {
-		animation: textZoom 2.5s ease-in-out infinite;
+		animation: textZoom 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 	}
 
 	@keyframes textZoom {
@@ -832,52 +938,208 @@
 			transform: scale(1) translateY(0px);
 			text-shadow: 0 0 10px rgba(249, 115, 22, 0.3);
 		}
-		25% { 
-			transform: scale(1.15) translateY(-5px);
-			text-shadow: 0 0 20px rgba(249, 115, 22, 0.6), 0 0 30px rgba(251, 191, 36, 0.4);
-		}
 		50% { 
 			transform: scale(1.3) translateY(-10px);
 			text-shadow: 0 0 30px rgba(249, 115, 22, 0.8), 0 0 40px rgba(251, 191, 36, 0.6), 0 0 50px rgba(59, 130, 246, 0.4);
 		}
-		75% { 
-			transform: scale(1.15) translateY(-5px);
-			text-shadow: 0 0 20px rgba(249, 115, 22, 0.6), 0 0 30px rgba(251, 191, 36, 0.4);
-		}
 	}
 
-	/* Animación de zoom más suave */
+	/* Animación de zoom más suave - RÁPIDA */
 	.text-zoom-smooth {
-		animation: textZoomSmooth 3s ease-in-out infinite;
+		animation: textZoomSmooth 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
 	}
 
 	@keyframes textZoomSmooth {
 		0%, 100% { 
 			transform: scale(1) translateY(0px);
+			text-shadow: 0 0 8px rgba(251, 191, 36, 0.2);
 		}
 		50% { 
 			transform: scale(1.2) translateY(-8px);
+			text-shadow: 0 0 16px rgba(251, 191, 36, 0.6), 0 0 24px rgba(249, 115, 22, 0.3);
 		}
 	}
 
-	/* Animación de zoom con rotación */
+	/* Animación de zoom con rotación - RÁPIDA */
 	.text-zoom-rotate {
-		animation: textZoomRotate 2.8s ease-in-out infinite;
+		animation: textZoomRotate 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 	}
 
 	@keyframes textZoomRotate {
 		0%, 100% { 
 			transform: scale(1) rotate(0deg) translateY(0px);
-		}
-		25% { 
-			transform: scale(1.1) rotate(1deg) translateY(-3px);
+			text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
 		}
 		50% { 
 			transform: scale(1.25) rotate(0deg) translateY(-6px);
+			text-shadow: 0 0 25px rgba(59, 130, 246, 0.8), 0 0 35px rgba(251, 191, 36, 0.6), 0 0 45px rgba(249, 115, 22, 0.4);
 		}
-		75% { 
-			transform: scale(1.1) rotate(-1deg) translateY(-3px);
+	}
+
+	/* Animación de zoom ultra fluida para títulos principales - RÁPIDA */
+	.text-zoom-ultra {
+		animation: textZoomUltra 3s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+	}
+
+	@keyframes textZoomUltra {
+		0%, 100% { 
+			transform: scale(1) translateY(0px);
+			text-shadow: 0 0 15px rgba(249, 115, 22, 0.4);
 		}
+		50% { 
+			transform: scale(1.2) translateY(-8px);
+			text-shadow: 0 0 27px rgba(249, 115, 22, 0.8), 0 0 40px rgba(251, 191, 36, 0.6), 0 0 50px rgba(59, 130, 246, 0.4);
+		}
+	}
+
+	/* Proteger elementos del formulario de las animaciones */
+	.registration-form {
+		animation: formGlow 4s ease-in-out infinite !important;
+		transform: translateY(0) !important;
+		position: relative;
+		z-index: 100;
+	}
+
+	.registration-form * {
+		animation: none !important;
+		transform: none !important;
+	}
+
+	.form-group {
+		animation: none !important;
+		transform: none !important;
+		position: relative;
+		z-index: 101;
+	}
+
+	.form-group * {
+		animation: none !important;
+		transform: none !important;
+	}
+
+	.form-group input {
+		animation: inputPulse 3s ease-in-out infinite !important;
+		transform: none !important;
+		position: relative;
+		z-index: 102;
+		pointer-events: auto !important;
+		user-select: text !important;
+	}
+
+	.form-group input:focus {
+		transform: translateY(-2px) !important;
+		z-index: 103;
+	}
+
+	.form-group label {
+		animation: none !important;
+		transform: none !important;
+		position: relative;
+		z-index: 101;
+	}
+
+	.btn-whatsapp {
+		animation: none !important;
+		transform: none !important;
+		position: relative;
+		z-index: 101;
+	}
+
+	.registration-form:hover {
+		transform: translateY(-5px) !important;
+	}
+
+	/* Contenedor del formulario - aislado de animaciones */
+	.form-container {
+		animation: none !important;
+		transform: none !important;
+		position: relative;
+		z-index: 99;
+		pointer-events: auto !important;
+	}
+
+	/* Formulario estático - sin animaciones */
+	.static-form {
+		animation: none !important;
+		transform: none !important;
+		position: relative !important;
+		z-index: 1000 !important;
+		pointer-events: auto !important;
+	}
+
+	.static-form * {
+		animation: none !important;
+		transform: none !important;
+		pointer-events: auto !important;
+	}
+
+	/* Asegurar que los inputs funcionen correctamente - CON INTERACTIVIDAD */
+	input[type="text"],
+	input[type="email"],
+	input[type="tel"] {
+		animation: none !important;
+		transform: none !important;
+		position: relative !important;
+		z-index: 1000 !important;
+		pointer-events: auto !important;
+		user-select: text !important;
+		-webkit-user-select: text !important;
+		-moz-user-select: text !important;
+		-ms-user-select: text !important;
+		background: rgba(255, 255, 255, 0.95) !important;
+		border: 2px solid rgba(0, 0, 0, 0.1) !important;
+		width: 100% !important;
+		padding: 0.75rem 1rem !important;
+		border-radius: 0.75rem !important;
+		font-size: 1rem !important;
+		color: #000000 !important;
+		transition: all 0.3s ease !important;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+	}
+
+	/* Asegurar que el botón siempre sea visible */
+	.btn-whatsapp,
+	button.btn-whatsapp {
+		display: block !important;
+		visibility: visible !important;
+		opacity: 1 !important;
+		position: relative !important;
+		z-index: 10 !important;
+		margin-top: 1rem !important;
+		width: 100% !important;
+	}
+
+	input[type="text"]:hover,
+	input[type="email"]:hover,
+	input[type="tel"]:hover {
+		border-color: rgba(251, 191, 36, 0.3) !important;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+		transform: translateY(-1px) !important;
+	}
+
+	input[type="text"]:focus,
+	input[type="email"]:focus,
+	input[type="tel"]:focus {
+		transform: translateY(-2px) !important;
+		z-index: 1001 !important;
+		outline: none !important;
+		border-color: #fbbf24 !important;
+		background: rgba(255, 255, 255, 1) !important;
+		color: #000000 !important;
+		box-shadow: 
+			0 0 0 3px rgba(251, 191, 36, 0.2),
+			0 8px 25px rgba(0, 0, 0, 0.15) !important;
+	}
+
+	/* Estilo específico para el campo de WhatsApp */
+	input[type="tel"] {
+		font-family: 'Courier New', monospace !important;
+		letter-spacing: 0.5px !important;
+	}
+
+	input[type="tel"]::placeholder {
+		color: rgba(0, 0, 0, 0.4) !important;
+		font-style: italic !important;
 	}
 
 
@@ -892,26 +1154,29 @@
 		display: block;
 	}
 
-	/* Formulario de registro */
+	/* Formulario de registro - CON INTERACTIVIDAD SUTIL */
 	.registration-form {
 		background: rgba(255, 255, 255, 0.98);
 		backdrop-filter: blur(20px);
 		padding: 2rem;
 		border-radius: 1.5rem;
-		box-shadow: 
-			0 25px 50px rgba(0, 0, 0, 0.6),
-			0 0 0 1px rgba(255, 255, 255, 0.2),
-			0 0 0 3px rgba(251, 191, 36, 0.2);
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 		margin-top: 1rem;
 		border: 2px solid rgba(251, 191, 36, 0.3);
 		position: relative;
-		transition: all 0.3s ease;
 		opacity: 1;
-		transform: translateY(0);
+		transform: none !important;
 		display: block;
 		visibility: visible;
-		animation: formGlow 4s ease-in-out infinite;
+		animation: none !important;
 		z-index: 3;
+		transition: all 0.3s ease;
+	}
+
+	.registration-form:hover {
+		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+		border-color: rgba(251, 191, 36, 0.5);
+		transform: translateY(-2px) !important;
 	}
 
 	@keyframes formGlow {
@@ -931,12 +1196,9 @@
 	}
 
 	.registration-form:hover {
-		box-shadow: 
-			0 35px 70px rgba(0, 0, 0, 0.7),
-			0 0 0 1px rgba(255, 255, 255, 0.3),
-			0 0 0 3px rgba(251, 191, 36, 0.3);
-		transform: translateY(-5px);
-		border-color: rgba(251, 191, 36, 0.5);
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+		transform: none !important;
+		border-color: rgba(251, 191, 36, 0.3);
 	}
 
 	.form-group {
@@ -946,9 +1208,22 @@
 	.form-group label {
 		display: block;
 		font-weight: 600;
-		color: var(--text-dark);
+		color: #000000;
 		margin-bottom: 0.5rem;
 		font-size: 0.9rem;
+		transition: all 0.3s ease;
+		cursor: pointer;
+	}
+
+	.form-group:hover label {
+		color: #fbbf24;
+		transform: translateX(5px);
+	}
+
+	.form-group input:focus + label,
+	.form-group:focus-within label {
+		color: #fbbf24;
+		transform: translateX(5px);
 	}
 
 	.form-group input {
@@ -957,10 +1232,20 @@
 		border: 2px solid rgba(0, 0, 0, 0.1);
 		border-radius: 0.75rem;
 		font-size: 1rem;
+		color: #000000;
 		transition: all 0.3s ease;
 		background: rgba(255, 255, 255, 0.95);
-		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-		animation: inputPulse 3s ease-in-out infinite;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		animation: none !important;
+		transform: none !important;
+		position: relative;
+		z-index: 10;
+	}
+
+	.form-group input:hover {
+		border-color: rgba(251, 191, 36, 0.3);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		transform: translateY(-1px) !important;
 	}
 
 	@keyframes inputPulse {
@@ -979,7 +1264,8 @@
 		box-shadow: 
 			0 0 0 4px rgba(251, 191, 36, 0.2),
 			0 8px 25px rgba(0, 0, 0, 0.15);
-		transform: translateY(-2px);
+		transform: translateY(-2px) !important;
+		z-index: 15;
 	}
 
 	/* Botones */
@@ -1014,6 +1300,44 @@
 		transition: all 0.3s ease;
 		text-transform: uppercase;
 		letter-spacing: 1px;
+		cursor: pointer;
+		display: block !important;
+		visibility: visible !important;
+		border: none;
+		margin-top: 1rem;
+	}
+
+	.btn-whatsapp::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 0;
+		height: 0;
+		background: rgba(255, 255, 255, 0.3);
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		transition: width 0.6s, height 0.6s;
+		z-index: 1;
+	}
+
+	.btn-whatsapp:hover::before {
+		width: 300px;
+		height: 300px;
+	}
+
+	.btn-whatsapp:hover {
+		transform: translateY(-3px);
+		box-shadow: 
+			0 15px 40px rgba(251, 191, 36, 0.5),
+			0 0 30px rgba(251, 191, 36, 0.3);
+	}
+
+	.btn-whatsapp:active {
+		transform: translateY(-1px);
+		box-shadow: 
+			0 8px 20px rgba(251, 191, 36, 0.4),
+			0 0 15px rgba(251, 191, 36, 0.2);
 	}
 
 	.btn-whatsapp:hover {
@@ -1025,9 +1349,33 @@
 	}
 
 	.btn-whatsapp:disabled {
-		opacity: 0.7;
-		cursor: not-allowed;
+		opacity: 0.7 !important;
+		cursor: not-allowed !important;
+		transform: none !important;
+		background: linear-gradient(135deg, #9ca3af 0%, #6b7280 50%, #4b5563 100%) !important;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+		display: block !important;
+		visibility: visible !important;
+		position: relative !important;
+		z-index: 10 !important;
+		width: 100% !important;
+		padding: 1rem 1.5rem !important;
+		font-size: 1.1rem !important;
+		font-weight: 800 !important;
+		border-radius: 1rem !important;
+		border: none !important;
+		margin-top: 1rem !important;
+		color: #ffffff !important;
+	}
+
+	.btn-whatsapp:disabled:hover {
 		transform: none;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+		background: linear-gradient(135deg, #9ca3af 0%, #6b7280 50%, #4b5563 100%);
+	}
+
+	.btn-whatsapp:disabled::before {
+		display: none;
 	}
 
 
@@ -1737,5 +2085,76 @@
 		.faq-answer.open {
 			padding: 0 1rem 1rem 1rem;
 		}
+	}
+
+	/* Efectos de validación del formulario */
+	.form-group input:valid {
+		border-color: #10b981 !important;
+		background: rgba(16, 185, 129, 0.05) !important;
+	}
+
+	.form-group input:invalid:not(:placeholder-shown) {
+		border-color: #ef4444 !important;
+		background: rgba(239, 68, 68, 0.05) !important;
+	}
+
+	/* Animación de pulso sutil en el formulario */
+	.registration-form {
+		animation: subtlePulse 4s ease-in-out infinite;
+	}
+
+	@keyframes subtlePulse {
+		0%, 100% { 
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+		}
+		50% { 
+			box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+		}
+	}
+
+	/* Indicador de progreso del formulario */
+	.form-progress {
+		margin-bottom: 1.5rem;
+		text-align: center;
+	}
+
+	.progress-bar {
+		width: 100%;
+		height: 8px;
+		background: rgba(0, 0, 0, 0.1);
+		border-radius: 4px;
+		overflow: hidden;
+		margin-bottom: 0.5rem;
+		position: relative;
+	}
+
+	.progress-fill {
+		height: 100%;
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+		border-radius: 4px;
+		transition: width 0.5s ease;
+		position: relative;
+	}
+
+	.progress-fill::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+		animation: progressShine 2s infinite;
+	}
+
+	@keyframes progressShine {
+		0% { transform: translateX(-100%); }
+		100% { transform: translateX(100%); }
+	}
+
+	.progress-text {
+		font-size: 0.9rem;
+		color: #6b7280;
+		font-weight: 500;
 	}
 </style>
