@@ -196,3 +196,278 @@ export function shakeElement(element) {
 		}
 	});
 }
+
+// Animación de entrada espectacular para el hero
+export function spectacularHeroAnimation(heroTitle, heroSubtitle, registrationForm) {
+	if (!heroTitle || !heroSubtitle || !registrationForm) return;
+
+	const tl = gsap.timeline();
+	
+	// Efecto de partículas de fondo
+	createBackgroundParticles();
+	
+	// Animación del título con efecto de escritura
+	tl.from(heroTitle, {
+		duration: 1.2,
+		y: 100,
+		opacity: 0,
+		scale: 0.8,
+		rotationX: 90,
+		ease: "power3.out"
+	})
+	// Efecto de resplandor en el título
+	.to(heroTitle, {
+		duration: 0.5,
+		textShadow: "0 0 20px rgba(251, 191, 36, 0.8), 0 0 40px rgba(251, 191, 36, 0.4)",
+		ease: "power2.out"
+	}, "-=0.3")
+	// Animación del subtítulo con efecto de deslizamiento
+	.from(heroSubtitle, {
+		duration: 0.8,
+		x: -50,
+		opacity: 0,
+		ease: "power2.out"
+	}, "-=0.5")
+	// Animación del formulario con efecto de zoom
+	.from(registrationForm, {
+		duration: 1,
+		scale: 0.7,
+		opacity: 0,
+		rotationY: 15,
+		ease: "back.out(1.7)"
+	}, "-=0.3");
+}
+
+// Crear partículas de fondo animadas
+export function createBackgroundParticles() {
+	const hero = document.querySelector('.hero');
+	if (!hero) return;
+
+	// Crear contenedor de partículas
+	const particleContainer = document.createElement('div');
+	particleContainer.className = 'particle-container';
+	particleContainer.style.cssText = `
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		overflow: hidden;
+		z-index: 1;
+	`;
+	
+	hero.appendChild(particleContainer);
+
+	// Crear partículas
+	for (let i = 0; i < 30; i++) {
+		const particle = document.createElement('div');
+		particle.className = 'bg-particle';
+		particle.style.cssText = `
+			position: absolute;
+			width: ${Math.random() * 6 + 2}px;
+			height: ${Math.random() * 6 + 2}px;
+			background: rgba(251, 191, 36, ${Math.random() * 0.6 + 0.2});
+			border-radius: 50%;
+			left: ${Math.random() * 100}%;
+			top: ${Math.random() * 100}%;
+		`;
+		
+		particleContainer.appendChild(particle);
+		
+		// Animación de flotación
+		gsap.to(particle, {
+			duration: 8 + Math.random() * 4,
+			y: -200,
+			x: Math.random() * 400 - 200,
+			opacity: 0,
+			scale: 0,
+			ease: "power1.out",
+			repeat: -1,
+			delay: Math.random() * 5
+		});
+	}
+}
+
+// Animación de ondas en botones
+export function addRippleEffect(button) {
+	if (!button) return;
+	
+	button.addEventListener('click', function(e) {
+		const ripple = document.createElement('span');
+		const rect = button.getBoundingClientRect();
+		const size = Math.max(rect.width, rect.height);
+		const x = e.clientX - rect.left - size / 2;
+		const y = e.clientY - rect.top - size / 2;
+		
+		ripple.style.cssText = `
+			position: absolute;
+			width: ${size}px;
+			height: ${size}px;
+			left: ${x}px;
+			top: ${y}px;
+			background: rgba(255, 255, 255, 0.3);
+			border-radius: 50%;
+			transform: scale(0);
+			pointer-events: none;
+		`;
+		
+		button.style.position = 'relative';
+		button.style.overflow = 'hidden';
+		button.appendChild(ripple);
+		
+		gsap.to(ripple, {
+			duration: 0.6,
+			scale: 2,
+			opacity: 0,
+			ease: "power2.out",
+			onComplete: () => ripple.remove()
+		});
+	});
+}
+
+// Animación de entrada escalonada para elementos
+export function staggeredEntryAnimation(selector, delay = 0.1) {
+	const elements = document.querySelectorAll(selector);
+	
+	gsap.fromTo(elements, 
+		{
+			y: 50,
+			opacity: 0,
+			scale: 0.9
+		},
+		{
+			duration: 0.8,
+			y: 0,
+			opacity: 1,
+			scale: 1,
+			stagger: delay,
+			ease: "power2.out",
+			delay: 0.5
+		}
+	);
+}
+
+// Animación de hover mejorada para formularios
+export function enhancedFormHover(form) {
+	if (!form) return;
+	
+	form.addEventListener('mouseenter', () => {
+		gsap.to(form, {
+			duration: 0.3,
+			scale: 1.02,
+			y: -5,
+			boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 3px rgba(251, 191, 36, 0.3)",
+			ease: "power2.out"
+		});
+	});
+	
+	form.addEventListener('mouseleave', () => {
+		gsap.to(form, {
+			duration: 0.3,
+			scale: 1,
+			y: 0,
+			boxShadow: "0 25px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1), 0 0 0 3px rgba(251, 191, 36, 0.1)",
+			ease: "power2.out"
+		});
+	});
+}
+
+// Animación de typing para el título
+export function typewriterTitle(element, text, speed = 100) {
+	if (!element) return;
+	
+	element.textContent = '';
+	let i = 0;
+	
+	function type() {
+		if (i < text.length) {
+			element.textContent += text.charAt(i);
+			i++;
+			setTimeout(type, speed);
+		}
+	}
+	
+	type();
+}
+
+// Animación de pulso mejorada
+export function enhancedPulseAnimation(element) {
+	if (!element) return;
+	
+	gsap.to(element, {
+		duration: 2,
+		scale: 1.05,
+		boxShadow: "0 0 30px rgba(251, 191, 36, 0.6)",
+		ease: "power2.inOut",
+		repeat: -1,
+		yoyo: true
+	});
+}
+
+// Animación de entrada desde diferentes direcciones
+export function slideInFromDirection(element, direction = 'left', delay = 0) {
+	if (!element) return;
+	
+	const directions = {
+		left: { x: -100, y: 0 },
+		right: { x: 100, y: 0 },
+		top: { x: 0, y: -100 },
+		bottom: { x: 0, y: 100 }
+	};
+	
+	const startPos = directions[direction] || directions.left;
+	
+	gsap.fromTo(element, 
+		{
+			...startPos,
+			opacity: 0
+		},
+		{
+			duration: 0.8,
+			x: 0,
+			y: 0,
+			opacity: 1,
+			ease: "power2.out",
+			delay: delay
+		}
+	);
+}
+
+// Animación de resplandor en texto
+export function textGlowAnimation(element) {
+	if (!element) return;
+	
+	gsap.to(element, {
+		duration: 2,
+		textShadow: "0 0 20px rgba(251, 191, 36, 0.8), 0 0 40px rgba(251, 191, 36, 0.4), 0 0 60px rgba(251, 191, 36, 0.2)",
+		ease: "power2.inOut",
+		repeat: -1,
+		yoyo: true
+	});
+}
+
+// Animación de rotación 3D en hover
+export function add3DHoverEffect(element) {
+	if (!element) return;
+	
+	element.addEventListener('mouseenter', () => {
+		gsap.to(element, {
+			duration: 0.3,
+			rotationY: 5,
+			rotationX: 5,
+			scale: 1.05,
+			ease: "power2.out"
+		});
+	});
+	
+	element.addEventListener('mouseleave', () => {
+		gsap.to(element, {
+			duration: 0.3,
+			rotationY: 0,
+			rotationX: 0,
+			scale: 1,
+			ease: "power2.out"
+		});
+	});
+}

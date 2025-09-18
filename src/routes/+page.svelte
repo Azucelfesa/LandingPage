@@ -7,7 +7,16 @@
 		addPulseAnimation,
 		animateSpinner,
 		animateSuccess,
-		shakeElement
+		shakeElement,
+		spectacularHeroAnimation,
+		addRippleEffect,
+		staggeredEntryAnimation,
+		enhancedFormHover,
+		typewriterTitle,
+		enhancedPulseAnimation,
+		slideInFromDirection,
+		textGlowAnimation,
+		add3DHoverEffect
 	} from '$lib/animations.js';
 	// import { 
 	// 	createRippleEffect, 
@@ -84,26 +93,47 @@
 		
 		// Esperar a que los elementos estén disponibles
 		setTimeout(() => {
-			// Ejecutar animaciones del hero solo si los elementos existen
+			// Ejecutar animación espectacular del hero
 			if (heroTitle && heroSubtitle && registrationForm) {
-				animateHero(heroTitle, heroSubtitle, registrationForm);
+				spectacularHeroAnimation(heroTitle, heroSubtitle, registrationForm);
 			}
 			
-			// Ejecutar animaciones de scroll
+			// Ejecutar animaciones de scroll mejoradas
 			animateScrollElements();
 			
-			// Agregar animaciones de hover
+			// Agregar animaciones de hover mejoradas
 			if (registrationForm) {
-				addHoverAnimations(registrationForm);
+				enhancedFormHover(registrationForm);
 			}
 			
-			// Agregar animación de pulsación al botón principal
+			// Agregar efectos de ondas a botones
+			const buttons = document.querySelectorAll('.btn');
+			buttons.forEach(button => addRippleEffect(button));
+			
+			// Agregar animación de pulsación mejorada al botón principal
 			setTimeout(() => {
 				const mainButton = document.querySelector('.btn-whatsapp');
 				if (mainButton) {
-					addPulseAnimation(mainButton);
+					enhancedPulseAnimation(mainButton);
 				}
 			}, 2000);
+			
+			// Agregar animaciones escalonadas a los campos del formulario
+			setTimeout(() => {
+				staggeredEntryAnimation('.form-group', 0.15);
+			}, 1000);
+			
+			// Agregar efectos 3D a elementos interactivos
+			const interactiveElements = document.querySelectorAll('.btn, .form-group input');
+			interactiveElements.forEach(element => add3DHoverEffect(element));
+			
+			// Agregar animación de resplandor al título
+			if (heroTitle) {
+				setTimeout(() => {
+					textGlowAnimation(heroTitle);
+				}, 1500);
+			}
+			
 		}, 200);
 	});
 </script>
@@ -258,6 +288,24 @@
 			radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.1) 0%, transparent 80%),
 			radial-gradient(circle at 70% 30%, rgba(41, 0, 64, 0.15) 0%, transparent 60%);
 		pointer-events: none;
+		animation: backgroundShift 8s ease-in-out infinite;
+	}
+
+	@keyframes backgroundShift {
+		0%, 100% { 
+			background: 
+				radial-gradient(circle at 20% 80%, rgba(30, 27, 75, 0.3) 0%, transparent 70%),
+				radial-gradient(circle at 80% 20%, rgba(49, 46, 129, 0.2) 0%, transparent 70%),
+				radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.1) 0%, transparent 80%),
+				radial-gradient(circle at 70% 30%, rgba(41, 0, 64, 0.15) 0%, transparent 60%);
+		}
+		50% { 
+			background: 
+				radial-gradient(circle at 30% 70%, rgba(30, 27, 75, 0.4) 0%, transparent 70%),
+				radial-gradient(circle at 70% 30%, rgba(49, 46, 129, 0.3) 0%, transparent 70%),
+				radial-gradient(circle at 60% 40%, rgba(76, 29, 149, 0.2) 0%, transparent 80%),
+				radial-gradient(circle at 60% 40%, rgba(41, 0, 64, 0.2) 0%, transparent 60%);
+		}
 	}
 
 	.hero-content-centered {
@@ -284,6 +332,12 @@
 			0 0 30px rgba(59, 130, 246, 0.2),
 			0 2px 8px rgba(0, 0, 0, 0.5);
 		filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.3));
+		animation: titleFloat 6s ease-in-out infinite;
+	}
+
+	@keyframes titleFloat {
+		0%, 100% { transform: translateY(0px); }
+		50% { transform: translateY(-10px); }
 	}
 
 
@@ -313,6 +367,23 @@
 		transform: translateY(0);
 		display: block;
 		visibility: visible;
+		animation: formGlow 4s ease-in-out infinite;
+	}
+
+	@keyframes formGlow {
+		0%, 100% { 
+			box-shadow: 
+				0 25px 50px rgba(0, 0, 0, 0.6),
+				0 0 0 1px rgba(255, 255, 255, 0.2),
+				0 0 0 3px rgba(251, 191, 36, 0.2);
+		}
+		50% { 
+			box-shadow: 
+				0 25px 50px rgba(0, 0, 0, 0.6),
+				0 0 0 1px rgba(255, 255, 255, 0.3),
+				0 0 0 3px rgba(251, 191, 36, 0.4),
+				0 0 20px rgba(251, 191, 36, 0.2);
+		}
 	}
 
 	.registration-form:hover {
@@ -345,6 +416,16 @@
 		transition: all 0.3s ease;
 		background: rgba(255, 255, 255, 0.95);
 		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+		animation: inputPulse 3s ease-in-out infinite;
+	}
+
+	@keyframes inputPulse {
+		0%, 100% { 
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+		}
+		50% { 
+			box-shadow: 0 4px 20px rgba(251, 191, 36, 0.2);
+		}
 	}
 
 	.form-group input:focus {
