@@ -20,6 +20,12 @@
 		createBackgroundParticles,
 		createBackgroundParticlesForBenefits
 	} from '$lib/animations';
+	import { 
+		createRippleEffect, 
+		createMouseFollower, 
+		revealTextByWords,
+		slideInFromDirection as advancedSlideIn
+	} from '$lib/advancedAnimations';
 	// import { 
 	// 	createRippleEffect, 
 	// 	createMouseFollower, 
@@ -51,6 +57,9 @@
 	let heroSection: HTMLElement;
 	let loadingSpinner: HTMLElement;
 	let successIcon: HTMLElement;
+	let sectionTitles: HTMLElement[] = [];
+	let benefitCards: HTMLElement[] = [];
+	let testimonialCards: HTMLElement[] = [];
 	
 	async function handleSubmit(event: any) {
 		event.preventDefault();
@@ -150,6 +159,80 @@
 					createBackgroundParticlesForBenefits(benefitsSection);
 				}
 			}, 3000);
+
+			// NUEVAS ANIMACIONES DE TEXTO INTERACTIVAS
+			
+			// Asegurar que el texto sea visible primero
+			setTimeout(() => {
+				if (heroTitle) {
+					heroTitle.style.opacity = '1';
+					heroTitle.style.visibility = 'visible';
+					heroTitle.style.display = 'block';
+				}
+				if (heroSubtitle) {
+					heroSubtitle.style.opacity = '1';
+					heroSubtitle.style.visibility = 'visible';
+					heroSubtitle.style.display = 'block';
+				}
+			}, 100);
+
+			// Animación de escritura para el título principal (solo después de que sea visible)
+			setTimeout(() => {
+				if (heroTitle) {
+					// Aplicar animación de escritura sin ocultar el texto
+					heroTitle.classList.add('typewriter');
+				}
+			}, 1000);
+
+			// Animación de revelado palabra por palabra para subtítulos (solo después de que sean visibles)
+			setTimeout(() => {
+				const subtitles = document.querySelectorAll('.hero-subtitle, .section-subtitle, .cta-description');
+				subtitles.forEach((subtitle, index) => {
+					setTimeout(() => {
+						// Aplicar animación sin ocultar el texto
+						subtitle.classList.add('word-reveal');
+					}, index * 200);
+				});
+			}, 1500);
+
+			// Animación de aparición escalonada para títulos de sección
+			setTimeout(() => {
+				const titles = document.querySelectorAll('.section-title, .cta-title');
+				titles.forEach((title, index) => {
+					setTimeout(() => {
+						advancedSlideIn(title as HTMLElement, 'bottom', 0.8);
+					}, index * 300);
+				});
+			}, 1500);
+
+			// Animación de hover mejorada para títulos
+			setTimeout(() => {
+				const allTitles = document.querySelectorAll('h1, h2, h3');
+				allTitles.forEach(title => {
+					title.addEventListener('mouseenter', () => {
+						title.style.transform = 'scale(1.05) translateY(-2px)';
+						title.style.textShadow = '0 0 20px rgba(249, 115, 22, 0.6)';
+						title.style.transition = 'all 0.3s ease';
+					});
+					title.addEventListener('mouseleave', () => {
+						title.style.transform = 'scale(1) translateY(0)';
+						title.style.textShadow = '';
+					});
+				});
+			}, 2000);
+
+			// Animación de ondas en elementos interactivos
+			setTimeout(() => {
+				const interactiveElements = document.querySelectorAll('.btn, .benefit-card, .testimonial-card, .faq-item');
+				interactiveElements.forEach(element => {
+					createRippleEffect(element);
+				});
+			}, 2500);
+
+			// Seguidor de mouse para elementos de texto
+			setTimeout(() => {
+				createMouseFollower();
+			}, 3000);
 			
 		}, 200);
 	});
@@ -185,11 +268,11 @@
 		<section class="hero" bind:this={heroSection}>
 			<div class="container">
 				<div class="hero-content-centered">
-					<h1 class="hero-title" bind:this={heroTitle}>
+					<h1 class="hero-title text-glow text-zoom" bind:this={heroTitle}>
 				
 						La guía que todo padre necesita para que su hijo ingrese a la prepa de sus sueños
 					</h1>
-					<h2 class="hero-subtitle" bind:this={heroSubtitle}>
+					<h2 class="hero-subtitle text-zoom-smooth" bind:this={heroSubtitle}>
 						Regístrate <strong>GRATIS</strong> y recibe en tu WhatsApp consejos, guías y recordatorios clave del proceso de admisión <strong>ECOEMS 2026</strong>.
 					</h2>
 					
@@ -258,8 +341,8 @@
 	<section id="beneficios" class="benefits-section">
 		<div class="container">
 			<div class="section-header">
-				<h2 class="section-title">¿Por qué elegir ADNED?</h2>
-				<p class="section-subtitle">
+				<h2 class="section-title text-glow text-zoom-rotate">¿Por qué elegir ADNED?</h2>
+				<p class="section-subtitle text-zoom-smooth">
 					Somos la guía más completa y efectiva para el proceso de admisión ECOEMS 2026
 				</p>
 			</div>
@@ -346,8 +429,8 @@
 	<section id="prueba-social" class="testimonials-section">
 		<div class="container">
 			<div class="section-header">
-				<h2 class="section-title">Lo que dicen otros padres como tú</h2>
-				<p class="section-subtitle">
+				<h2 class="section-title text-glow text-zoom-rotate">Lo que dicen otros padres como tú</h2>
+				<p class="section-subtitle text-zoom-smooth">
 					Más de 1,200 padres y alumnos ya están dentro de ADNED recibiendo información exclusiva
 				</p>
 			</div>
@@ -428,8 +511,8 @@
 	<section id="cta-intermedio" class="cta-intermedio-section">
 		<div class="container">
 			<div class="cta-content">
-				<h2 class="cta-title">No dejes que tu hijo se quede fuera de su prepa soñada</h2>
-				<p class="cta-description">Únete ahora y recibe toda la información en tu celular</p>
+				<h2 class="cta-title text-glow text-zoom">No dejes que tu hijo se quede fuera de su prepa soñada</h2>
+				<p class="cta-description text-zoom-smooth">Únete ahora y recibe toda la información en tu celular</p>
 				<button class="cta-button" on:click={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
 					<svg class="cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 						<path d="M9 12l2 2 4-4"/>
@@ -448,8 +531,8 @@
 	<section id="preguntas-frecuentes" class="faq-section">
 		<div class="container">
 			<div class="section-header">
-				<h2 class="section-title">¿Tienes dudas? Te las resolvemos</h2>
-				<p class="section-subtitle">
+				<h2 class="section-title text-glow text-zoom-rotate">¿Tienes dudas? Te las resolvemos</h2>
+				<p class="section-subtitle text-zoom-smooth">
 					Aquí están las respuestas a las preguntas más comunes de padres como tú
 				</p>
 			</div>
@@ -598,12 +681,203 @@
 			0 0 30px rgba(59, 130, 246, 0.2),
 			0 2px 8px rgba(0, 0, 0, 0.5);
 		filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.3));
-		animation: titleFloat 6s ease-in-out infinite;
+		animation: titleFloat 3s ease-in-out infinite;
+		transition: all 0.3s ease;
+		cursor: pointer;
+		opacity: 1;
+		visibility: visible;
+		display: block;
 	}
 
 	@keyframes titleFloat {
+		0%, 100% { transform: translateY(0px) scale(1); }
+		25% { transform: translateY(-15px) scale(1.02); }
+		50% { transform: translateY(-20px) scale(1.05); }
+		75% { transform: translateY(-15px) scale(1.02); }
+	}
+
+	/* Animaciones de texto interactivas */
+	.hero-title:hover {
+		transform: scale(1.05) translateY(-5px);
+		text-shadow: 
+			0 0 20px rgba(249, 115, 22, 0.6),
+			0 0 30px rgba(251, 191, 36, 0.4),
+			0 0 40px rgba(59, 130, 246, 0.4),
+			0 4px 12px rgba(0, 0, 0, 0.7);
+		filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.5));
+	}
+
+	/* Animación de escritura */
+	.typewriter {
+		overflow: hidden;
+		border-right: 3px solid #f97316;
+		white-space: nowrap;
+		animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+		opacity: 1;
+		visibility: visible;
+	}
+
+	@keyframes typing {
+		from { width: 0; }
+		to { width: 100%; }
+	}
+
+	@keyframes blink-caret {
+		from, to { border-color: transparent; }
+		50% { border-color: #f97316; }
+	}
+
+	/* Animación de revelado palabra por palabra */
+	.word-reveal {
+		opacity: 1;
+		transform: translateY(0);
+		animation: wordReveal 0.6s ease forwards;
+	}
+
+	@keyframes wordReveal {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	/* Animación de hover para todos los títulos */
+	h1, h2, h3 {
+		transition: all 0.3s ease;
+		cursor: pointer;
+	}
+
+	h1:hover, h2:hover, h3:hover {
+		transform: scale(1.05) translateY(-2px);
+		text-shadow: 0 0 20px rgba(249, 115, 22, 0.6);
+	}
+
+	/* Animación de ondas en texto */
+	.text-wave {
+		animation: textWave 1.5s ease-in-out infinite;
+	}
+
+	@keyframes textWave {
+		0%, 100% { transform: translateY(0px) rotate(0deg); }
+		25% { transform: translateY(-8px) rotate(1deg); }
+		50% { transform: translateY(-12px) rotate(0deg); }
+		75% { transform: translateY(-8px) rotate(-1deg); }
+	}
+
+	/* Animación de brillo en texto */
+	.text-glow {
+		animation: textGlow 2s ease-in-out infinite alternate;
+	}
+
+	@keyframes textGlow {
+		from {
+			text-shadow: 0 0 10px rgba(249, 115, 22, 0.3);
+		}
+		to {
+			text-shadow: 0 0 25px rgba(249, 115, 22, 0.9), 0 0 40px rgba(251, 191, 36, 0.6), 0 0 50px rgba(59, 130, 246, 0.4);
+		}
+	}
+
+	/* Animación de rotación sutil */
+	.text-rotate {
+		animation: textRotate 2.5s ease-in-out infinite;
+	}
+
+	@keyframes textRotate {
+		0%, 100% { transform: rotate(0deg) scale(1); }
+		25% { transform: rotate(2deg) scale(1.02); }
+		50% { transform: rotate(0deg) scale(1.05); }
+		75% { transform: rotate(-2deg) scale(1.02); }
+	}
+
+	/* Animación de pulso dinámico */
+	.text-pulse {
+		animation: textPulse 1.8s ease-in-out infinite;
+	}
+
+	@keyframes textPulse {
+		0%, 100% { 
+			transform: scale(1) translateY(0px);
+			text-shadow: 0 0 10px rgba(249, 115, 22, 0.3);
+		}
+		50% { 
+			transform: scale(1.08) translateY(-8px);
+			text-shadow: 0 0 30px rgba(249, 115, 22, 0.8), 0 0 40px rgba(251, 191, 36, 0.5);
+		}
+	}
+
+	/* Animación de rebote */
+	.text-bounce {
+		animation: textBounce 2s ease-in-out infinite;
+	}
+
+	@keyframes textBounce {
 		0%, 100% { transform: translateY(0px); }
-		50% { transform: translateY(-10px); }
+		25% { transform: translateY(-10px); }
+		50% { transform: translateY(-15px); }
+		75% { transform: translateY(-5px); }
+	}
+
+	/* Animación de zoom continuo - ACERCAR Y ALEJAR */
+	.text-zoom {
+		animation: textZoom 2.5s ease-in-out infinite;
+	}
+
+	@keyframes textZoom {
+		0%, 100% { 
+			transform: scale(1) translateY(0px);
+			text-shadow: 0 0 10px rgba(249, 115, 22, 0.3);
+		}
+		25% { 
+			transform: scale(1.15) translateY(-5px);
+			text-shadow: 0 0 20px rgba(249, 115, 22, 0.6), 0 0 30px rgba(251, 191, 36, 0.4);
+		}
+		50% { 
+			transform: scale(1.3) translateY(-10px);
+			text-shadow: 0 0 30px rgba(249, 115, 22, 0.8), 0 0 40px rgba(251, 191, 36, 0.6), 0 0 50px rgba(59, 130, 246, 0.4);
+		}
+		75% { 
+			transform: scale(1.15) translateY(-5px);
+			text-shadow: 0 0 20px rgba(249, 115, 22, 0.6), 0 0 30px rgba(251, 191, 36, 0.4);
+		}
+	}
+
+	/* Animación de zoom más suave */
+	.text-zoom-smooth {
+		animation: textZoomSmooth 3s ease-in-out infinite;
+	}
+
+	@keyframes textZoomSmooth {
+		0%, 100% { 
+			transform: scale(1) translateY(0px);
+		}
+		50% { 
+			transform: scale(1.2) translateY(-8px);
+		}
+	}
+
+	/* Animación de zoom con rotación */
+	.text-zoom-rotate {
+		animation: textZoomRotate 2.8s ease-in-out infinite;
+	}
+
+	@keyframes textZoomRotate {
+		0%, 100% { 
+			transform: scale(1) rotate(0deg) translateY(0px);
+		}
+		25% { 
+			transform: scale(1.1) rotate(1deg) translateY(-3px);
+		}
+		50% { 
+			transform: scale(1.25) rotate(0deg) translateY(-6px);
+		}
+		75% { 
+			transform: scale(1.1) rotate(-1deg) translateY(-3px);
+		}
 	}
 
 
@@ -613,6 +887,9 @@
 		margin-bottom: 1.5rem;
 		color: #ffffff;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		opacity: 1;
+		visibility: visible;
+		display: block;
 	}
 
 	/* Formulario de registro */
@@ -1028,7 +1305,7 @@
 
 	/* Testimonials Section */
 	.testimonials-section {
-		padding: 6rem 0;
+		padding: 2rem 0 6rem 0;
 		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		position: relative;
 		overflow: hidden;
@@ -1220,7 +1497,7 @@
 	/* CTA Intermedio Section */
 	.cta-intermedio-section {
 		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
-		padding: 6rem 0;
+		padding: 1rem 0;
 		text-align: center;
 		position: relative;
 		overflow: hidden;
@@ -1325,7 +1602,7 @@
 
 	/* FAQ Section */
 	.faq-section {
-		padding: 6rem 0;
+		padding: 2rem 0 4rem 0;
 		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		position: relative;
 		overflow: hidden;
