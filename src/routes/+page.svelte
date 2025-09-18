@@ -524,10 +524,10 @@
 	.hero {
 		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		color: var(--bg-white);
-		padding: 2rem 0 0 0;
-		min-height: 100vh;
+		padding: 0 0 4rem 0;
+		min-height: auto;
 		display: flex;
-		align-items: center;
+		align-items: flex-start;
 		position: relative;
 		overflow: hidden;
 	}
@@ -812,7 +812,7 @@
 	/* Responsive Design */
 	@media (max-width: 768px) {
 		.hero {
-			padding: 1rem 0;
+			padding: 1rem 0 2rem 0;
 			min-height: auto;
 		}
 
@@ -1219,7 +1219,7 @@
 
 	/* CTA Intermedio Section */
 	.cta-intermedio-section {
-		background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		padding: 6rem 0;
 		text-align: center;
 		position: relative;
@@ -1250,7 +1250,7 @@
 	.cta-title {
 		font-size: 2.2rem;
 		font-weight: 800;
-		color: #290040;
+		color: #ffffff;
 		margin-bottom: 1.5rem;
 		background: linear-gradient(135deg, #f97316 0%, #fbbf24 25%, #fbbf24 50%, #3b82f6 75%, #8b5cf6 100%);
 		-webkit-background-clip: text;
@@ -1263,9 +1263,10 @@
 
 	.cta-description {
 		font-size: 1.2rem;
-		color: #4a5568;
+		color: rgba(255, 255, 255, 0.9);
 		margin-bottom: 2.5rem;
 		line-height: 1.6;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
 
 	.cta-button {
@@ -1325,7 +1326,7 @@
 	/* FAQ Section */
 	.faq-section {
 		padding: 6rem 0;
-		background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		position: relative;
 		overflow: hidden;
 	}
@@ -1352,24 +1353,27 @@
 	}
 
 	.faq-item {
-		background: white;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(20px);
 		border-radius: 1rem;
 		margin-bottom: 1rem;
-		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 		transition: all 0.3s ease;
-		border: 2px solid rgba(251, 191, 36, 0.2);
+		border: 2px solid rgba(251, 191, 36, 0.3);
 		overflow: hidden;
 	}
 
 	.faq-item:hover {
 		transform: translateY(-2px);
-		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-		border-color: rgba(251, 191, 36, 0.4);
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+		border-color: rgba(251, 191, 36, 0.6);
+		background: rgba(255, 255, 255, 1);
 	}
 
 	.faq-item.open {
 		border-color: rgba(251, 191, 36, 0.6);
-		box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+		background: rgba(255, 255, 255, 1);
 	}
 
 	.faq-question {
