@@ -42,7 +42,7 @@
 						<a href="/#beneficios" class="nav-link" on:click={closeMenu}>Beneficios</a>
 					</li>
 					<li class="nav-item">
-						<a href="/#prueba-social" class="nav-link" on:click={closeMenu}>Prueba Social</a>
+						<a href="/#testimonios" class="nav-link" on:click={closeMenu}>Testimonios</a>
 					</li>
 					<li class="nav-item">
 						<a href="/#cta-intermedio" class="nav-link" on:click={closeMenu}>CTA Intermedio</a>

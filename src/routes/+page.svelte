@@ -529,8 +529,8 @@
 		</div>
 	</section>
 
-	<!-- Sección de Prueba Social -->
-	<section id="prueba-social" class="testimonials-section">
+	<!-- Sección de Testimonios -->
+	<section id="testimonios" class="testimonials-section">
 		<div class="container">
 			<div class="section-header">
 				<h2 class="section-title text-glow text-zoom-rotate">Lo que dicen otros padres como tú</h2>

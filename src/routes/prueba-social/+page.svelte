@@ -22,7 +22,7 @@
 </script>
 
 <svelte:head>
-	<title>Prueba Social - ADNED</title>
+	<title>Testimonios - ADNED</title>
 	<meta name="description" content="Descubre las historias de éxito de padres que lograron que sus hijos ingresaran a la prepa de sus sueños con ADNED.">
 </svelte:head>
 
