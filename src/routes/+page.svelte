@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import type { PageData } from './$types';
 	import { 
 		animateHero, 
@@ -48,6 +48,7 @@
 	let isSubmitting = false;
 	let showThankYou = false;
 	let isFormValid = false;
+	let redirectTimer: number | null = null;
 	
 	// Estado para controlar qué FAQ está abierto
 	let openFaq: number | null = null;
@@ -189,6 +190,11 @@
 			if (successIcon) {
 				animateSuccess(successIcon);
 			}
+			
+			// Configurar redirección automática después de 5 segundos
+			redirectTimer = setTimeout(() => {
+				window.location.href = '/';
+			}, 5000);
 		}
 		catch (error: any) {
 			console.error('Error during form submission:', error);
@@ -208,6 +214,16 @@
 		window.open('https://wa.me/1234567890', '_blank');
 	}
 	
+	function goToHomePage() {
+		// Limpiar el timer si existe
+		if (redirectTimer) {
+			clearTimeout(redirectTimer);
+			redirectTimer = null;
+		}
+		// Redirigir a la página de inicio
+		window.location.href = '/';
+	}
+	
 	onMount(() => {
 		// Asegurar que el formulario sea visible inmediatamente
 		if (registrationForm) {
@@ -224,8 +240,6 @@
 				(input as HTMLInputElement).style.pointerEvents = 'auto';
 				(input as HTMLInputElement).style.userSelect = 'text';
 				(input as HTMLInputElement).style.webkitUserSelect = 'text';
-				(input as HTMLInputElement).style.mozUserSelect = 'text';
-				(input as HTMLInputElement).style.msUserSelect = 'text';
 				(input as HTMLInputElement).style.position = 'relative';
 				(input as HTMLInputElement).style.zIndex = '1000';
 				(input as HTMLInputElement).style.transform = 'none';
@@ -344,13 +358,13 @@
 				const allTitles = document.querySelectorAll('h1, h2, h3');
 				allTitles.forEach(title => {
 					title.addEventListener('mouseenter', () => {
-						title.style.transform = 'scale(1.05) translateY(-2px)';
-						title.style.textShadow = '0 0 20px rgba(249, 115, 22, 0.6)';
-						title.style.transition = 'all 0.3s ease';
+						(title as HTMLElement).style.transform = 'scale(1.05) translateY(-2px)';
+						(title as HTMLElement).style.textShadow = '0 0 20px rgba(249, 115, 22, 0.6)';
+						(title as HTMLElement).style.transition = 'all 0.3s ease';
 					});
 					title.addEventListener('mouseleave', () => {
-						title.style.transform = 'scale(1) translateY(0)';
-						title.style.textShadow = '';
+						(title as HTMLElement).style.transform = 'scale(1) translateY(0)';
+						(title as HTMLElement).style.textShadow = '';
 					});
 				});
 			}, 2000);
@@ -365,10 +379,18 @@
 
 			// Seguidor de mouse para elementos de texto
 			setTimeout(() => {
-				createMouseFollower();
+				createMouseFollower(document.body);
 			}, 3000);
 			
 		}, 200);
+	});
+
+	onDestroy(() => {
+		// Limpiar el timer si existe cuando el componente se desmonte
+		if (redirectTimer) {
+			clearTimeout(redirectTimer);
+			redirectTimer = null;
+		}
 	});
 </script>
 
@@ -392,10 +414,19 @@
 					<p class="text-xl text-gray-600 mb-8">
 						Gracias por unirte a nuestra comunidad. Ahora puedes acceder al grupo de WhatsApp.
 					</p>
-					<button class="btn btn-whatsapp text-lg px-8 py-3" on:click={joinGroup}>
-						<span class="whatsapp-icon">📱</span>
-						Entrar al grupo de WhatsApp
-					</button>
+					<div class="success-buttons">
+						<button class="btn btn-whatsapp text-lg px-8 py-3" on:click={joinGroup}>
+							<span class="whatsapp-icon">📱</span>
+							Entrar al grupo de WhatsApp
+						</button>
+						<button class="btn btn-home text-lg px-8 py-3" on:click={goToHomePage}>
+							<span class="home-icon">🏠</span>
+							Volver al inicio
+						</button>
+					</div>
+					<p class="redirect-message text-sm text-gray-500 mt-4">
+						Serás redirigido automáticamente al inicio en 5 segundos...
+					</p>
 				</div>
 			</div>
 		</section>
@@ -1441,6 +1472,98 @@
 	.success-icon {
 		font-size: 4rem;
 		margin-bottom: 1rem;
+	}
+
+	.success-buttons {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		align-items: center;
+		margin-bottom: 1rem;
+	}
+
+	.btn-home {
+		background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%);
+		color: #ffffff;
+		width: 100%;
+		max-width: 300px;
+		padding: 1rem 1.5rem;
+		font-size: 1.1rem;
+		font-weight: 800;
+		border-radius: 1rem;
+		position: relative;
+		overflow: hidden;
+		box-shadow: 
+			0 10px 30px rgba(59, 130, 246, 0.4),
+			0 0 20px rgba(59, 130, 246, 0.2);
+		transition: all 0.3s ease;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		cursor: pointer;
+		display: block;
+		visibility: visible;
+		border: none;
+	}
+
+	.btn-home::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 0;
+		height: 0;
+		background: rgba(255, 255, 255, 0.3);
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		transition: width 0.6s, height 0.6s;
+		z-index: 1;
+	}
+
+	.btn-home:hover::before {
+		width: 300px;
+		height: 300px;
+	}
+
+	.btn-home:hover {
+		transform: translateY(-3px);
+		box-shadow: 
+			0 15px 40px rgba(59, 130, 246, 0.5),
+			0 0 30px rgba(59, 130, 246, 0.3);
+		background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 50%, #1e3a8a 100%);
+	}
+
+	.btn-home:active {
+		transform: translateY(-1px);
+		box-shadow: 
+			0 8px 20px rgba(59, 130, 246, 0.4),
+			0 0 15px rgba(59, 130, 246, 0.2);
+	}
+
+	.home-icon {
+		font-size: 1.2em;
+	}
+
+	.redirect-message {
+		animation: pulse 2s ease-in-out infinite;
+	}
+
+	@keyframes pulse {
+		0%, 100% { opacity: 0.7; }
+		50% { opacity: 1; }
+	}
+
+	/* Responsive para botones de éxito */
+	@media (max-width: 768px) {
+		.success-buttons {
+			flex-direction: column;
+			width: 100%;
+		}
+
+		.btn-whatsapp,
+		.btn-home {
+			width: 100%;
+			max-width: none;
+		}
 	}
 
 	/* Responsive Design */
