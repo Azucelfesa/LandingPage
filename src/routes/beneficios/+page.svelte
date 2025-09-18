@@ -62,9 +62,9 @@
 						<path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
 					</svg>
 				</div>
-				<h3 class="benefit-title">Guía Completa</h3>
+				<h3 class="benefit-title">Información Oficial y Actualizada</h3>
 				<p class="benefit-description">
-					Acceso a toda la información necesaria para el proceso de admisión ECOEMS 2026, desde requisitos hasta fechas importantes.
+					Recibe información oficial y actualizada del ECOEMS directamente en tu WhatsApp, sin intermediarios ni información desactualizada.
 				</p>
 			</div>
 
@@ -75,9 +75,9 @@
 						<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
 					</svg>
 				</div>
-				<h3 class="benefit-title">Estrategias Probadas</h3>
+				<h3 class="benefit-title">Tips Prácticos</h3>
 				<p class="benefit-description">
-					Métodos y técnicas que han ayudado a cientos de estudiantes a ingresar exitosamente a las mejores preparatorias.
+					Consejos prácticos y estrategias específicas para padres y alumnos que te ayudarán a navegar el proceso de admisión con confianza.
 				</p>
 			</div>
 
@@ -85,15 +85,13 @@
 			<div class="benefit-card">
 				<div class="benefit-icon">
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-						<circle cx="9" cy="7" r="4"/>
-						<path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-						<path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+						<circle cx="12" cy="12" r="10"/>
+						<polyline points="12,6 12,12 16,14"/>
 					</svg>
 				</div>
-				<h3 class="benefit-title">Comunidad de Padres</h3>
+				<h3 class="benefit-title">Recordatorios Clave</h3>
 				<p class="benefit-description">
-					Conecta con otros padres que están en el mismo proceso y comparte experiencias, dudas y consejos valiosos.
+					Recibe recordatorios importantes para que tu hijo no pierda fechas críticas del proceso de admisión ECOEMS 2026.
 				</p>
 			</div>
 
@@ -101,13 +99,12 @@
 			<div class="benefit-card">
 				<div class="benefit-icon">
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<circle cx="12" cy="12" r="10"/>
-						<polyline points="12,6 12,12 16,14"/>
+						<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
 					</svg>
 				</div>
-				<h3 class="benefit-title">Acompañamiento 24/7</h3>
+				<h3 class="benefit-title">Comunicación Directa</h3>
 				<p class="benefit-description">
-					Soporte continuo durante todo el proceso, con respuestas rápidas a tus dudas y seguimiento personalizado.
+					Comunicación directa con asesores especializados que resolverán todas tus dudas y te guiarán paso a paso.
 				</p>
 			</div>
 
@@ -115,25 +112,16 @@
 			<div class="benefit-card">
 				<div class="benefit-icon">
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+						<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+						<polyline points="14,2 14,8 20,8"/>
+						<line x1="16" y1="13" x2="8" y2="13"/>
+						<line x1="16" y1="17" x2="8" y2="17"/>
+						<polyline points="10,9 9,9 8,9"/>
 					</svg>
 				</div>
-				<h3 class="benefit-title">Materiales Exclusivos</h3>
+				<h3 class="benefit-title">Material Exclusivo</h3>
 				<p class="benefit-description">
-					Acceso a recursos únicos, simulacros de examen, guías de estudio y materiales que no encontrarás en ningún otro lugar.
-				</p>
-			</div>
-
-			<!-- Beneficio 6 -->
-			<div class="benefit-card">
-				<div class="benefit-icon">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-					</svg>
-				</div>
-				<h3 class="benefit-title">Resultados Garantizados</h3>
-				<p class="benefit-description">
-					Nuestro método ha demostrado ser efectivo. El 95% de nuestros estudiantes logra ingresar a su primera opción.
+					Acceso a material exclusivo diseñado específicamente para preparar mejor a tu hijo para el proceso de admisión.
 				</p>
 			</div>
 		</div>

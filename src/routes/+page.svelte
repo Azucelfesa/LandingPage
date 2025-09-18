@@ -16,7 +16,9 @@
 		enhancedPulseAnimation,
 		slideInFromDirection,
 		textGlowAnimation,
-		add3DHoverEffect
+		add3DHoverEffect,
+		createBackgroundParticles,
+		createBackgroundParticlesForBenefits
 	} from '$lib/animations.js';
 	// import { 
 	// 	createRippleEffect, 
@@ -133,6 +135,14 @@
 					textGlowAnimation(heroTitle);
 				}, 1500);
 			}
+
+			// Agregar partículas a la sección de beneficios
+			setTimeout(() => {
+				const benefitsSection = document.querySelector('.benefits-section');
+				if (benefitsSection) {
+					createBackgroundParticlesForBenefits(benefitsSection);
+				}
+			}, 3000);
 			
 		}, 200);
 	});
@@ -237,6 +247,94 @@
 		</section>
 	{/if}
 
+	<!-- Sección de Beneficios -->
+	<section id="beneficios" class="benefits-section">
+		<div class="container">
+			<div class="section-header">
+				<h2 class="section-title">¿Por qué elegir ADNED?</h2>
+				<p class="section-subtitle">
+					Somos la guía más completa y efectiva para el proceso de admisión ECOEMS 2026
+				</p>
+			</div>
+
+			<div class="benefits-grid">
+				<!-- Beneficio 1 -->
+				<div class="benefit-card">
+					<div class="benefit-icon">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<path d="M9 12l2 2 4-4"/>
+							<path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
+							<path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
+							<path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
+							<path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
+						</svg>
+					</div>
+					<h3 class="benefit-title">Información Oficial y Actualizada</h3>
+					<p class="benefit-description">
+						Recibe información oficial y actualizada del ECOEMS directamente en tu WhatsApp, sin intermediarios ni información desactualizada.
+					</p>
+				</div>
+
+				<!-- Beneficio 2 -->
+				<div class="benefit-card">
+					<div class="benefit-icon">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+						</svg>
+					</div>
+					<h3 class="benefit-title">Tips Prácticos</h3>
+					<p class="benefit-description">
+						Consejos prácticos y estrategias específicas para padres y alumnos que te ayudarán a navegar el proceso de admisión con confianza.
+					</p>
+				</div>
+
+				<!-- Beneficio 3 -->
+				<div class="benefit-card">
+					<div class="benefit-icon">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<circle cx="12" cy="12" r="10"/>
+							<polyline points="12,6 12,12 16,14"/>
+						</svg>
+					</div>
+					<h3 class="benefit-title">Recordatorios Clave</h3>
+					<p class="benefit-description">
+						Recibe recordatorios importantes para que tu hijo no pierda fechas críticas del proceso de admisión ECOEMS 2026.
+					</p>
+				</div>
+
+				<!-- Beneficio 4 -->
+				<div class="benefit-card">
+					<div class="benefit-icon">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+						</svg>
+					</div>
+					<h3 class="benefit-title">Comunicación Directa</h3>
+					<p class="benefit-description">
+						Comunicación directa con asesores especializados que resolverán todas tus dudas y te guiarán paso a paso.
+					</p>
+				</div>
+
+				<!-- Beneficio 5 -->
+				<div class="benefit-card">
+					<div class="benefit-icon">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+							<polyline points="14,2 14,8 20,8"/>
+							<line x1="16" y1="13" x2="8" y2="13"/>
+							<line x1="16" y1="17" x2="8" y2="17"/>
+							<polyline points="10,9 9,9 8,9"/>
+						</svg>
+					</div>
+					<h3 class="benefit-title">Material Exclusivo</h3>
+					<p class="benefit-description">
+						Acceso a material exclusivo diseñado específicamente para preparar mejor a tu hijo para el proceso de admisión.
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
 </main>
 
 <style>
@@ -265,7 +363,7 @@
 
 	/* Hero Section */
 	.hero {
-		background: var(--adned-purple);
+		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		color: var(--bg-white);
 		padding: 1rem 0;
 		min-height: 50vh;
@@ -282,11 +380,9 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background: 
-			radial-gradient(circle at 20% 80%, rgba(30, 27, 75, 0.3) 0%, transparent 70%),
-			radial-gradient(circle at 80% 20%, rgba(49, 46, 129, 0.2) 0%, transparent 70%),
-			radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.1) 0%, transparent 80%),
-			radial-gradient(circle at 70% 30%, rgba(41, 0, 64, 0.15) 0%, transparent 60%);
+		background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
 		pointer-events: none;
 		animation: backgroundShift 8s ease-in-out infinite;
 	}
@@ -294,17 +390,15 @@
 	@keyframes backgroundShift {
 		0%, 100% { 
 			background: 
-				radial-gradient(circle at 20% 80%, rgba(30, 27, 75, 0.3) 0%, transparent 70%),
-				radial-gradient(circle at 80% 20%, rgba(49, 46, 129, 0.2) 0%, transparent 70%),
-				radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.1) 0%, transparent 80%),
-				radial-gradient(circle at 70% 30%, rgba(41, 0, 64, 0.15) 0%, transparent 60%);
+				radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+				radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+				radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
 		}
 		50% { 
 			background: 
-				radial-gradient(circle at 30% 70%, rgba(30, 27, 75, 0.4) 0%, transparent 70%),
-				radial-gradient(circle at 70% 30%, rgba(49, 46, 129, 0.3) 0%, transparent 70%),
-				radial-gradient(circle at 60% 40%, rgba(76, 29, 149, 0.2) 0%, transparent 80%),
-				radial-gradient(circle at 60% 40%, rgba(41, 0, 64, 0.2) 0%, transparent 60%);
+				radial-gradient(circle at 30% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+				radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
+				radial-gradient(circle at 60% 40%, rgba(249, 115, 22, 0.15) 0%, transparent 50%);
 		}
 	}
 
@@ -603,5 +697,158 @@
 	.py-3 {
 		padding-top: 0.75rem;
 		padding-bottom: 0.75rem;
+	}
+
+	/* Sección de Beneficios */
+	.benefits-section {
+		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
+		padding: 4rem 0;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.benefits-section::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
+		pointer-events: none;
+		z-index: 1;
+		animation: backgroundShift 8s ease-in-out infinite;
+	}
+
+
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1rem;
+		position: relative;
+		z-index: 2;
+	}
+
+	.section-header {
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+
+	.section-title {
+		font-size: 2.5rem;
+		font-weight: 800;
+		color: #ffffff;
+		margin-bottom: 1rem;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 25%, #fbbf24 50%, #3b82f6 75%, #8b5cf6 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		text-shadow: 0 4px 20px rgba(249, 115, 22, 0.5);
+		filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.3));
+	}
+
+	.section-subtitle {
+		font-size: 1.2rem;
+		color: rgba(255, 255, 255, 0.9);
+		max-width: 600px;
+		margin: 0 auto;
+		line-height: 1.6;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+	}
+
+	.benefits-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+		gap: 2rem;
+		margin-top: 3rem;
+	}
+
+	.benefit-card {
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(20px);
+		padding: 2.5rem 2rem;
+		border-radius: 1.5rem;
+		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+		transition: all 0.3s ease;
+		border: 2px solid rgba(251, 191, 36, 0.3);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.benefit-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+	}
+
+	.benefit-card:hover {
+		transform: translateY(-10px);
+		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+		border-color: rgba(251, 191, 36, 0.6);
+		background: rgba(255, 255, 255, 1);
+	}
+
+	.benefit-icon {
+		width: 60px;
+		height: 60px;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+		border-radius: 1rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 1.5rem;
+		box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+	}
+
+	.benefit-icon svg {
+		width: 30px;
+		height: 30px;
+		color: white;
+	}
+
+	.benefit-title {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #290040;
+		margin-bottom: 1rem;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	.benefit-description {
+		color: #4a5568;
+		line-height: 1.6;
+		font-size: 1rem;
+	}
+
+	/* Responsive para beneficios */
+	@media (max-width: 768px) {
+		.benefits-section {
+			padding: 3rem 0;
+		}
+
+		.section-title {
+			font-size: 2rem;
+		}
+
+		.benefits-grid {
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
+		}
+
+		.benefit-card {
+			padding: 2rem 1.5rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.benefit-card {
+			padding: 1.5rem 1rem;
+		}
 	}
 </style>

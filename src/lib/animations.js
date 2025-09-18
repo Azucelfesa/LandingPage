@@ -116,7 +116,7 @@ export function typewriterAnimation(element, text, speed = 0.05) {
 	type();
 }
 
-// Animación de partículas flotantes
+// Animación de partículas flotantes (deshabilitada)
 export function createFloatingParticles(container) {
 	const particles = [];
 	const particleCount = 20;
@@ -259,32 +259,87 @@ export function createBackgroundParticles() {
 	
 	hero.appendChild(particleContainer);
 
-	// Crear partículas
-	for (let i = 0; i < 30; i++) {
+	// Crear partículas más sutiles
+	for (let i = 0; i < 15; i++) {
 		const particle = document.createElement('div');
 		particle.className = 'bg-particle';
 		particle.style.cssText = `
 			position: absolute;
-			width: ${Math.random() * 6 + 2}px;
-			height: ${Math.random() * 6 + 2}px;
-			background: rgba(251, 191, 36, ${Math.random() * 0.6 + 0.2});
+			width: ${Math.random() * 4 + 2}px;
+			height: ${Math.random() * 4 + 2}px;
+			background: rgba(251, 191, 36, ${Math.random() * 0.5 + 0.3});
 			border-radius: 50%;
 			left: ${Math.random() * 100}%;
-			top: ${Math.random() * 100}%;
+			top: 100%;
+			box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
 		`;
 		
 		particleContainer.appendChild(particle);
 		
-		// Animación de flotación
+		// Animación de flotación suave
 		gsap.to(particle, {
-			duration: 8 + Math.random() * 4,
-			y: -200,
-			x: Math.random() * 400 - 200,
+			duration: 10 + Math.random() * 6,
+			y: -150,
+			x: Math.random() * 200 - 100,
+			rotation: Math.random() * 180,
 			opacity: 0,
-			scale: 0,
-			ease: "power1.out",
+			scale: 0.3,
+			ease: "power2.out",
 			repeat: -1,
-			delay: Math.random() * 5
+			delay: Math.random() * 8
+		});
+	}
+}
+
+// Crear partículas de fondo para la sección de beneficios
+export function createBackgroundParticlesForBenefits(container) {
+	if (!container) return;
+
+	// Crear contenedor de partículas
+	const particleContainer = document.createElement('div');
+	particleContainer.className = 'benefits-particle-container';
+	particleContainer.style.cssText = `
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		overflow: hidden;
+		z-index: 1;
+	`;
+	
+	container.appendChild(particleContainer);
+
+	// Crear partículas más sutiles para beneficios
+	for (let i = 0; i < 12; i++) {
+		const particle = document.createElement('div');
+		particle.className = 'benefits-particle';
+		particle.style.cssText = `
+			position: absolute;
+			width: ${Math.random() * 3 + 1}px;
+			height: ${Math.random() * 3 + 1}px;
+			background: rgba(251, 191, 36, ${Math.random() * 0.4 + 0.2});
+			border-radius: 50%;
+			left: ${Math.random() * 100}%;
+			top: 100%;
+			pointer-events: none;
+			box-shadow: 0 0 6px rgba(251, 191, 36, 0.3);
+		`;
+		
+		particleContainer.appendChild(particle);
+		
+		// Animación de flotación suave
+		gsap.to(particle, {
+			duration: 12 + Math.random() * 8,
+			y: -120,
+			x: Math.random() * 150 - 75,
+			rotation: Math.random() * 120,
+			opacity: 0,
+			scale: 0.2,
+			ease: "power2.out",
+			repeat: -1,
+			delay: Math.random() * 10
 		});
 	}
 }

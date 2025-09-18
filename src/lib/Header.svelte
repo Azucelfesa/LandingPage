@@ -39,7 +39,7 @@
 						<a href="#inicio" class="nav-link" on:click={closeMenu}>Inicio</a>
 					</li>
 					<li class="nav-item">
-						<a href="#beneficios" class="nav-link" on:click={closeMenu}>Beneficios</a>
+						<a href="/#beneficios" class="nav-link" on:click={closeMenu}>Beneficios</a>
 					</li>
 					<li class="nav-item">
 						<a href="#servicios" class="nav-link" on:click={closeMenu}>Servicios</a>
