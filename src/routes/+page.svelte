@@ -1,547 +1,527 @@
 <script>
-	let count = 0;
-	let currentBanner = 0;
+	import { onMount } from 'svelte';
+	import { 
+		animateHero, 
+		animateScrollElements, 
+		addHoverAnimations, 
+		addPulseAnimation,
+		animateSpinner,
+		animateSuccess,
+		shakeElement
+	} from '$lib/animations.js';
+	// import { 
+	// 	createRippleEffect, 
+	// 	createMouseFollower, 
+	// 	revealTextByWords,
+	// 	slideInFromDirection
+	// } from '$lib/advancedAnimations.js';
 	
-	function increment() {
-		count += 1;
-	}
+	let formData = {
+		parentName: '',
+		studentName: '',
+		whatsapp: '',
+		email: ''
+	};
 	
-	const banners = [
-		{
-			id: 1,
-			title: "¡Oferta Especial!",
-			subtitle: "Descuento del 50% en todos los cursos",
-			buttonText: "Ver Oferta",
-			buttonLink: "#oferta",
-			background: "linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)",
-			textColor: "white"
-		},
-		{
-			id: 2,
-			title: "Nuevo Curso Disponible",
-			subtitle: "Aprende las últimas tecnologías web",
-			buttonText: "Comenzar Ahora",
-			buttonLink: "#curso",
-			background: "linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%)",
-			textColor: "white"
-		},
-		{
-			id: 3,
-			title: "Comunidad Activa",
-			subtitle: "Únete a más de 10,000 estudiantes",
-			buttonText: "Unirse",
-			buttonLink: "#comunidad",
-			background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-			textColor: "white"
+	let isSubmitting = false;
+	let showThankYou = false;
+	
+	// Referencias para animaciones
+	let heroTitle;
+	let heroSubtitle;
+	let registrationForm;
+	let heroSection;
+	let loadingSpinner;
+	let successIcon;
+	
+	async function handleSubmit(event) {
+		event.preventDefault();
+		isSubmitting = true;
+		
+		// Animar el spinner de carga
+		if (loadingSpinner) {
+			animateSpinner(loadingSpinner);
 		}
-	];
-	
-	function nextBanner() {
-		currentBanner = (currentBanner + 1) % banners.length;
-	}
-	
-	function prevBanner() {
-		currentBanner = currentBanner === 0 ? banners.length - 1 : currentBanner - 1;
-	}
-	
-	function goToBanner(index) {
-		currentBanner = index;
-	}
-
-	// Auto-play functionality
-	let autoPlayInterval;
-	
-	function startAutoPlay() {
-		autoPlayInterval = setInterval(() => {
-			nextBanner();
-		}, 5000); // Cambia cada 5 segundos
-	}
-	
-	function stopAutoPlay() {
-		if (autoPlayInterval) {
-			clearInterval(autoPlayInterval);
+		
+		// Simular envío de datos
+		await new Promise(resolve => setTimeout(resolve, 1500));
+		
+		// Aquí iría la lógica para guardar en la base de datos
+		console.log('Datos del formulario:', formData);
+		
+		isSubmitting = false;
+		showThankYou = true;
+		
+		// Animar el ícono de éxito
+		if (successIcon) {
+			animateSuccess(successIcon);
 		}
 	}
-
-	// Start auto-play when component mounts
-	import { onMount, onDestroy } from 'svelte';
+	
+	function joinGroup() {
+		// Redirigir a WhatsApp
+		window.open('https://wa.me/1234567890', '_blank');
+	}
 	
 	onMount(() => {
-		startAutoPlay();
-	});
-	
-	onDestroy(() => {
-		stopAutoPlay();
+		// Asegurar que el formulario sea visible inmediatamente
+		if (registrationForm) {
+			registrationForm.style.opacity = '1';
+			registrationForm.style.transform = 'translateY(0)';
+			registrationForm.style.display = 'block';
+			registrationForm.style.visibility = 'visible';
+		}
+		
+		// Fallback adicional después de un tiempo
+		setTimeout(() => {
+			if (registrationForm) {
+				registrationForm.style.opacity = '1';
+				registrationForm.style.transform = 'translateY(0)';
+				registrationForm.style.display = 'block';
+				registrationForm.style.visibility = 'visible';
+			}
+		}, 1000);
+		
+		// Esperar a que los elementos estén disponibles
+		setTimeout(() => {
+			// Ejecutar animaciones del hero solo si los elementos existen
+			if (heroTitle && heroSubtitle && registrationForm) {
+				animateHero(heroTitle, heroSubtitle, registrationForm);
+			}
+			
+			// Ejecutar animaciones de scroll
+			animateScrollElements();
+			
+			// Agregar animaciones de hover
+			if (registrationForm) {
+				addHoverAnimations(registrationForm);
+			}
+			
+			// Agregar animación de pulsación al botón principal
+			setTimeout(() => {
+				const mainButton = document.querySelector('.btn-whatsapp');
+				if (mainButton) {
+					addPulseAnimation(mainButton);
+				}
+			}, 2000);
+		}, 200);
 	});
 </script>
 
 <svelte:head>
-	<title>Landing Page - SvelteKit</title>
-	<meta name="description" content="Una landing page moderna creada con SvelteKit" />
+	<title>ADNED - Guía para Ingreso a Prepa ECOEMS 2026</title>
+	<meta name="description" content="La guía que todo padre necesita para que su hijo ingrese a la prepa de sus sueños. Regístrate GRATIS y recibe consejos, guías y recordatorios clave del proceso de admisión ECOEMS 2026." />
 </svelte:head>
 
 <main class="main-content">
-	<!-- Banner Carousel -->
-	<section class="banner-carousel" on:mouseenter={stopAutoPlay} on:mouseleave={startAutoPlay}>
-		<div class="banner-container">
-			{#each banners as banner, index}
-				<div class="banner-slide" class:active={index === currentBanner} style="background: {banner.background}; color: {banner.textColor};">
-					<div class="banner-content">
-						<div class="banner-text">
-							<h2 class="banner-title">{banner.title}</h2>
-							<p class="banner-subtitle">{banner.subtitle}</p>
-							<button class="banner-btn" on:click={() => window.location.href = banner.buttonLink}>
-								{banner.buttonText}
-							</button>
-						</div>
-						<div class="banner-image">
-							<div class="banner-icon">
-								{#if index === 0}
-									🔥
-								{:else if index === 1}
-									🚀
-								{:else}
-									👥
-								{/if}
+	{#if showThankYou}
+		<!-- Página de agradecimiento -->
+		<section class="hero thank-you-section">
+			<div class="container">
+				<div class="hero-content text-center">
+					<div class="success-icon" bind:this={successIcon}>✅</div>
+					<h1 class="text-5xl font-bold mb-6 text-green-600">
+						¡Registro Exitoso!
+					</h1>
+					<p class="text-xl text-gray-600 mb-8">
+						Gracias por unirte a nuestra comunidad. Ahora puedes acceder al grupo de WhatsApp.
+					</p>
+					<button class="btn btn-whatsapp text-lg px-8 py-3" on:click={joinGroup}>
+						<span class="whatsapp-icon">📱</span>
+						Entrar al grupo de WhatsApp
+					</button>
+				</div>
+			</div>
+		</section>
+	{:else}
+		<!-- Hero Section -->
+		<section class="hero" bind:this={heroSection}>
+			<div class="container">
+				<div class="hero-content-centered">
+					<h1 class="hero-title" bind:this={heroTitle}>
+				
+						La guía que todo padre necesita para que su hijo ingrese a la prepa de sus sueños
+					</h1>
+					<h2 class="hero-subtitle" bind:this={heroSubtitle}>
+						Regístrate <strong>GRATIS</strong> y recibe en tu WhatsApp consejos, guías y recordatorios clave del proceso de admisión <strong>ECOEMS 2026</strong>.
+					</h2>
+					
+					<!-- Formulario de registro -->
+					<form class="registration-form" bind:this={registrationForm} on:submit={handleSubmit}>
+							<div class="form-group">
+								<label for="parentName">Nombre del padre/tutor</label>
+								<input 
+									type="text" 
+									id="parentName" 
+									bind:value={formData.parentName}
+									required 
+									placeholder="Tu nombre completo"
+								>
 							</div>
-						</div>
+							
+							<div class="form-group">
+								<label for="studentName">Nombre del alumno</label>
+								<input 
+									type="text" 
+									id="studentName" 
+									bind:value={formData.studentName}
+									required 
+									placeholder="Nombre de tu hijo/a"
+								>
+							</div>
+							
+							<div class="form-group">
+								<label for="whatsapp">WhatsApp</label>
+								<input 
+									type="tel" 
+									id="whatsapp" 
+									bind:value={formData.whatsapp}
+									required 
+									placeholder="+52 55 1234 5678"
+								>
+							</div>
+							
+							<div class="form-group">
+								<label for="email">Correo electrónico</label>
+								<input 
+									type="email" 
+									id="email" 
+									bind:value={formData.email}
+									required 
+									placeholder="tu@email.com"
+								>
+							</div>
+							
+							<button type="submit" class="btn btn-whatsapp" disabled={isSubmitting}>
+								{#if isSubmitting}
+									<span class="loading-spinner" bind:this={loadingSpinner}></span>
+									Registrando...
+								{:else}
+									<span class="whatsapp-icon">📱</span>
+									Registrarme GRATIS
+								{/if}
+							</button>
+						</form>
 					</div>
 				</div>
-			{/each}
-		</div>
-		
-		<!-- Navigation Arrows -->
-		<button class="banner-nav banner-prev" on:click={prevBanner}>
-			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-				<path d="M15 18l-6-6 6-6"/>
-			</svg>
-		</button>
-		<button class="banner-nav banner-next" on:click={nextBanner}>
-			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-				<path d="M9 18l6-6-6-6"/>
-			</svg>
-		</button>
-		
-		<!-- Dots Indicator -->
-		<div class="banner-dots">
-			{#each banners as _, index}
-				<button 
-					class="banner-dot" 
-					class:active={index === currentBanner}
-					on:click={() => goToBanner(index)}
-				></button>
-			{/each}
-		</div>
-	</section>
+		</section>
+	{/if}
 
-	<!-- Hero Section -->
-	<section class="hero">
-		<div class="container">
-			<div class="hero-content text-center">
-				<h1 class="text-5xl font-bold mb-6">
-					Bienvenido a tu Landing Page
-				</h1>
-				<p class="text-xl text-gray-600 mb-8">
-					Una página moderna y responsive creada con SvelteKit y TypeScript
-				</p>
-				<div class="flex gap-4 justify-center">
-					<button class="btn btn-primary" on:click={increment}>
-						Contador: {count}
-					</button>
-					<button class="btn btn-secondary">
-						Más información
-					</button>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- Features Section -->
-	<section class="section bg-gray-50">
-		<div class="container">
-			<div class="text-center mb-12">
-				<h2 class="text-4xl font-bold mb-4">Características</h2>
-				<p class="text-lg text-gray-600">
-					Descubre las características principales de esta landing page
-				</p>
-			</div>
-			
-			<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-				<div class="card text-center">
-					<div class="mb-4">
-						<div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-							<svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-							</svg>
-						</div>
-					</div>
-					<h3 class="text-xl font-semibold mb-2">Rápido</h3>
-					<p class="text-gray-600">
-						Construido con SvelteKit para un rendimiento óptimo y carga rápida
-					</p>
-				</div>
-				
-				<div class="card text-center">
-					<div class="mb-4">
-						<div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-							<svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-							</svg>
-						</div>
-					</div>
-					<h3 class="text-xl font-semibold mb-2">Confiable</h3>
-					<p class="text-gray-600">
-						Desarrollado con TypeScript para mayor seguridad y mantenibilidad
-					</p>
-				</div>
-				
-				<div class="card text-center">
-					<div class="mb-4">
-						<div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
-							<svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-							</svg>
-						</div>
-					</div>
-					<h3 class="text-xl font-semibold mb-2">Moderno</h3>
-					<p class="text-gray-600">
-						Diseño responsive y moderno que se adapta a todos los dispositivos
-					</p>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- CTA Section -->
-	<section class="section">
-		<div class="container">
-			<div class="text-center">
-				<h2 class="text-4xl font-bold mb-4">¿Listo para comenzar?</h2>
-				<p class="text-lg text-gray-600 mb-8">
-					Comienza a construir tu proyecto con SvelteKit hoy mismo
-				</p>
-				<button class="btn btn-primary text-lg px-8 py-3">
-					Comenzar ahora
-				</button>
-			</div>
-		</div>
-	</section>
 </main>
 
 <style>
-	:global(.bg-blue-100) {
-		background-color: #dbeafe;
-	}
-	
-	:global(.bg-green-100) {
-		background-color: #dcfce7;
-	}
-	
-	:global(.bg-purple-100) {
-		background-color: #f3e8ff;
-	}
-	
-	:global(.text-blue-600) {
-		color: #2563eb;
-	}
-	
-	:global(.text-green-600) {
-		color: #16a34a;
-	}
-	
-	:global(.text-purple-600) {
-		color: #9333ea;
-	}
-	
-	:global(.text-gray-600) {
-		color: var(--color-text-2);
-	}
-	
-	:global(.w-16) {
-		width: 4rem;
-	}
-	
-	:global(.h-16) {
-		height: 4rem;
-	}
-	
-	:global(.w-8) {
-		width: 2rem;
-	}
-	
-	:global(.h-8) {
-		height: 2rem;
-	}
-	
-	:global(.rounded-full) {
-		border-radius: 9999px;
-	}
-	
-	:global(.flex) {
-		display: flex;
-	}
-	
-	:global(.items-center) {
-		align-items: center;
-	}
-	
-	:global(.justify-center) {
-		justify-content: center;
-	}
-	
-	:global(.mx-auto) {
-		margin-left: auto;
-		margin-right: auto;
-	}
-	
-	:global(.px-8) {
-		padding-left: 2rem;
-		padding-right: 2rem;
-	}
-	
-	:global(.py-3) {
-		padding-top: 0.75rem;
-		padding-bottom: 0.75rem;
-	}
-	
-	:global(.md\\:grid-cols-3) {
-		@media (min-width: 768px) {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
-		}
+	/* Variables CSS - Paleta Profesional */
+	:root {
+		--primary-blue: #1e40af;
+		--primary-dark: #1e3a8a;
+		--secondary-gray: #64748b;
+		--accent-blue: #3b82f6;
+		--adned-purple: #290040;
+		--adned-purple-dark: #1a0026;
+		--adned-purple-light: #3d0060;
+		--text-dark: #1e293b;
+		--text-gray: #64748b;
+		--bg-light: #f8fafc;
+		--bg-white: #ffffff;
+		--border-light: #e2e8f0;
+		--success-green: #059669;
+		--shadow-light: rgba(0, 0, 0, 0.1);
+		--shadow-medium: rgba(0, 0, 0, 0.15);
 	}
 
 	.main-content {
-		padding-top: 70px; /* Espacio para el header fijo */
+		padding-top: 80px;
 	}
 
-	/* Banner Carousel Styles */
-	.banner-carousel {
+	/* Hero Section */
+	.hero {
+		background: var(--adned-purple);
+		color: var(--bg-white);
+		padding: 3rem 0;
+		min-height: 60vh;
+		display: flex;
+		align-items: center;
 		position: relative;
-		height: 400px;
 		overflow: hidden;
-		margin-bottom: 2rem;
 	}
 
-	.banner-container {
-		position: relative;
-		width: 100%;
-		height: 100%;
-	}
-
-	.banner-slide {
+	.hero::before {
+		content: '';
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: 100%;
-		height: 100%;
-		opacity: 0;
-		transform: translateX(100%);
-		transition: all 0.5s ease-in-out;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		right: 0;
+		bottom: 0;
+		background: 
+			radial-gradient(circle at 20% 80%, rgba(30, 27, 75, 0.3) 0%, transparent 70%),
+			radial-gradient(circle at 80% 20%, rgba(49, 46, 129, 0.2) 0%, transparent 70%),
+			radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.1) 0%, transparent 80%),
+			radial-gradient(circle at 70% 30%, rgba(41, 0, 64, 0.15) 0%, transparent 60%);
+		pointer-events: none;
 	}
 
-	.banner-slide.active {
-		opacity: 1;
-		transform: translateX(0);
+	.hero-content-centered {
+		max-width: 600px;
+		margin: 0 auto;
+		text-align: center;
+		position: relative;
+		z-index: 1;
 	}
 
-	.banner-content {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		width: 100%;
-		max-width: 1200px;
-		padding: 0 2rem;
-		gap: 3rem;
+	.hero-title {
+		font-size: 2.5rem;
+		font-weight: 700;
+		line-height: 1.2;
+		margin-bottom: 1.5rem;
+		color: var(--bg-white);
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 25%, #fbbf24 50%, #3b82f6 75%, #8b5cf6 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		text-shadow: 
+			0 0 10px rgba(249, 115, 22, 0.3),
+			0 0 20px rgba(251, 191, 36, 0.2),
+			0 0 30px rgba(59, 130, 246, 0.2),
+			0 2px 8px rgba(0, 0, 0, 0.5);
+		filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.3));
 	}
 
-	.banner-text {
-		flex: 1;
-		text-align: left;
-	}
 
-	.banner-title {
-		font-size: 3rem;
-		font-weight: 800;
-		margin-bottom: 1rem;
-		line-height: 1.1;
-	}
-
-	.banner-subtitle {
-		font-size: 1.25rem;
-		margin-bottom: 2rem;
-		opacity: 0.9;
+	.hero-subtitle {
+		font-size: 1.2rem;
 		line-height: 1.6;
+		margin-bottom: 2rem;
+		color: #ffffff;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
 
-	.banner-btn {
-		background: rgba(255, 255, 255, 0.2);
-		border: 2px solid rgba(255, 255, 255, 0.3);
-		color: white;
-		padding: 1rem 2rem;
-		font-size: 1.1rem;
+	/* Formulario de registro */
+	.registration-form {
+		background: rgba(255, 255, 255, 0.98);
+		backdrop-filter: blur(20px);
+		padding: 3rem;
+		border-radius: 2rem;
+		box-shadow: 
+			0 25px 50px rgba(0, 0, 0, 0.6),
+			0 0 0 1px rgba(255, 255, 255, 0.2),
+			0 0 0 3px rgba(251, 191, 36, 0.2);
+		margin-top: 2rem;
+		border: 2px solid rgba(251, 191, 36, 0.3);
+		position: relative;
+		transition: all 0.3s ease;
+		opacity: 1;
+		transform: translateY(0);
+		display: block;
+		visibility: visible;
+	}
+
+	.registration-form:hover {
+		box-shadow: 
+			0 35px 70px rgba(0, 0, 0, 0.7),
+			0 0 0 1px rgba(255, 255, 255, 0.3),
+			0 0 0 3px rgba(251, 191, 36, 0.3);
+		transform: translateY(-5px);
+		border-color: rgba(251, 191, 36, 0.5);
+	}
+
+	.form-group {
+		margin-bottom: 1.5rem;
+	}
+
+	.form-group label {
+		display: block;
 		font-weight: 600;
-		border-radius: 0.5rem;
-		cursor: pointer;
-		transition: all 0.3s ease;
-		backdrop-filter: blur(10px);
+		color: var(--text-dark);
+		margin-bottom: 0.5rem;
+		font-size: 0.9rem;
 	}
 
-	.banner-btn:hover {
-		background: rgba(255, 255, 255, 0.3);
-		border-color: rgba(255, 255, 255, 0.5);
+	.form-group input {
+		width: 100%;
+		padding: 1rem 1.25rem;
+		border: 2px solid rgba(0, 0, 0, 0.1);
+		border-radius: 1rem;
+		font-size: 1.1rem;
+		transition: all 0.3s ease;
+		background: rgba(255, 255, 255, 0.95);
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	}
+
+	.form-group input:focus {
+		outline: none;
+		border-color: #fbbf24;
+		background: rgba(255, 255, 255, 1);
+		box-shadow: 
+			0 0 0 4px rgba(251, 191, 36, 0.2),
+			0 8px 25px rgba(0, 0, 0, 0.15);
 		transform: translateY(-2px);
-		box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 	}
 
-	.banner-image {
-		flex: 0 0 200px;
-		display: flex;
+	/* Botones */
+	.btn {
+		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-	}
-
-	.banner-icon {
-		font-size: 8rem;
-		opacity: 0.8;
-		animation: float 3s ease-in-out infinite;
-	}
-
-	@keyframes float {
-		0%, 100% { transform: translateY(0px); }
-		50% { transform: translateY(-20px); }
-	}
-
-	/* Navigation Arrows */
-	.banner-nav {
-		position: absolute;
-		top: 50%;
-		transform: translateY(-50%);
-		background: rgba(255, 255, 255, 0.2);
+		padding: 0.75rem 1.5rem;
 		border: none;
-		color: white;
-		width: 50px;
-		height: 50px;
-		border-radius: 50%;
+		border-radius: 0.5rem;
+		font-weight: 600;
+		text-decoration: none;
 		cursor: pointer;
-		display: flex;
-		align-items: center;
-		justify-content: center;
 		transition: all 0.3s ease;
-		backdrop-filter: blur(10px);
-		z-index: 10;
-	}
-
-	.banner-nav:hover {
-		background: rgba(255, 255, 255, 0.3);
-		transform: translateY(-50%) scale(1.1);
-	}
-
-	.banner-prev {
-		left: 2rem;
-	}
-
-	.banner-next {
-		right: 2rem;
-	}
-
-	/* Dots Indicator */
-	.banner-dots {
-		position: absolute;
-		bottom: 2rem;
-		left: 50%;
-		transform: translateX(-50%);
-		display: flex;
+		font-size: 1rem;
 		gap: 0.5rem;
-		z-index: 10;
 	}
 
-	.banner-dot {
-		width: 12px;
-		height: 12px;
-		border-radius: 50%;
-		border: 2px solid rgba(255, 255, 255, 0.5);
-		background: transparent;
-		cursor: pointer;
+	.btn-whatsapp {
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+		color: #000000;
+		width: 100%;
+		padding: 1.5rem 2rem;
+		font-size: 1.3rem;
+		font-weight: 800;
+		border-radius: 1.5rem;
+		position: relative;
+		overflow: hidden;
+		box-shadow: 
+			0 10px 30px rgba(251, 191, 36, 0.4),
+			0 0 20px rgba(251, 191, 36, 0.2);
 		transition: all 0.3s ease;
+		text-transform: uppercase;
+		letter-spacing: 1px;
 	}
 
-	.banner-dot.active {
-		background: white;
-		border-color: white;
-		transform: scale(1.2);
+	.btn-whatsapp:hover {
+		background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+		transform: translateY(-4px);
+		box-shadow: 
+			0 15px 40px rgba(251, 191, 36, 0.5),
+			0 0 30px rgba(251, 191, 36, 0.3);
 	}
 
-	.banner-dot:hover {
-		border-color: white;
-		background: rgba(255, 255, 255, 0.5);
+	.btn-whatsapp:disabled {
+		opacity: 0.7;
+		cursor: not-allowed;
+		transform: none;
+	}
+
+
+	.whatsapp-icon {
+		font-size: 1.2em;
+	}
+
+	.loading-spinner {
+		width: 20px;
+		height: 20px;
+		border: 2px solid transparent;
+		border-top: 2px solid white;
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
+	}
+
+
+	/* Efectos de hover mejorados */
+	.btn-whatsapp:hover {
+		transform: translateY(-2px) scale(1.02);
+		box-shadow: 0 15px 30px rgba(251, 191, 36, 0.4);
+	}
+
+	.registration-form:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+	}
+
+	/* Efectos de focus mejorados */
+	.form-group input:focus {
+		transform: scale(1.02);
+		box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+	}
+
+	/* Efecto de ondas en botones */
+	.btn {
+		position: relative;
+		overflow: hidden;
+	}
+
+
+	/* Thank You Page */
+	.thank-you-section {
+		background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+		min-height: 60vh;
+		color: var(--adned-purple);
+	}
+
+	.success-icon {
+		font-size: 4rem;
+		margin-bottom: 1rem;
 	}
 
 	/* Responsive Design */
 	@media (max-width: 768px) {
-		.banner-carousel {
-			height: 300px;
+		.hero {
+			padding: 1.5rem 0;
+			min-height: auto;
 		}
 
-		.banner-content {
-			flex-direction: column;
-			text-align: center;
-			gap: 1.5rem;
-			padding: 0 1rem;
-		}
-
-		.banner-title {
-			font-size: 2rem;
-		}
-
-		.banner-subtitle {
-			font-size: 1rem;
-		}
-
-		.banner-icon {
-			font-size: 4rem;
-		}
-
-		.banner-nav {
-			width: 40px;
-			height: 40px;
-		}
-
-		.banner-prev {
-			left: 1rem;
-		}
-
-		.banner-next {
-			right: 1rem;
-		}
-
-		.banner-dots {
-			bottom: 1rem;
-		}
-	}
-
-	@media (max-width: 480px) {
-		.banner-carousel {
-			height: 250px;
-		}
-
-		.banner-title {
+		.hero-title {
 			font-size: 1.5rem;
 		}
 
-		.banner-subtitle {
-			font-size: 0.9rem;
+
+		.hero-subtitle {
+			font-size: 1.1rem;
 		}
 
-		.banner-btn {
-			padding: 0.75rem 1.5rem;
-			font-size: 1rem;
+		.registration-form {
+			padding: 1.5rem;
 		}
+	}
 
-		.banner-icon {
-			font-size: 3rem;
-		}
+	/* Utility Classes */
+	.text-center {
+		text-align: center;
+	}
+
+	.mb-6 {
+		margin-bottom: 1.5rem;
+	}
+
+	.mb-8 {
+		margin-bottom: 2rem;
+	}
+
+	.text-5xl {
+		font-size: 3rem;
+	}
+
+	.text-xl {
+		font-size: 1.25rem;
+	}
+
+	.font-bold {
+		font-weight: 700;
+	}
+
+	.text-green-600 {
+		color: #16a34a;
+	}
+
+	.text-gray-600 {
+		color: var(--text-gray);
+	}
+
+	.px-8 {
+		padding-left: 2rem;
+		padding-right: 2rem;
+	}
+
+	.py-3 {
+		padding-top: 0.75rem;
+		padding-bottom: 0.75rem;
 	}
 </style>

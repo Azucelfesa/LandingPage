@@ -16,10 +16,8 @@
 			<!-- Logo -->
 			<div class="logo">
 				<a href="/" class="logo-link">
-					<svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-					</svg>
-					<span class="logo-text">LandingPage</span>
+					<img src="/photo_2025-09-12_15-08-29.jpg" alt="ADNED Logo" class="logo-image">
+				
 				</a>
 			</div>
 
@@ -68,11 +66,12 @@
 		top: 0;
 		left: 0;
 		right: 0;
-		background: rgba(255, 255, 255, 0.95);
-		backdrop-filter: blur(10px);
-		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+		background: linear-gradient(135deg, #000000 0%, #1e1b4b 30%, #312e81 60%, #4c1d95 100%);
+		backdrop-filter: blur(20px);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 		z-index: 1000;
 		transition: all 0.3s ease;
+		box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 	}
 
 	.container {
@@ -85,7 +84,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		height: 70px;
+		height: 80px;
 	}
 
 	.logo {
@@ -95,26 +94,41 @@
 	.logo-link {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
+		gap: 0.75rem;
 		text-decoration: none;
-		color: var(--color-text);
+		color: #ffffff;
 		font-weight: 700;
-		font-size: 1.25rem;
-		transition: color 0.3s ease;
+		font-size: 1.5rem;
+		transition: all 0.3s ease;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
 
 	.logo-link:hover {
-		color: var(--color-primary);
+		color: #fbbf24;
+		transform: scale(1.02);
+		text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
 	}
 
-	.logo-icon {
-		width: 32px;
-		height: 32px;
-		color: var(--color-primary);
+	.logo-image {
+		width: 60px;
+		height: 60px;
+		object-fit: contain;
+		border-radius: 8px;
+		transition: all 0.3s ease;
+	}
+
+	.logo-link:hover .logo-image {
+		transform: scale(1.1);
+		filter: brightness(1.2);
 	}
 
 	.logo-text {
 		font-size: 1.5rem;
+		font-weight: 800;
+		background: linear-gradient(135deg, #FF0000, #FFFF00, #0000FF);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
 	.nav {
@@ -137,29 +151,38 @@
 
 	.nav-link {
 		text-decoration: none;
-		color: var(--color-text-2);
+		color: rgba(255, 255, 255, 0.9);
 		font-weight: 500;
-		transition: color 0.3s ease;
+		transition: all 0.3s ease;
 		position: relative;
+		padding: 0.5rem 1rem;
+		border-radius: 0.5rem;
+		font-size: 0.9rem;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
 	}
 
 	.nav-link:hover {
-		color: var(--color-primary);
+		color: #fbbf24;
+		background: rgba(251, 191, 36, 0.2);
+		transform: translateY(-1px);
+		text-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
 	}
 
 	.nav-link::after {
 		content: '';
 		position: absolute;
 		bottom: -5px;
-		left: 0;
+		left: 50%;
+		transform: translateX(-50%);
 		width: 0;
 		height: 2px;
-		background: var(--color-primary);
+		background: linear-gradient(135deg, #FF0000, #FFFF00, #0000FF);
 		transition: width 0.3s ease;
 	}
 
 	.nav-link:hover::after {
-		width: 100%;
+		width: 80%;
 	}
 
 	.header-cta {
@@ -201,15 +224,17 @@
 	@media (max-width: 768px) {
 		.nav {
 			position: fixed;
-			top: 70px;
+			top: 80px;
 			left: 0;
 			right: 0;
-			background: white;
-			border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+			background: linear-gradient(135deg, #000000 0%, #1e1b4b 30%, #312e81 60%, #4c1d95 100%);
+			backdrop-filter: blur(20px);
+			border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 			transform: translateY(-100%);
 			opacity: 0;
 			visibility: hidden;
 			transition: all 0.3s ease;
+			box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
 		}
 
 		.nav-open {
@@ -252,13 +277,21 @@
 	}
 
 	.btn-primary {
-		background: var(--color-primary);
-		color: white;
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+		color: #1f2937;
+		font-weight: 700;
+		border-radius: 0.75rem;
+		position: relative;
+		overflow: hidden;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
 	}
 
 	.btn-primary:hover {
-		background: var(--color-primary-dark);
-		transform: translateY(-1px);
+		background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+		transform: translateY(-2px);
+		box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
 	}
 
 	.btn-sm {
