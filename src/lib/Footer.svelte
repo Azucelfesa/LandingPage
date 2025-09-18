@@ -1,6 +1,11 @@
 <script>
 	const currentYear = new Date().getFullYear();
 
+	function joinGroup() {
+		// Redirigir a WhatsApp
+		window.open('https://wa.me/1234567890', '_blank');
+	}
+
 	const socialLinks = [
 		{
 			name: 'Facebook',
@@ -50,91 +55,59 @@
 	<div class="container">
 		<!-- Main Footer Content -->
 		<div class="footer-main">
-			<!-- Company Info -->
-			<div class="footer-section">
+			<!-- Logo ADNED -->
+			<div class="footer-section footer-logo-section">
 				<div class="footer-logo">
-					<svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-					</svg>
-					<span class="logo-text">LandingPage</span>
+					<img src="/photo_2025-09-12_15-08-29.jpg" alt="ADNED Logo" class="adned-logo">
+					<span class="logo-text">ADNED</span>
 				</div>
 				<p class="footer-description">
-					Construimos experiencias digitales excepcionales que conectan marcas con sus audiencias de manera efectiva y memorable.
+					La guía que todo padre necesita para que su hijo ingrese a la prepa de sus sueños.
 				</p>
-				<div class="social-links">
-					{#each socialLinks as social}
-						<a 
-							href={social.url} 
-							class="social-link" 
-							aria-label={social.name}
-							target="_blank" 
-							rel="noopener noreferrer"
-						>
-							<svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
-								<path d={social.icon} />
-							</svg>
-						</a>
-					{/each}
+			</div>
+
+			<!-- Datos de Contacto -->
+			<div class="footer-section">
+				<h3 class="footer-title">Contacto</h3>
+				<div class="contact-info">
+					<div class="contact-item">
+						<svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+						</svg>
+						<span>WhatsApp: +52 55 1234 5678</span>
+					</div>
+					<div class="contact-item">
+						<svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+							<polyline points="22,6 12,13 2,6"/>
+						</svg>
+						<span>contacto@adned.com</span>
+					</div>
 				</div>
 			</div>
 
-			<!-- Quick Links -->
+			<!-- Aviso de Privacidad -->
 			<div class="footer-section">
-				<h3 class="footer-title">Enlaces rápidos</h3>
+				<h3 class="footer-title">Legal</h3>
 				<ul class="footer-links">
-					{#each quickLinks as link}
-						<li>
-							<a href={link.url} class="footer-link">{link.name}</a>
-						</li>
-					{/each}
+					<li><a href="#privacidad" class="footer-link">Aviso de Privacidad</a></li>
+					<li><a href="#terminos" class="footer-link">Términos y Condiciones</a></li>
+					<li><a href="#cookies" class="footer-link">Política de Cookies</a></li>
 				</ul>
 			</div>
 
-			<!-- Company Links -->
-			<div class="footer-section">
-				<h3 class="footer-title">Empresa</h3>
-				<ul class="footer-links">
-					{#each companyLinks as link}
-						<li>
-							<a href={link.url} class="footer-link">{link.name}</a>
-						</li>
-					{/each}
-				</ul>
-			</div>
-
-			<!-- Support Links -->
-			<div class="footer-section">
-				<h3 class="footer-title">Soporte</h3>
-				<ul class="footer-links">
-					{#each supportLinks as link}
-						<li>
-							<a href={link.url} class="footer-link">{link.name}</a>
-						</li>
-					{/each}
-				</ul>
-			</div>
-
-			<!-- Newsletter -->
-			<div class="footer-section">
-				<h3 class="footer-title">Newsletter</h3>
-				<p class="newsletter-description">
-					Mantente al día con nuestras últimas noticias y actualizaciones.
+			<!-- CTA Button -->
+			<div class="footer-section footer-cta-section">
+				<h3 class="footer-title">¿Listo para empezar?</h3>
+				<p class="cta-description">
+					Únete a nuestro grupo gratuito y recibe consejos exclusivos para el proceso de admisión ECOEMS 2026.
 				</p>
-				<form class="newsletter-form">
-					<div class="newsletter-input-group">
-						<input 
-							type="email" 
-							placeholder="Tu email" 
-							class="newsletter-input"
-							required
-						>
-						<button type="submit" class="newsletter-btn">
-							<svg class="newsletter-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-							</svg>
-						</button>
-					</div>
-				</form>
+				<button class="footer-cta-btn" on:click={joinGroup}>
+					<svg class="cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+					</svg>
+					Unirme al grupo gratuito
+				</button>
 			</div>
 		</div>
 
@@ -142,7 +115,7 @@
 		<div class="footer-bottom">
 			<div class="footer-bottom-content">
 				<p class="copyright">
-					© {currentYear} LandingPage. Todos los derechos reservados.
+					© {currentYear} ADNED. Todos los derechos reservados.
 				</p>
 				<div class="footer-bottom-links">
 					<a href="#privacidad" class="footer-bottom-link">Política de privacidad</a>
@@ -156,10 +129,13 @@
 
 <style>
 	.footer {
-		background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+		background: #290040;
 		color: white;
-		padding: 2rem 0 0;
+		padding: 0;
 		margin-top: 0;
+		border-top: 2px solid rgba(251, 191, 36, 0.3);
+		box-shadow: 0 -8px 30px rgba(41, 0, 64, 0.4);
+		min-height: 300px;
 	}
 
 	.container {
@@ -170,9 +146,10 @@
 
 	.footer-main {
 		display: grid;
-		grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
-		gap: 2rem;
-		margin-bottom: 2rem;
+		grid-template-columns: 2fr 1fr 1fr 1.5fr;
+		gap: 1rem;
+		margin-bottom: 0;
+		padding: 1.5rem 0;
 	}
 
 	.footer-section {
@@ -184,22 +161,51 @@
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
-		margin-bottom: 1rem;
+		margin-bottom: 0.5rem;
 		font-size: 1.5rem;
 		font-weight: 700;
 	}
 
-	.logo-icon {
-		width: 32px;
-		height: 32px;
-		color: var(--color-primary, #3b82f6);
+	.adned-logo {
+		width: 50px;
+		height: 50px;
+		object-fit: contain;
+		border-radius: 8px;
+	}
+
+	.logo-text {
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
 	.footer-description {
 		color: rgba(255, 255, 255, 0.8);
-		line-height: 1.6;
-		margin-bottom: 1.5rem;
+		line-height: 1.4;
+		margin-bottom: 0.5rem;
+		font-size: 0.9rem;
+	}
+
+	.contact-info {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.contact-item {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		color: rgba(255, 255, 255, 0.8);
 		font-size: 0.95rem;
+	}
+
+	.contact-icon {
+		width: 20px;
+		height: 20px;
+		color: #fbbf24;
+		flex-shrink: 0;
 	}
 
 	.social-links {
@@ -312,9 +318,52 @@
 		height: 18px;
 	}
 
+	.footer-cta-section {
+		text-align: center;
+	}
+
+	.cta-description {
+		color: rgba(255, 255, 255, 0.8);
+		font-size: 0.85rem;
+		margin-bottom: 1rem;
+		line-height: 1.4;
+	}
+
+	.footer-cta-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #f59e0b 100%);
+		color: #ffffff;
+		padding: 0.75rem 1.5rem;
+		border: none;
+		border-radius: 0.75rem;
+		font-weight: 700;
+		font-size: 0.9rem;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+	}
+
+	.footer-cta-btn:hover {
+		background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+		transform: translateY(-2px);
+		box-shadow: 0 8px 25px rgba(249, 115, 22, 0.6);
+		text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+	}
+
+	.cta-icon {
+		width: 20px;
+		height: 20px;
+	}
+
 	.footer-bottom {
-		border-top: 1px solid rgba(255, 255, 255, 0.1);
-		padding: 2rem 0;
+		border-top: 2px solid rgba(251, 191, 36, 0.3);
+		padding: 1rem 0;
+		background: rgba(0, 0, 0, 0.2);
 	}
 
 	.footer-bottom-content {
@@ -357,12 +406,22 @@
 
 	@media (max-width: 768px) {
 		.footer {
-			padding: 1.5rem 0 0;
+			padding: 0;
 		}
 
 		.footer-main {
 			grid-template-columns: 1fr;
-			gap: 1.5rem;
+			gap: 1rem;
+			padding: 1rem 0;
+		}
+
+		.footer-cta-section {
+			text-align: center;
+		}
+
+		.footer-cta-btn {
+			width: 100%;
+			justify-content: center;
 		}
 
 		.footer-bottom-content {

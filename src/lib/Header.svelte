@@ -13,6 +13,17 @@
 <header class="header">
 	<div class="container">
 		<div class="header-content">
+			<!-- Mobile Menu Button -->
+			<button 
+				class="mobile-menu-btn" 
+				on:click={toggleMenu}
+				aria-label="Toggle menu"
+			>
+				<span class="hamburger" class:hamburger-open={isMenuOpen}></span>
+				<span class="hamburger" class:hamburger-open={isMenuOpen}></span>
+				<span class="hamburger" class:hamburger-open={isMenuOpen}></span>
+			</button>
+
 			<!-- Logo -->
 			<div class="logo">
 				<a href="/" class="logo-link">
@@ -28,13 +39,18 @@
 						<a href="#inicio" class="nav-link" on:click={closeMenu}>Inicio</a>
 					</li>
 					<li class="nav-item">
-						<a href="#caracteristicas" class="nav-link" on:click={closeMenu}>Características</a>
+						<a href="#beneficios" class="nav-link" on:click={closeMenu}>Beneficios</a>
 					</li>
 					<li class="nav-item">
 						<a href="#servicios" class="nav-link" on:click={closeMenu}>Servicios</a>
 					</li>
 					<li class="nav-item">
 						<a href="#contacto" class="nav-link" on:click={closeMenu}>Contacto</a>
+					</li>
+					<li class="nav-item mobile-cta">
+						<button class="btn btn-primary mobile-cta-btn" on:click={closeMenu}>
+							Empezar ahora
+						</button>
 					</li>
 				</ul>
 			</nav>
@@ -45,17 +61,6 @@
 					Empezar ahora
 				</button>
 			</div>
-
-			<!-- Mobile Menu Button -->
-			<button 
-				class="mobile-menu-btn" 
-				on:click={toggleMenu}
-				aria-label="Toggle menu"
-			>
-				<span class="hamburger" class:hamburger-open={isMenuOpen}></span>
-				<span class="hamburger" class:hamburger-open={isMenuOpen}></span>
-				<span class="hamburger" class:hamburger-open={isMenuOpen}></span>
-			</button>
 		</div>
 	</div>
 </header>
@@ -85,10 +90,14 @@
 		align-items: center;
 		justify-content: space-between;
 		height: 80px;
+		position: relative;
 	}
 
 	.logo {
 		flex-shrink: 0;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
 	}
 
 	.logo-link {
@@ -147,6 +156,15 @@
 
 	.nav-item {
 		margin: 0;
+	}
+
+	.mobile-cta {
+		display: none;
+	}
+
+	.mobile-menu-btn {
+		display: none;
+		order: -1;
 	}
 
 	.nav-link {
@@ -224,10 +242,40 @@
 	}
 
 	/* Mobile Styles */
+	/* Tablet Styles */
+	@media (max-width: 1024px) {
+		.nav-list {
+			gap: 1.5rem;
+		}
+		
+		.nav-link {
+			font-size: 0.9rem;
+		}
+		
+		.btn-primary {
+			padding: 0.6rem 1.2rem;
+			font-size: 0.85rem;
+		}
+	}
+
+	/* Mobile Styles */
 	@media (max-width: 768px) {
+		.header-content {
+			height: 70px;
+		}
+		
+		.logo-image {
+			width: 50px;
+			height: 50px;
+		}
+		
+		.logo-text {
+			font-size: 1.2rem;
+		}
+		
 		.nav {
 			position: fixed;
-			top: 80px;
+			top: 70px;
 			left: 0;
 			right: 0;
 			background: #290040;
@@ -238,6 +286,7 @@
 			visibility: hidden;
 			transition: all 0.3s ease;
 			box-shadow: 0 12px 40px rgba(41, 0, 64, 0.4);
+			padding: 1rem 0;
 		}
 
 		.nav-open {
@@ -248,20 +297,111 @@
 
 		.nav-list {
 			flex-direction: column;
-			padding: 2rem 1rem;
-			gap: 1.5rem;
+			gap: 0;
+			width: 100%;
+		}
+
+		.nav-item {
+			width: 100%;
+			border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+		}
+
+		.nav-item:last-child {
+			border-bottom: none;
+		}
+
+		.mobile-cta {
+			padding: 1rem 1.5rem;
+			text-align: center;
+		}
+
+		.mobile-cta-btn {
+			width: 100%;
+			justify-content: center;
+			font-size: 1rem;
+			padding: 0.75rem 1.5rem;
 		}
 
 		.nav-link {
-			font-size: 1.1rem;
+			display: block;
+			padding: 1rem 1.5rem;
+			text-align: center;
+			font-size: 1rem;
+			font-weight: 600;
+			transition: all 0.3s ease;
+			border-radius: 0;
+		}
+
+		.nav-link:hover {
+			background: linear-gradient(135deg, rgba(249, 115, 22, 0.3) 0%, rgba(251, 191, 36, 0.2) 100%);
+			transform: none;
+			text-shadow: 0 0 12px rgba(249, 115, 22, 0.8);
+			box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
 		}
 
 		.header-cta {
 			display: none;
 		}
 
+		.mobile-cta {
+			display: block;
+		}
+
 		.mobile-menu-btn {
 			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			width: 40px;
+			height: 40px;
+			background: none;
+			border: none;
+			cursor: pointer;
+			padding: 0;
+			z-index: 1001;
+			order: -1;
+		}
+
+		.hamburger {
+			width: 25px;
+			height: 3px;
+			background: #fbbf24;
+			margin: 3px 0;
+			transition: all 0.3s ease;
+			border-radius: 2px;
+		}
+
+		.hamburger-open:nth-child(1) {
+			transform: rotate(45deg) translate(6px, 6px);
+		}
+
+		.hamburger-open:nth-child(2) {
+			opacity: 0;
+		}
+
+		.hamburger-open:nth-child(3) {
+			transform: rotate(-45deg) translate(6px, -6px);
+		}
+	}
+
+	/* Small Mobile Styles */
+	@media (max-width: 480px) {
+		.container {
+			padding: 0 0.75rem;
+		}
+		
+		.logo-image {
+			width: 45px;
+			height: 45px;
+		}
+		
+		.logo-text {
+			font-size: 1.1rem;
+		}
+		
+		.nav-link {
+			padding: 0.875rem 1rem;
+			font-size: 0.95rem;
 		}
 	}
 
