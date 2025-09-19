@@ -62,6 +62,7 @@
 	// Estado para el carrusel de reseñas
 	let currentReviewIndex = 0;
 	let reviewInterval: number;
+
 	
 	// Lista de imágenes de reseñas
 	const reviewImages = [
@@ -99,6 +100,7 @@
 			clearInterval(reviewInterval);
 		}
 	}
+
 
 	// Función para validar el formulario
 	function validateForm() {
@@ -413,6 +415,7 @@
 </svelte:head>
 
 <main class="main-content">
+
 		<!-- Hero Section -->
 		<section class="hero" bind:this={heroSection}>
 			<div class="container">
@@ -3757,5 +3760,6 @@
 			font-size: 1rem;
 		}
 	}
+
 
 </style>

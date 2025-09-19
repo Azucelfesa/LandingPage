@@ -100,20 +100,19 @@
 	}
 
 	.logo {
-		position: absolute;
-		left: 50%;
-		transform: translateX(-50%);
+		position: relative;
 		z-index: 1001;
+		flex-shrink: 0;
 	}
 
 	.logo-link {
 		display: flex;
 		align-items: center;
-		gap: 0.75rem;
+		gap: 0.5rem;
 		text-decoration: none;
 		color: #ffffff;
 		font-weight: 700;
-		font-size: 1.5rem;
+		font-size: 1.2rem;
 		transition: all 0.3s ease;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
@@ -125,8 +124,8 @@
 	}
 
 	.logo-image {
-		width: 60px;
-		height: 60px;
+		width: 45px;
+		height: 45px;
 		object-fit: contain;
 		border-radius: 8px;
 		transition: all 0.3s ease;
@@ -155,7 +154,7 @@
 	.nav-list {
 		display: flex;
 		align-items: center;
-		gap: 1rem;
+		gap: 0.8rem;
 		list-style: none;
 		margin: 0;
 		padding: 0;
@@ -181,9 +180,9 @@
 		font-weight: 600;
 		transition: all 0.3s ease;
 		position: relative;
-		padding: 0.4rem 0.5rem;
+		padding: 0.3rem 0.4rem;
 		border-radius: 0.5rem;
-		font-size: 0.8rem;
+		font-size: 0.75rem;
 		text-transform: uppercase;
 		letter-spacing: 0.3px;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -254,12 +253,22 @@
 	/* Tablet Styles */
 	@media (max-width: 1024px) {
 		.nav-list {
-			gap: 0.8rem;
+			gap: 0.6rem;
 		}
 		
 		.nav-link {
-			font-size: 0.75rem;
-			padding: 0.3rem 0.4rem;
+			font-size: 0.7rem;
+			padding: 0.25rem 0.35rem;
+		}
+		
+		.logo-image {
+			width: 40px;
+			height: 40px;
+		}
+		
+		.logo-link {
+			font-size: 1.1rem;
+			gap: 0.4rem;
 		}
 		
 		.btn-primary {
