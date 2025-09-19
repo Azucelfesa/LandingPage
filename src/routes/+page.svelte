@@ -2920,40 +2920,9 @@
 
 
 
-	.foto-desc {
-		font-size: 0.9rem;
-		color: rgba(255, 255, 255, 0.9);
-		line-height: 1.4;
-		margin: 0;
-	}
 
-	.carousel-btn {
-		width: 50px;
-		height: 50px;
-		background: rgba(255, 255, 255, 0.9);
-		backdrop-filter: blur(10px);
-		border: none;
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		cursor: pointer;
-		transition: all 0.3s ease;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-		z-index: 10;
-	}
 
-	.carousel-btn:hover {
-		background: rgba(255, 255, 255, 1);
-		transform: scale(1.1);
-		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-	}
 
-	.carousel-btn svg {
-		width: 24px;
-		height: 24px;
-		color: #290040;
-	}
 
 
 	.carousel-controls {
