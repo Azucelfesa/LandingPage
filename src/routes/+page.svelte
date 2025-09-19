@@ -49,6 +49,10 @@
 	let showThankYou = false;
 	let isFormValid = false;
 	let redirectTimer: number | null = null;
+	let showMoreCursos = false;
+	let currentPhotoIndex = 0;
+	let carouselInterval: number | null = null;
+
 	
 	// Estado para controlar qué FAQ está abierto
 	let openFaq: number | null = null;
@@ -223,6 +227,99 @@
 		// Redirigir a la página de inicio
 		window.location.href = '/';
 	}
+
+	function toggleMoreCursos() {
+		showMoreCursos = !showMoreCursos;
+	}
+
+	// Funciones del carrusel de fotos
+	const fotosResenas = [
+		{
+			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.18 (1).jpeg",
+			alt: "Reseña ADNED 1",
+			titulo: "Testimonio Real",
+			desc: "Estudiante satisfecho con ADNED"
+		},
+		{
+			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.18.jpeg",
+			alt: "Reseña ADNED 2",
+			titulo: "Experiencia Positiva",
+			desc: "Resultados que hablan por sí solos"
+		},
+		{
+			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.19 (1).jpeg",
+			alt: "Reseña ADNED 3",
+			titulo: "Recomendación",
+			desc: "Estudiantes que recomiendan ADNED"
+		},
+		{
+			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.19.jpeg",
+			alt: "Reseña ADNED 4",
+			titulo: "Éxito Garantizado",
+			desc: "Logros de nuestros estudiantes"
+		},
+		{
+			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.20 (1).jpeg",
+			alt: "Reseña ADNED 5",
+			titulo: "Calidad Educativa",
+			desc: "Excelencia en la enseñanza"
+		},
+		{
+			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.20.jpeg",
+			alt: "Reseña ADNED 6",
+			titulo: "Satisfacción Total",
+			desc: "Estudiantes completamente satisfechos"
+		},
+		{
+			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.21.jpeg",
+			alt: "Reseña ADNED 7",
+			titulo: "Resultados Exitosos",
+			desc: "Metas alcanzadas con ADNED"
+		},
+		{
+			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.22 (1).jpeg",
+			alt: "Reseña ADNED 8",
+			titulo: "Confianza Plena",
+			desc: "Estudiantes que confían en nosotros"
+		},
+		{
+			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.22.jpeg",
+			alt: "Reseña ADNED 9",
+			titulo: "Excelencia Comprobada",
+			desc: "Calidad que se demuestra"
+		}
+	];
+
+
+	function nextPhoto() {
+		currentPhotoIndex = (currentPhotoIndex + 1) % fotosResenas.length;
+	}
+
+	function prevPhoto() {
+		currentPhotoIndex = (currentPhotoIndex - 1 + fotosResenas.length) % fotosResenas.length;
+	}
+
+	function goToPhoto(index: number) {
+		currentPhotoIndex = index;
+	}
+
+	function startCarousel() {
+		if (carouselInterval) {
+			clearInterval(carouselInterval);
+		}
+		if (videoCarouselInterval) {
+			clearInterval(videoCarouselInterval);
+		}
+		carouselInterval = setInterval(nextPhoto, 4000); // Cambia cada 4 segundos
+	}
+
+	function stopCarousel() {
+		if (carouselInterval) {
+			clearInterval(carouselInterval);
+			carouselInterval = null;
+		}
+	}
+
 	
 	onMount(() => {
 		// Asegurar que el formulario sea visible inmediatamente
@@ -383,6 +480,9 @@
 			}, 3000);
 			
 		}, 200);
+
+		// Iniciar el carrusel de fotos
+		startCarousel();
 	});
 
 	onDestroy(() => {
@@ -391,6 +491,8 @@
 			clearTimeout(redirectTimer);
 			redirectTimer = null;
 		}
+		// Limpiar el carrusel
+		stopCarousel();
 	});
 </script>
 
@@ -415,10 +517,10 @@
 						Gracias por unirte a nuestra comunidad. Ahora puedes acceder al grupo de WhatsApp.
 					</p>
 					<div class="success-buttons">
-						<button class="btn btn-whatsapp text-lg px-8 py-3" on:click={joinGroup}>
-							<span class="whatsapp-icon">📱</span>
-							Entrar al grupo de WhatsApp
-						</button>
+					<button class="btn btn-whatsapp text-lg px-8 py-3" on:click={joinGroup}>
+						<span class="whatsapp-icon">📱</span>
+						Entrar al grupo de WhatsApp
+					</button>
 						<button class="btn btn-home text-lg px-8 py-3" on:click={goToHomePage}>
 							<span class="home-icon">🏠</span>
 							Volver al inicio
@@ -569,157 +671,374 @@
 		</div>
 	</section>
 
-	<!-- Sección de Testimonios -->
-	<section id="testimonios" class="testimonials-section">
+	<!-- Sección Quiénes Somos -->
+	<section id="quienes-somos" class="quienes-somos-section">
 		<div class="container">
 			<div class="section-header">
-				<h2 class="section-title text-glow text-zoom-rotate">Lo que dicen otros padres como tú</h2>
+				<h2 class="section-title text-glow text-zoom-rotate">Quiénes Somos</h2>
 				<p class="section-subtitle text-zoom-smooth">
-					Más de 1,200 padres y alumnos ya están dentro de ADNED recibiendo información exclusiva
+					Conoce más sobre nuestro equipo y nuestra misión
 				</p>
 			</div>
 
-			<div class="testimonials-carousel">
-				<!-- Testimonio Principal -->
-				<div class="testimonial-main">
-					<div class="testimonial-content">
-						<div class="quote-icon">
+			<div class="quienes-somos-content">
+				<div class="quienes-somos-text">
+					<p class="main-text">
+						ADNED es mucho más que un curso de preparación: es una comunidad que acompaña a los estudiantes en cada paso de su camino académico, brindando innovación, motivación y cercanía. Nacimos con la misión de ofrecer cursos accesibles y de calidad que permitan a los jóvenes enfrentar con confianza y seguridad los exámenes de admisión al bachillerato y la universidad, especialmente bajo los nuevos procesos ECOEMS, UNAM, IPN y UAM. Nuestra visión es clara: consolidarnos como la comunidad educativa líder en México, reconocida por un enfoque futurista, juvenil y motivador, donde cada alumno encuentre no solo conocimientos, sino inspiración para creer en sí mismo. A través de herramientas digitales, estrategias modernas, inteligencia artificial y personajes como Adni y Ema, transformamos la forma de aprender y hacer frente a los retos educativos. ADNED no es solo preparación académica, es un espacio donde el compromiso, la confianza y la innovación se convierten en aliados para cumplir sueños y abrir las puertas del futuro.
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Sección Nuestros Cursos -->
+	<section id="nuestros-cursos" class="nuestros-cursos-section">
+		<div class="container">
+			<div class="section-header">
+				<h2 class="section-title text-glow text-zoom-rotate">Nuestros Cursos</h2>
+				<p class="section-subtitle text-zoom-smooth">
+					Descubre los cursos especializados que tenemos para ti
+				</p>
+			</div>
+
+			<div class="cursos-sections">
+				<!-- Sección 1: Introducción -->
+				<div class="curso-section curso-intro">
+					<div class="curso-icon">
 							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1 0 1-1 2-2 2s-1-.008-1-.008V21z"/>
-								<path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1.005 0 1.005.005 1.005 1.005 0 1-.995 2-2 2s-1-.008-1-.008V21z"/>
+							<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
 							</svg>
 						</div>
-						<p class="testimonial-text">
-							"Gracias al grupo estuve al pendiente de cada fecha y mi hijo logró entrar a la prepa de sus sueños."
+					<h3 class="curso-title">Nuestra Comunidad Educativa</h3>
+					<p class="curso-text">
+						ADNED es una comunidad educativa creada para transformar la manera en que los estudiantes se preparan rumbo a los exámenes de admisión más importantes de su vida académica. Nuestro propósito va más allá de enseñar; buscamos inspirar y acompañar a cada alumno en un proceso que suele estar lleno de nervios, dudas e incertidumbre.
 						</p>
-						<div class="testimonial-author">
-							<div class="author-avatar">
-								<img src="/photo_2025-09-12_15-08-29.jpg" alt="Laura M." class="author-photo">
 							</div>
-							<div class="author-info">
-								<h4 class="author-name">Laura M.</h4>
+
+				<!-- Botón Ver Más -->
+				<div class="ver-mas-container">
+					<button class="btn-ver-mas" on:click={toggleMoreCursos}>
+						{#if showMoreCursos}
+							<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<polyline points="18,15 12,9 6,15"/>
+							</svg>
+							Ver menos
+						{:else}
+							<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<polyline points="6,9 12,15 18,9"/>
+							</svg>
+							Ver más
+						{/if}
+					</button>
 							</div>
+
+				{#if showMoreCursos}
+					<!-- Sección 2: Beneficios Principales -->
+					<div class="curso-section curso-beneficios">
+						<div class="curso-icon">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M9 12l2 2 4-4"/>
+								<path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
+								<path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
+								<path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
+								<path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
+							</svg>
 						</div>
+						<h3 class="curso-title">Beneficios Principales</h3>
+						<div class="beneficios-grid">
+							<div class="beneficio-item">
+								<div class="beneficio-icon">
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+										<line x1="8" y1="21" x2="16" y2="21"/>
+										<line x1="12" y1="17" x2="12" y2="21"/>
+									</svg>
 					</div>
+								<h4 class="beneficio-title">Clases en Línea</h4>
+								<p class="beneficio-desc">Acceso a clases virtuales desde cualquier lugar</p>
 				</div>
 
-				<!-- Testimonios Adicionales -->
-				<div class="testimonials-grid">
-					<div class="testimonial-card">
-						<div class="testimonial-content">
-							<div class="author-avatar">
-								<div class="avatar-placeholder">MR</div>
+							<div class="beneficio-item">
+								<div class="beneficio-icon">
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<path d="M9 11H5a2 2 0 0 0-2 2v3c0 1.1.9 2 2 2h4m0-7v7m0-7h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H9m0-7V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>
+									</svg>
 							</div>
-							<p class="testimonial-text">
-								"Los recordatorios fueron clave para no perder fechas importantes. ¡100% recomendado!"
-							</p>
-							<div class="author-info">
-								<h4 class="author-name">María R.</h4>
+								<h4 class="beneficio-title">Simulacros</h4>
+								<p class="beneficio-desc">Pruebas de práctica para evaluar tu progreso</p>
+							</div>
+							
+							<div class="beneficio-item">
+								<div class="beneficio-icon">
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+										<polyline points="14,2 14,8 20,8"/>
+										<line x1="16" y1="13" x2="8" y2="13"/>
+										<line x1="16" y1="17" x2="8" y2="17"/>
+										<polyline points="10,9 9,9 8,9"/>
+									</svg>
+						</div>
+								<h4 class="beneficio-title">Banco de Preguntas</h4>
+								<p class="beneficio-desc">Amplia base de datos con preguntas de exámenes</p>
+					</div>
+
+							<div class="beneficio-item">
+								<div class="beneficio-icon">
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+										<circle cx="9" cy="7" r="4"/>
+										<path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+										<path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+									</svg>
+							</div>
+								<h4 class="beneficio-title">Acompañamiento</h4>
+								<p class="beneficio-desc">Soporte personalizado durante todo el proceso</p>
 							</div>
 						</div>
 					</div>
 
-					<div class="testimonial-card">
-						<div class="testimonial-content">
-							<div class="author-avatar">
-								<div class="avatar-placeholder">CL</div>
+					<!-- Sección 3: Galería de Cursos -->
+					<div class="curso-section curso-galeria">
+						<div class="curso-icon">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+								<circle cx="8.5" cy="8.5" r="1.5"/>
+								<polyline points="21,15 16,10 5,21"/>
+							</svg>
 							</div>
-							<p class="testimonial-text">
-								"El proceso era confuso, pero ADNED nos guió paso a paso. ¡Increíble servicio!"
-							</p>
-							<div class="author-info">
-								<h4 class="author-name">Carlos L.</h4>
-							</div>
-						</div>
-					</div>
-
-					<div class="testimonial-card">
-						<div class="testimonial-content">
-							<div class="author-avatar">
-								<div class="avatar-placeholder">AG</div>
-							</div>
-							<p class="testimonial-text">
-								"Los tips prácticos fueron exactamente lo que necesitábamos. ¡Gracias infinitas!"
-							</p>
-							<div class="author-info">
-								<h4 class="author-name">Ana G.</h4>
+						<h3 class="curso-title">Nuestros Cursos en Acción</h3>
+						<p class="curso-text">
+							Descubre cómo son nuestras clases y el ambiente de aprendizaje que creamos para nuestros estudiantes.
+						</p>
+						<div class="galeria-grid">
+							<div class="galeria-item">
+								<img src="/cursos/photo_2025-09-18_16-36-26.jpg" alt="Curso ADNED 1" class="galeria-imagen">
+								<div class="galeria-overlay">
+									<div class="galeria-info">
+										<h4 class="galeria-titulo">Clases Interactivas</h4>
+										<p class="galeria-desc">Aprendizaje dinámico y participativo</p>
 							</div>
 						</div>
 					</div>
+							
+							<div class="galeria-item">
+								<img src="/cursos/photo_2025-09-18_16-36-26 (2).jpg" alt="Curso ADNED 2" class="galeria-imagen">
+								<div class="galeria-overlay">
+									<div class="galeria-info">
+										<h4 class="galeria-titulo">Material Didáctico</h4>
+										<p class="galeria-desc">Recursos educativos de alta calidad</p>
 				</div>
+			</div>
+		</div>
+							
+							<div class="galeria-item">
+								<img src="/cursos/photo_2025-09-18_16-36-26 (3).jpg" alt="Curso ADNED 3" class="galeria-imagen">
+								<div class="galeria-overlay">
+									<div class="galeria-info">
+										<h4 class="galeria-titulo">Ambiente de Estudio</h4>
+										<p class="galeria-desc">Espacios diseñados para el aprendizaje</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="galeria-item">
+								<img src="/cursos/photo_2025-09-18_16-36-26 (4).jpg" alt="Curso ADNED 4" class="galeria-imagen">
+								<div class="galeria-overlay">
+									<div class="galeria-info">
+										<h4 class="galeria-titulo">Tecnología Educativa</h4>
+										<p class="galeria-desc">Herramientas modernas de enseñanza</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="galeria-item">
+								<img src="/cursos/photo_2025-09-18_16-36-26 (5).jpg" alt="Curso ADNED 5" class="galeria-imagen">
+								<div class="galeria-overlay">
+									<div class="galeria-info">
+										<h4 class="galeria-titulo">Resultados Exitosos</h4>
+										<p class="galeria-desc">Estudiantes que logran sus objetivos</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{/if}
 			</div>
 		</div>
 	</section>
 
-	<!-- Sección CTA Intermedio -->
-	<section id="cta-intermedio" class="cta-intermedio-section">
-		<div class="container">
-			<div class="cta-content">
-				<h2 class="cta-title text-glow text-zoom-ultra">No dejes que tu hijo se quede fuera de su prepa soñada</h2>
-				<p class="cta-description text-zoom-smooth">Únete ahora y recibe toda la información en tu celular</p>
-				<button class="cta-button" on:click={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-					<svg class="cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M9 12l2 2 4-4"/>
-						<path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
-						<path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
-						<path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
-						<path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
-					</svg>
-					Registrarme y entrar al grupo
-				</button>
-			</div>
-		</div>
-	</section>
-
-	<!-- Sección de Preguntas Frecuentes -->
-	<section id="preguntas-frecuentes" class="faq-section">
+	<!-- Sección de Reseñas -->
+	<section id="reseñas" class="faq-section">
 		<div class="container">
 			<div class="section-header">
-				<h2 class="section-title text-glow text-zoom-rotate">¿Tienes dudas? Te las resolvemos</h2>
+				<h2 class="section-title text-glow text-zoom-rotate">Reseñas de Nuestros Estudiantes</h2>
 				<p class="section-subtitle text-zoom-smooth">
-					Aquí están las respuestas a las preguntas más comunes de padres como tú
+					Descubre lo que dicen nuestros estudiantes sobre su experiencia con ADNED
 				</p>
+				<div class="reinforcement-phrase">
+					<p class="reinforcement-text">
+						Más de <span class="highlight-number">1,200</span> estudiantes y familias ya forman parte de ADNED
+					</p>
+				</div>
 			</div>
 
-			<div class="faq-container">
-				<div class="faq-item" class:open={openFaq === 0}>
-					<button class="faq-question" on:click={() => toggleFaq(0)}>
-						<span class="question-text">¿Tiene costo el grupo?</span>
-						<svg class="faq-icon" class:rotated={openFaq === 0} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+			<div class="reseñas-container">
+				<div class="reseña-item" class:open={openFaq === 0}>
+					<button class="reseña-header" on:click={() => toggleFaq(0)}>
+						<div class="reseña-info">
+							<div class="reseña-avatar">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+									<circle cx="12" cy="7" r="4"/>
+								</svg>
+							</div>
+							<div class="reseña-details">
+								<h3 class="reseña-nombre">María González</h3>
+								<div class="reseña-rating">
+									⭐⭐⭐⭐⭐
+								</div>
+							</div>
+						</div>
+						<svg class="reseña-icon" class:rotated={openFaq === 0} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<polyline points="6,9 12,15 18,9"/>
 						</svg>
 					</button>
-					<div class="faq-answer" class:open={openFaq === 0}>
-						<p>No, es 100% gratuito.</p>
+					<div class="reseña-content" class:open={openFaq === 0}>
+						<p>"ADNED me ayudó a prepararme para el examen de admisión de la UNAM. Las clases en línea son excelentes y los profesores muy dedicados. Logré entrar a la carrera que quería gracias a su apoyo."</p>
 					</div>
 				</div>
 
-				<div class="faq-item" class:open={openFaq === 1}>
-					<button class="faq-question" on:click={() => toggleFaq(1)}>
-						<span class="question-text">¿Por qué piden mis datos?</span>
-						<svg class="faq-icon" class:rotated={openFaq === 1} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<div class="reseña-item" class:open={openFaq === 1}>
+					<button class="reseña-header" on:click={() => toggleFaq(1)}>
+						<div class="reseña-info">
+							<div class="reseña-avatar">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+									<circle cx="12" cy="7" r="4"/>
+								</svg>
+							</div>
+							<div class="reseña-details">
+								<h3 class="reseña-nombre">Carlos Rodríguez</h3>
+								<div class="reseña-rating">
+									⭐⭐⭐⭐⭐
+								</div>
+							</div>
+						</div>
+						<svg class="reseña-icon" class:rotated={openFaq === 1} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<polyline points="6,9 12,15 18,9"/>
 						</svg>
 					</button>
-					<div class="faq-answer" class:open={openFaq === 1}>
-						<p>Para enviarte información personalizada y asegurarnos de que recibas todo el contenido.</p>
+					<div class="reseña-content" class:open={openFaq === 1}>
+						<p>"Los simulacros y el banco de preguntas son increíbles. Me sentí muy preparado para el examen del IPN. El acompañamiento personalizado hace la diferencia."</p>
 					</div>
 				</div>
 
-				<div class="faq-item" class:open={openFaq === 2}>
-					<button class="faq-question" on:click={() => toggleFaq(2)}>
-						<span class="question-text">¿Cuánto tiempo estaré en el grupo?</span>
-						<svg class="faq-icon" class:rotated={openFaq === 2} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<div class="reseña-item" class:open={openFaq === 2}>
+					<button class="reseña-header" on:click={() => toggleFaq(2)}>
+						<div class="reseña-info">
+							<div class="reseña-avatar">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+									<circle cx="12" cy="7" r="4"/>
+								</svg>
+							</div>
+							<div class="reseña-details">
+								<h3 class="reseña-nombre">Ana Martínez</h3>
+								<div class="reseña-rating">
+									⭐⭐⭐⭐⭐
+								</div>
+							</div>
+						</div>
+						<svg class="reseña-icon" class:rotated={openFaq === 2} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<polyline points="6,9 12,15 18,9"/>
 						</svg>
 					</button>
-					<div class="faq-answer" class:open={openFaq === 2}>
-						<p>Hasta que termine el proceso de admisión ECOEMS.</p>
+					<div class="reseña-content" class:open={openFaq === 2}>
+						<p>"La metodología de ADNED es única. Los personajes Adni y Ema hacen que aprender sea divertido. Recomiendo totalmente este curso para cualquier estudiante."</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Sección de Fotos de Reseñas - Carrusel -->
+			<div class="fotos-reseñas-container">
+				<div class="fotos-header">
+					<h3 class="fotos-title">Reseñas en Imágenes</h3>
+					<p class="fotos-subtitle">
+						Mira lo que dicen nuestros estudiantes a través de sus capturas de pantalla
+					</p>
+				</div>
+
+				<div class="carousel-container">
+					<div class="carousel-wrapper">
+						<button class="carousel-btn carousel-prev" on:click={prevPhoto} on:mouseenter={stopCarousel} on:mouseleave={startCarousel}>
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<polyline points="15,18 9,12 15,6"/>
+							</svg>
+						</button>
+
+						<div class="carousel-slide">
+							<div class="carousel-track" style="transform: translateX(-{currentPhotoIndex * 33.333}%)">
+								{#each fotosResenas as foto, index}
+									<div class="carousel-item">
+										<div class="foto-item">
+											<img src={foto.src} alt={foto.alt} class="foto-imagen">
+											<div class="foto-overlay">
+												<div class="play-button">
+													<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+														<polygon points="5,3 19,12 5,21"/>
+													</svg>
+												</div>
+											</div>
+											<div class="foto-info">
+												<div class="foto-logo">ADNED</div>
+												<div class="foto-titulo">{foto.titulo}</div>
+												<div class="foto-desc">{foto.desc}</div>
+											</div>
+										</div>
+									</div>
+								{/each}
+							</div>
+						</div>
+
+						<button class="carousel-btn carousel-next" on:click={nextPhoto} on:mouseenter={stopCarousel} on:mouseleave={startCarousel}>
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<polyline points="9,18 15,12 9,6"/>
+							</svg>
+						</button>
+					</div>
+
+					<div class="carousel-indicators">
+						{#each fotosResenas as _, index}
+							<button 
+								class="indicator" 
+								class:active={index === currentPhotoIndex}
+								on:click={() => goToPhoto(index)}
+								on:mouseenter={stopCarousel} 
+								on:mouseleave={startCarousel}
+							></button>
+						{/each}
+					</div>
+
+					<div class="carousel-controls">
+						<button class="control-btn" on:click={stopCarousel} on:mouseenter={stopCarousel}>
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<rect x="6" y="4" width="4" height="16"/>
+								<rect x="14" y="4" width="4" height="16"/>
+							</svg>
+							Pausar
+						</button>
+						<button class="control-btn" on:click={startCarousel}>
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<polygon points="5,3 19,12 5,21"/>
+							</svg>
+							Reproducir
+						</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
+
 
 </main>
 
@@ -1783,15 +2102,15 @@
 		}
 	}
 
-	/* Testimonials Section */
-	.testimonials-section {
+	/* Quiénes Somos Section */
+	.quienes-somos-section {
 		padding: 2rem 0 6rem 0;
 		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		position: relative;
 		overflow: hidden;
 	}
 
-	.testimonials-section::before {
+	.quienes-somos-section::before {
 		content: '';
 		position: absolute;
 		top: 0;
@@ -1806,16 +2125,10 @@
 		animation: backgroundShift 8s ease-in-out infinite;
 	}
 
-	.testimonials-carousel {
-		display: flex;
-		flex-direction: column;
-		gap: 3rem;
-	}
-
-	.testimonial-main {
+	.quienes-somos-content {
 		background: rgba(255, 255, 255, 0.95);
 		backdrop-filter: blur(20px);
-		padding: 3rem 2.5rem;
+		padding: 4rem 3rem;
 		border-radius: 2rem;
 		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 		transition: all 0.3s ease;
@@ -1823,9 +2136,11 @@
 		position: relative;
 		overflow: hidden;
 		text-align: center;
+		max-width: 900px;
+		margin: 0 auto;
 	}
 
-	.testimonial-main::before {
+	.quienes-somos-content::before {
 		content: '';
 		position: absolute;
 		top: 0;
@@ -1835,252 +2150,597 @@
 		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
 	}
 
-	.testimonial-main:hover {
+	.quienes-somos-content:hover {
 		transform: translateY(-5px);
 		box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
 		border-color: rgba(251, 191, 36, 0.6);
 		background: rgba(255, 255, 255, 1);
 	}
 
-	.testimonials-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 2rem;
-	}
-
-	.testimonial-card {
-		background: rgba(255, 255, 255, 0.9);
-		backdrop-filter: blur(20px);
-		padding: 2rem 1.5rem;
-		border-radius: 1.5rem;
-		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-		transition: all 0.3s ease;
-		border: 2px solid rgba(251, 191, 36, 0.2);
+	.quienes-somos-text {
 		position: relative;
-		overflow: hidden;
-		text-align: center;
+		z-index: 2;
 	}
 
-	.testimonial-card::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 3px;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
-	}
-
-	.testimonial-card:hover {
-		transform: translateY(-8px);
-		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-		border-color: rgba(251, 191, 36, 0.5);
-		background: rgba(255, 255, 255, 1);
-	}
-
-	.testimonial-content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 1.5rem;
-	}
-
-	.quote-icon {
-		width: 50px;
-		height: 50px;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
-	}
-
-	.quote-icon svg {
-		width: 24px;
-		height: 24px;
-		color: white;
-	}
-
-	.testimonial-text {
-		font-size: 1.1rem;
-		line-height: 1.6;
-		color: #4a5568;
-		font-style: italic;
-		margin: 0;
-	}
-
-	.testimonial-author {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0.75rem;
-	}
-
-	.author-avatar {
-		width: 60px;
-		height: 60px;
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		overflow: hidden;
-		box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
-		border: 3px solid rgba(251, 191, 36, 0.3);
-	}
-
-	.author-photo {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-
-	.avatar-placeholder {
-		width: 100%;
-		height: 100%;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: white;
-		font-weight: 700;
+	.main-text {
 		font-size: 1.2rem;
-	}
-
-	.author-name {
-		font-size: 1rem;
-		font-weight: 700;
 		color: #290040;
+		line-height: 1.8;
 		margin: 0;
+		text-align: justify;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		font-weight: 400;
 	}
 
-	/* Responsive para testimonios */
+	/* Responsive para Quiénes Somos */
 	@media (max-width: 768px) {
-		.testimonials-section {
+		.quienes-somos-section {
 			padding: 4rem 0;
 		}
 
-		.testimonial-main {
-			padding: 2rem 1.5rem;
+		.quienes-somos-content {
+			padding: 3rem 2rem;
 		}
 
-		.testimonials-grid {
-			grid-template-columns: 1fr;
-			gap: 1.5rem;
-		}
-
-		.testimonial-card {
-			padding: 1.5rem 1rem;
+		.main-text {
+			font-size: 1.1rem;
+			line-height: 1.7;
+			text-align: left;
 		}
 	}
 
-	/* CTA Intermedio Section */
-	.cta-intermedio-section {
+	@media (max-width: 480px) {
+		.quienes-somos-content {
+			padding: 2.5rem 1.5rem;
+		}
+
+		.main-text {
+			font-size: 1rem;
+			line-height: 1.6;
+		}
+	}
+
+	/* Nuestros Cursos Section */
+	.nuestros-cursos-section {
+		padding: 2rem 0 6rem 0;
 		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
-		padding: 1rem 0;
-		text-align: center;
 		position: relative;
 		overflow: hidden;
 	}
 
-	.cta-intermedio-section::before {
+	.nuestros-cursos-section::before {
 		content: '';
 		position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-					radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-					radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.05) 0%, transparent 50%);
+		background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
 		pointer-events: none;
 		z-index: 1;
+		animation: backgroundShift 8s ease-in-out infinite;
 	}
 
-	.cta-content {
-		max-width: 600px;
+	.cursos-sections {
+		display: flex;
+		flex-direction: column;
+		gap: 2.5rem;
+		max-width: 1000px;
 		margin: 0 auto;
+	}
+
+	.curso-section {
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(20px);
+		padding: 3rem 2.5rem;
+		border-radius: 2rem;
+		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+		transition: all 0.3s ease;
+		border: 2px solid rgba(251, 191, 36, 0.3);
 		position: relative;
-		z-index: 2;
+		overflow: hidden;
+		text-align: center;
 	}
 
-	.cta-title {
-		font-size: 2.2rem;
-		font-weight: 800;
-		color: #ffffff;
+	.curso-section::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+	}
+
+	.curso-section:hover {
+		transform: translateY(-8px);
+		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+		border-color: rgba(251, 191, 36, 0.6);
+		background: rgba(255, 255, 255, 1);
+	}
+
+	.curso-intro {
+		border-color: rgba(249, 115, 22, 0.4);
+		background: linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(251, 191, 36, 0.05) 50%, rgba(59, 130, 246, 0.05) 100%);
+	}
+
+	.curso-intro::before {
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+	}
+
+	.curso-beneficios {
+		border-color: rgba(59, 130, 246, 0.4);
+		background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 50%, rgba(249, 115, 22, 0.05) 100%);
+	}
+
+	.curso-beneficios::before {
+		background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #f97316 100%);
+	}
+
+	.curso-galeria {
+		border-color: rgba(139, 92, 246, 0.4);
+		background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(249, 115, 22, 0.05) 50%, rgba(59, 130, 246, 0.05) 100%);
+	}
+
+	.curso-galeria::before {
+		background: linear-gradient(135deg, #8b5cf6 0%, #f97316 50%, #3b82f6 100%);
+	}
+
+	.curso-pending {
+		border-color: rgba(107, 114, 128, 0.3);
+		background: rgba(255, 255, 255, 0.8);
+		opacity: 0.7;
+	}
+
+	.curso-pending::before {
+		background: linear-gradient(135deg, #9ca3af 0%, #6b7280 50%, #4b5563 100%);
+	}
+
+	.curso-icon {
+		width: 80px;
+		height: 80px;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto 2rem auto;
+		box-shadow: 0 10px 25px rgba(249, 115, 22, 0.3);
+		transition: all 0.3s ease;
+	}
+
+	.curso-pending .curso-icon {
+		background: linear-gradient(135deg, #9ca3af 0%, #6b7280 50%, #4b5563 100%);
+		box-shadow: 0 8px 20px rgba(107, 114, 128, 0.3);
+	}
+
+	.curso-section:hover .curso-icon {
+		transform: scale(1.1);
+		box-shadow: 0 15px 35px rgba(249, 115, 22, 0.4);
+	}
+
+	.curso-pending:hover .curso-icon {
+		box-shadow: 0 12px 25px rgba(107, 114, 128, 0.4);
+	}
+
+	.curso-icon svg {
+		width: 40px;
+		height: 40px;
+		color: white;
+	}
+
+	.curso-title {
+		font-size: 1.8rem;
+		font-weight: 700;
+		color: #290040;
 		margin-bottom: 1.5rem;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 25%, #fbbf24 50%, #3b82f6 75%, #8b5cf6 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		text-shadow: 0 4px 20px rgba(249, 115, 22, 0.5);
-		filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.3));
-		line-height: 1.2;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
-	.cta-description {
+	.curso-pending .curso-title {
+		color: #6b7280;
+	}
+
+	.curso-text {
+		font-size: 1.1rem;
+		color: #4a5568;
+		line-height: 1.7;
+		margin: 0;
+		text-align: justify;
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	.curso-pending .curso-text {
+		color: #9ca3af;
+		font-style: italic;
+	}
+
+	.beneficios-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 2rem;
+		margin-top: 2rem;
+	}
+
+	.beneficio-item {
+		background: rgba(255, 255, 255, 0.8);
+		backdrop-filter: blur(10px);
+		padding: 2rem 1.5rem;
+		border-radius: 1.5rem;
+		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+		transition: all 0.3s ease;
+		border: 2px solid rgba(59, 130, 246, 0.2);
+		text-align: center;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.beneficio-item::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 3px;
+		background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #f97316 100%);
+	}
+
+	.beneficio-item:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+		border-color: rgba(59, 130, 246, 0.4);
+		background: rgba(255, 255, 255, 0.95);
+	}
+
+	.beneficio-icon {
+		width: 50px;
+		height: 50px;
+		background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #f97316 100%);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto 1rem auto;
+		box-shadow: 0 6px 15px rgba(59, 130, 246, 0.3);
+		transition: all 0.3s ease;
+	}
+
+	.beneficio-item:hover .beneficio-icon {
+		transform: scale(1.1);
+		box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+	}
+
+	.beneficio-icon svg {
+		width: 24px;
+		height: 24px;
+		color: white;
+	}
+
+	.beneficio-title {
+		font-size: 1.1rem;
+		font-weight: 700;
+		color: #290040;
+		margin-bottom: 0.75rem;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	}
+
+	.beneficio-desc {
+		font-size: 0.9rem;
+		color: #6b7280;
+		line-height: 1.5;
+		margin: 0;
+	}
+
+	.galeria-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 1.5rem;
+		margin-top: 2rem;
+	}
+
+	.galeria-item {
+		position: relative;
+		border-radius: 1rem;
+		overflow: hidden;
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+		transition: all 0.3s ease;
+		background: #ffffff;
+	}
+
+	.galeria-item:hover {
+		transform: translateY(-8px);
+		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+	}
+
+	.galeria-imagen {
+		width: 100%;
+		height: 200px;
+		object-fit: cover;
+		transition: all 0.3s ease;
+	}
+
+	.galeria-item:hover .galeria-imagen {
+		transform: scale(1.05);
+	}
+
+	.galeria-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(135deg, rgba(139, 92, 246, 0.9) 0%, rgba(249, 115, 22, 0.9) 100%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0;
+		transition: all 0.3s ease;
+	}
+
+	.galeria-item:hover .galeria-overlay {
+		opacity: 1;
+	}
+
+	.galeria-info {
+		text-align: center;
+		color: white;
+		padding: 1rem;
+	}
+
+	.galeria-titulo {
 		font-size: 1.2rem;
-		color: rgba(255, 255, 255, 0.9);
-		margin-bottom: 2.5rem;
-		line-height: 1.6;
+		font-weight: 700;
+		margin-bottom: 0.5rem;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
 
-	.cta-button {
+	.galeria-desc {
+		font-size: 0.9rem;
+		line-height: 1.4;
+		margin: 0;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+	}
+
+	.ver-mas-container {
+		display: flex;
+		justify-content: center;
+		margin: 2rem 0;
+	}
+
+	.btn-ver-mas {
 		display: inline-flex;
 		align-items: center;
 		gap: 0.75rem;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #f59e0b 100%);
+		background: linear-gradient(135deg, #8b5cf6 0%, #f97316 50%, #3b82f6 100%);
 		color: #ffffff;
-		padding: 1.25rem 2.5rem;
+		padding: 1rem 2rem;
 		border: none;
-		border-radius: 1rem;
+		border-radius: 2rem;
 		font-weight: 700;
 		font-size: 1.1rem;
 		cursor: pointer;
 		transition: all 0.3s ease;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
-		box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
+		box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		position: relative;
+		overflow: hidden;
 	}
 
-	.cta-button:hover {
-		background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+	.btn-ver-mas::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 0;
+		height: 0;
+		background: rgba(255, 255, 255, 0.3);
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		transition: width 0.6s, height 0.6s;
+		z-index: 1;
+	}
+
+	.btn-ver-mas:hover::before {
+		width: 300px;
+		height: 300px;
+	}
+
+	.btn-ver-mas:hover {
+		background: linear-gradient(135deg, #7c3aed 0%, #ea580c 50%, #2563eb 100%);
 		transform: translateY(-3px);
-		box-shadow: 0 12px 35px rgba(249, 115, 22, 0.6);
+		box-shadow: 0 12px 35px rgba(139, 92, 246, 0.6);
 		text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 	}
 
-	.cta-icon {
-		width: 24px;
-		height: 24px;
+	.btn-ver-mas:active {
+		transform: translateY(-1px);
+		box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
 	}
 
-	/* Responsive para CTA Intermedio */
+	.btn-icon {
+		width: 20px;
+		height: 20px;
+		transition: transform 0.3s ease;
+		position: relative;
+		z-index: 2;
+	}
+
+	.btn-ver-mas:hover .btn-icon {
+		transform: scale(1.1);
+	}
+
+	/* Responsive para Nuestros Cursos */
 	@media (max-width: 768px) {
-		.cta-intermedio-section {
+		.nuestros-cursos-section {
 			padding: 4rem 0;
 		}
 
-		.cta-title {
-			font-size: 1.8rem;
+		.cursos-sections {
+			gap: 2rem;
 		}
 
-		.cta-button {
-			padding: 1rem 2rem;
+		.curso-section {
+			padding: 2.5rem 2rem;
+		}
+
+		.curso-icon {
+			width: 70px;
+			height: 70px;
+		}
+
+		.curso-icon svg {
+			width: 35px;
+			height: 35px;
+		}
+
+		.curso-title {
+			font-size: 1.6rem;
+		}
+
+		.curso-text {
 			font-size: 1rem;
+			text-align: left;
+		}
+
+		.beneficios-grid {
+			grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+			gap: 1.5rem;
+		}
+
+		.beneficio-item {
+			padding: 1.5rem 1rem;
+		}
+
+		.beneficio-icon {
+			width: 45px;
+			height: 45px;
+		}
+
+		.beneficio-icon svg {
+			width: 22px;
+			height: 22px;
+		}
+
+		.beneficio-title {
+			font-size: 1rem;
+		}
+
+		.beneficio-desc {
+			font-size: 0.85rem;
+		}
+
+		.galeria-grid {
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			gap: 1rem;
+		}
+
+		.galeria-imagen {
+			height: 180px;
+		}
+
+		.galeria-titulo {
+			font-size: 1.1rem;
+		}
+
+		.galeria-desc {
+			font-size: 0.8rem;
+		}
+
+		.btn-ver-mas {
+			padding: 0.875rem 1.75rem;
+			font-size: 1rem;
+		}
+
+		.btn-icon {
+			width: 18px;
+			height: 18px;
 		}
 	}
 
 	@media (max-width: 480px) {
-		.cta-button {
-			width: 100%;
-			justify-content: center;
+		.curso-section {
+			padding: 2rem 1.5rem;
+		}
+
+		.curso-icon {
+			width: 60px;
+			height: 60px;
+		}
+
+		.curso-icon svg {
+			width: 30px;
+			height: 30px;
+		}
+
+		.curso-title {
+			font-size: 1.4rem;
+		}
+
+		.curso-text {
+			font-size: 0.95rem;
+		}
+
+		.beneficios-grid {
+			grid-template-columns: 1fr;
+			gap: 1rem;
+		}
+
+		.beneficio-item {
+			padding: 1.25rem 1rem;
+		}
+
+		.beneficio-icon {
+			width: 40px;
+			height: 40px;
+		}
+
+		.beneficio-icon svg {
+			width: 20px;
+			height: 20px;
+		}
+
+		.beneficio-title {
+			font-size: 0.95rem;
+		}
+
+		.beneficio-desc {
+			font-size: 0.8rem;
+		}
+
+		.galeria-grid {
+			grid-template-columns: 1fr;
+			gap: 1rem;
+		}
+
+		.galeria-imagen {
+			height: 160px;
+		}
+
+		.galeria-titulo {
+			font-size: 1rem;
+		}
+
+		.galeria-desc {
+			font-size: 0.75rem;
+		}
+
+		.btn-ver-mas {
+			padding: 0.75rem 1.5rem;
+			font-size: 0.9rem;
+		}
+
+		.btn-icon {
+			width: 16px;
+			height: 16px;
 		}
 	}
 
-	/* FAQ Section */
+	/* Reseñas Section */
 	.faq-section {
 		padding: 2rem 0 4rem 0;
 		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
@@ -2102,38 +2762,113 @@
 		z-index: 1;
 	}
 
-	.faq-container {
+	.reinforcement-phrase {
+		margin-top: 1.5rem;
+		text-align: center;
+	}
+
+	.reinforcement-text {
+		font-size: 1.2rem;
+		font-weight: 600;
+		color: #ffffff;
+		background: linear-gradient(135deg, rgba(251, 191, 36, 0.9) 0%, rgba(249, 115, 22, 0.9) 50%, rgba(59, 130, 246, 0.9) 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		margin: 0;
+		padding: 1rem 2rem;
+		border-radius: 1rem;
+		backdrop-filter: blur(10px);
+		background-color: rgba(255, 255, 255, 0.1);
+		border: 2px solid rgba(251, 191, 36, 0.3);
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+		position: relative;
+		overflow: hidden;
+		animation: pulseGlow 3s ease-in-out infinite;
+	}
+
+	.reinforcement-text::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+		animation: shimmer 2s infinite;
+	}
+
+	.highlight-number {
+		font-size: 1.4rem;
+		font-weight: 800;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		text-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+		animation: numberPulse 2s ease-in-out infinite;
+	}
+
+	@keyframes pulseGlow {
+		0%, 100% {
+			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+		}
+		50% {
+			box-shadow: 0 12px 35px rgba(251, 191, 36, 0.4);
+		}
+	}
+
+	@keyframes shimmer {
+		0% {
+			left: -100%;
+		}
+		100% {
+			left: 100%;
+		}
+	}
+
+	@keyframes numberPulse {
+		0%, 100% {
+			transform: scale(1);
+		}
+		50% {
+			transform: scale(1.05);
+		}
+	}
+
+	.reseñas-container {
 		max-width: 800px;
 		margin: 0 auto;
 		position: relative;
 		z-index: 2;
 	}
 
-	.faq-item {
+	.reseña-item {
 		background: rgba(255, 255, 255, 0.95);
 		backdrop-filter: blur(20px);
-		border-radius: 1rem;
-		margin-bottom: 1rem;
+		border-radius: 1.5rem;
+		margin-bottom: 1.5rem;
 		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 		transition: all 0.3s ease;
 		border: 2px solid rgba(251, 191, 36, 0.3);
 		overflow: hidden;
 	}
 
-	.faq-item:hover {
-		transform: translateY(-2px);
+	.reseña-item:hover {
+		transform: translateY(-3px);
 		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 		border-color: rgba(251, 191, 36, 0.6);
 		background: rgba(255, 255, 255, 1);
 	}
 
-	.faq-item.open {
+	.reseña-item.open {
 		border-color: rgba(251, 191, 36, 0.6);
 		box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
 		background: rgba(255, 255, 255, 1);
 	}
 
-	.faq-question {
+	.reseña-header {
 		width: 100%;
 		padding: 1.5rem 2rem;
 		background: none;
@@ -2146,20 +2881,53 @@
 		transition: all 0.3s ease;
 	}
 
-	.faq-question:hover {
+	.reseña-header:hover {
 		background: rgba(251, 191, 36, 0.05);
 	}
 
-	.question-text {
-		font-size: 1.1rem;
-		font-weight: 600;
-		color: #290040;
-		line-height: 1.4;
+	.reseña-info {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
 		flex: 1;
-		margin-right: 1rem;
 	}
 
-	.faq-icon {
+	.reseña-avatar {
+		width: 50px;
+		height: 50px;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+		flex-shrink: 0;
+	}
+
+	.reseña-avatar svg {
+		width: 24px;
+		height: 24px;
+		color: white;
+	}
+
+	.reseña-details {
+		flex: 1;
+	}
+
+	.reseña-nombre {
+		font-size: 1.1rem;
+		font-weight: 700;
+		color: #290040;
+		margin: 0 0 0.5rem 0;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	}
+
+	.reseña-rating {
+		font-size: 1.2rem;
+		line-height: 1;
+	}
+
+	.reseña-icon {
 		width: 24px;
 		height: 24px;
 		color: #f97316;
@@ -2167,55 +2935,487 @@
 		flex-shrink: 0;
 	}
 
-	.faq-icon.rotated {
+	.reseña-icon.rotated {
 		transform: rotate(180deg);
 	}
 
-	.faq-answer {
+	.reseña-content {
 		max-height: 0;
 		overflow: hidden;
 		transition: max-height 0.3s ease, padding 0.3s ease;
 		background: rgba(251, 191, 36, 0.02);
 	}
 
-	.faq-answer.open {
+	.reseña-content.open {
 		max-height: 200px;
 		padding: 0 2rem 1.5rem 2rem;
 	}
 
-	.faq-answer p {
+	.reseña-content p {
 		color: #4a5568;
 		line-height: 1.6;
 		margin: 0;
 		font-size: 1rem;
+		font-style: italic;
+		position: relative;
 	}
 
-	/* Responsive para FAQ */
+	.reseña-content p::before {
+		content: '"';
+		font-size: 3rem;
+		color: rgba(249, 115, 22, 0.3);
+		position: absolute;
+		top: -0.5rem;
+		left: -0.5rem;
+		font-family: serif;
+	}
+
+	.reseña-content p::after {
+		content: '"';
+		font-size: 3rem;
+		color: rgba(249, 115, 22, 0.3);
+		position: absolute;
+		bottom: -1rem;
+		right: -0.5rem;
+		font-family: serif;
+	}
+
+	/* Responsive para Reseñas */
 	@media (max-width: 768px) {
 		.faq-section {
 			padding: 4rem 0;
 		}
 
-		.faq-question {
+		.reinforcement-text {
+			font-size: 1.1rem;
+			padding: 0.875rem 1.5rem;
+		}
+
+		.highlight-number {
+			font-size: 1.3rem;
+		}
+
+		.reseña-header {
 			padding: 1.25rem 1.5rem;
 		}
 
-		.question-text {
+		.reseña-nombre {
 			font-size: 1rem;
 		}
 
-		.faq-answer.open {
+		.reseña-content.open {
 			padding: 0 1.5rem 1.25rem 1.5rem;
 		}
 	}
 
 	@media (max-width: 480px) {
-		.faq-question {
+		.reseña-header {
 			padding: 1rem;
 		}
 
-		.faq-answer.open {
+		.reseña-content.open {
 			padding: 0 1rem 1rem 1rem;
+		}
+
+		.reinforcement-text {
+			font-size: 1rem;
+			padding: 0.75rem 1.25rem;
+		}
+
+		.highlight-number {
+			font-size: 1.2rem;
+		}
+	}
+
+	/* Fotos de Reseñas - Carrusel */
+	.fotos-reseñas-container {
+		margin-top: 3rem;
+		padding-top: 3rem;
+		border-top: 2px solid rgba(251, 191, 36, 0.3);
+	}
+
+	.fotos-header {
+		text-align: center;
+		margin-bottom: 2.5rem;
+	}
+
+	.fotos-title {
+		font-size: 2rem;
+		font-weight: 700;
+		color: #ffffff;
+		margin-bottom: 1rem;
+		text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.fotos-subtitle {
+		font-size: 1.1rem;
+		color: rgba(255, 255, 255, 0.8);
+		line-height: 1.6;
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.carousel-container {
+		max-width: 900px;
+		margin: 0 auto;
+		position: relative;
+		padding: 0 1rem;
+	}
+
+	.carousel-wrapper {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+	}
+
+	.carousel-slide {
+		flex: 1;
+		overflow: hidden;
+		border-radius: 2rem;
+	}
+
+	.carousel-track {
+		display: flex;
+		transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+		gap: 1.5rem;
+	}
+
+	.carousel-item {
+		min-width: calc(33.333% - 1rem);
+		flex-shrink: 0;
+	}
+
+	.foto-item {
+		position: relative;
+		aspect-ratio: 4/5;
+		border-radius: 1.5rem;
+		overflow: hidden;
+		background: #ffffff;
+		cursor: pointer;
+		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+	}
+
+	.foto-item:hover {
+		transform: translateY(-10px) scale(1.02);
+		box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+	}
+
+	.foto-imagen {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: all 0.4s ease;
+	}
+
+	.foto-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 100%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0;
+		transition: all 0.3s ease;
+	}
+
+	.foto-item:hover .foto-overlay {
+		opacity: 1;
+	}
+
+	.play-button {
+		width: 60px;
+		height: 60px;
+		background: rgba(255, 255, 255, 0.95);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+		transition: all 0.3s ease;
+	}
+
+	.foto-item:hover .play-button {
+		transform: scale(1.1);
+		background: rgba(255, 255, 255, 1);
+	}
+
+	.play-button svg {
+		width: 24px;
+		height: 24px;
+		color: #290040;
+		margin-left: 4px;
+	}
+
+	.foto-info {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+		padding: 1.5rem 1rem 1rem 1rem;
+		color: white;
+	}
+
+	.foto-logo {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		background: rgba(249, 115, 22, 0.9);
+		color: white;
+		padding: 0.5rem 1rem;
+		border-radius: 1rem;
+		font-size: 0.8rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+	}
+
+	.foto-titulo {
+		font-size: 1.4rem;
+		font-weight: 700;
+		margin-bottom: 0.5rem;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+	}
+
+	.foto-desc {
+		font-size: 0.9rem;
+		color: rgba(255, 255, 255, 0.9);
+		line-height: 1.4;
+		margin: 0;
+	}
+
+	.carousel-btn {
+		width: 50px;
+		height: 50px;
+		background: rgba(255, 255, 255, 0.9);
+		backdrop-filter: blur(10px);
+		border: none;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+		z-index: 10;
+	}
+
+	.carousel-btn:hover {
+		background: rgba(255, 255, 255, 1);
+		transform: scale(1.1);
+		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+	}
+
+	.carousel-btn svg {
+		width: 24px;
+		height: 24px;
+		color: #290040;
+	}
+
+	.carousel-indicators {
+		display: flex;
+		justify-content: center;
+		gap: 0.75rem;
+		margin-top: 2rem;
+	}
+
+	.indicator {
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		border: none;
+		background: rgba(255, 255, 255, 0.4);
+		cursor: pointer;
+		transition: all 0.3s ease;
+	}
+
+	.indicator.active {
+		background: #fbbf24;
+		transform: scale(1.2);
+		box-shadow: 0 0 15px rgba(251, 191, 36, 0.6);
+	}
+
+	.indicator:hover {
+		background: rgba(255, 255, 255, 0.7);
+		transform: scale(1.1);
+	}
+
+	.carousel-controls {
+		display: flex;
+		justify-content: center;
+		gap: 1rem;
+		margin-top: 1rem;
+		padding: 0 1rem;
+	}
+
+	.control-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(10px);
+		border: 2px solid rgba(255, 255, 255, 0.3);
+		color: #ffffff;
+		padding: 0.75rem 1.5rem;
+		border-radius: 2rem;
+		font-size: 0.9rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.3s ease;
+	}
+
+	.control-btn:hover {
+		background: rgba(255, 255, 255, 0.2);
+		border-color: rgba(255, 255, 255, 0.5);
+		transform: translateY(-2px);
+	}
+
+	.control-btn svg {
+		width: 16px;
+		height: 16px;
+	}
+
+	/* Responsive para Carrusel de Fotos */
+	@media (max-width: 1024px) {
+		.carousel-item {
+			min-width: calc(50% - 0.75rem);
+		}
+	}
+
+	@media (max-width: 768px) {
+		.fotos-title {
+			font-size: 1.75rem;
+		}
+
+		.fotos-subtitle {
+			font-size: 1rem;
+		}
+
+		.carousel-container {
+			max-width: 100%;
+			padding: 0 0.5rem;
+		}
+
+		.carousel-wrapper {
+			gap: 1rem;
+		}
+
+		.carousel-item {
+			min-width: calc(100% - 0.5rem);
+		}
+
+		.carousel-btn {
+			width: 50px;
+			height: 50px;
+		}
+
+		.carousel-btn svg {
+			width: 24px;
+			height: 24px;
+		}
+
+		.foto-item {
+			aspect-ratio: 4/5;
+		}
+
+		.foto-info {
+			padding: 1.5rem 1rem 1rem 1rem;
+		}
+
+		.foto-titulo {
+			font-size: 1.2rem;
+		}
+
+		.foto-logo {
+			top: 0.75rem;
+			right: 0.75rem;
+			padding: 0.4rem 0.8rem;
+			font-size: 0.7rem;
+		}
+
+		.control-btn {
+			padding: 0.6rem 1.2rem;
+			font-size: 0.85rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.fotos-reseñas-container {
+			margin-top: 2rem;
+			padding-top: 2rem;
+		}
+
+		.fotos-title {
+			font-size: 1.5rem;
+		}
+
+		.carousel-container {
+			max-width: 100%;
+			padding: 0 0.25rem;
+		}
+
+		.carousel-wrapper {
+			gap: 0.5rem;
+		}
+
+		.carousel-btn {
+			width: 40px;
+			height: 40px;
+		}
+
+		.carousel-btn svg {
+			width: 20px;
+			height: 20px;
+		}
+
+		.play-button {
+			width: 60px;
+			height: 60px;
+		}
+
+		.play-button svg {
+			width: 24px;
+			height: 24px;
+		}
+
+		.foto-info {
+			padding: 1rem 0.75rem 0.75rem 0.75rem;
+		}
+
+		.foto-titulo {
+			font-size: 1.1rem;
+		}
+
+		.foto-desc {
+			font-size: 0.8rem;
+		}
+
+		.carousel-controls {
+			flex-direction: column;
+			gap: 0.75rem;
+		}
+
+		.control-btn {
+			padding: 0.5rem 1rem;
+			font-size: 0.8rem;
+		}
+
+		.carousel-indicators {
+			margin-top: 1rem;
+		}
+
+		.indicator {
+			width: 10px;
+			height: 10px;
 		}
 	}
 
@@ -2289,4 +3489,5 @@
 		color: #6b7280;
 		font-weight: 500;
 	}
+
 </style>

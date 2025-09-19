@@ -42,14 +42,17 @@
 						<a href="/#beneficios" class="nav-link" on:click={closeMenu}>Misión y Visión</a>
 					</li>
 					<li class="nav-item">
-						<a href="/#testimonios" class="nav-link" on:click={closeMenu}>Testimonios</a>
+						<a href="/#quienes-somos" class="nav-link" on:click={closeMenu}>Quiénes Somos</a>
 					</li>
 					<li class="nav-item">
-						<a href="/#cta-intermedio" class="nav-link" on:click={closeMenu}>CTA Intermedio</a>
+						<a href="/#nuestros-cursos" class="nav-link" on:click={closeMenu}>Nuestros Cursos</a>
 					</li>
                 <li class="nav-item">
-                    <a href="#preguntas-frecuentes" class="nav-link" on:click={closeMenu}>Preguntas</a>
+                    <a href="#reseñas" class="nav-link" on:click={closeMenu}>Reseñas</a>
                 </li>
+					<li class="nav-item">
+						<a href="/formulario" class="nav-link" on:click={closeMenu}>Formulario</a>
+					</li>
 					<li class="nav-item mobile-cta">
 						<button class="btn btn-primary mobile-cta-btn" on:click={closeMenu}>
 							Empezar ahora
@@ -60,9 +63,9 @@
 
 			<!-- CTA Button -->
 			<div class="header-cta">
-				<button class="btn btn-primary btn-sm">
+				<a href="/formulario" class="btn btn-primary btn-sm">
 					Empezar ahora
-				</button>
+				</a>
 			</div>
 		</div>
 	</div>
