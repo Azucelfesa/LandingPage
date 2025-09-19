@@ -2905,125 +2905,20 @@
 
 
 
-	.carousel-wrapper {
-		position: relative;
-		display: flex;
-		align-items: center;
-		gap: 2rem;
-	}
 
-	.carousel-slide {
-		flex: 1;
-		overflow: hidden;
-		border-radius: 2rem;
-	}
 
-	.carousel-track {
-		display: flex;
-		transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-		gap: 1.5rem;
-	}
 
-	.carousel-item {
-		min-width: calc(33.333% - 1rem);
-		flex-shrink: 0;
-	}
 
-	.foto-item {
-		position: relative;
-		aspect-ratio: 4/5;
-		border-radius: 1.5rem;
-		overflow: hidden;
-		background: #ffffff;
-		cursor: pointer;
-		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-	}
 
-	.foto-item:hover {
-		transform: translateY(-10px) scale(1.02);
-		box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-	}
 
-	.foto-imagen {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		transition: all 0.4s ease;
-	}
 
-	.foto-overlay {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 100%);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		opacity: 0;
-		transition: all 0.3s ease;
-	}
 
-	.foto-item:hover .foto-overlay {
-		opacity: 1;
-	}
 
-	.play-button {
-		width: 60px;
-		height: 60px;
-		background: rgba(255, 255, 255, 0.95);
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-		transition: all 0.3s ease;
-	}
 
-	.foto-item:hover .play-button {
-		transform: scale(1.1);
-		background: rgba(255, 255, 255, 1);
-	}
 
-	.play-button svg {
-		width: 24px;
-		height: 24px;
-		color: #290040;
-		margin-left: 4px;
-	}
 
-	.foto-info {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-		padding: 1.5rem 1rem 1rem 1rem;
-		color: white;
-	}
 
-	.foto-logo {
-		position: absolute;
-		top: 1rem;
-		right: 1rem;
-		background: rgba(249, 115, 22, 0.9);
-		color: white;
-		padding: 0.5rem 1rem;
-		border-radius: 1rem;
-		font-size: 0.8rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.5px;
-	}
 
-	.foto-titulo {
-		font-size: 1.4rem;
-		font-weight: 700;
-		margin-bottom: 0.5rem;
-		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-	}
 
 	.foto-desc {
 		font-size: 0.9rem;
