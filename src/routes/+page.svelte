@@ -862,33 +862,7 @@
 						</button>
 					</div>
 
-					<div class="carousel-indicators">
-						{#each fotosResenas as _, index}
-							<button 
-								class="indicator" 
-								class:active={index === currentPhotoIndex}
-								on:click={() => goToPhoto(index)}
-								on:mouseenter={stopCarousel} 
-								on:mouseleave={startCarousel}
-							></button>
-						{/each}
-					</div>
 
-					<div class="carousel-controls">
-						<button class="control-btn" on:click={stopCarousel} on:mouseenter={stopCarousel}>
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<rect x="6" y="4" width="4" height="16"/>
-								<rect x="14" y="4" width="4" height="16"/>
-							</svg>
-							Pausar
-						</button>
-						<button class="control-btn" on:click={startCarousel}>
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<polygon points="5,3 19,12 5,21"/>
-							</svg>
-							Reproducir
-						</button>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -3010,8 +2984,8 @@
 
 	/* Fotos de Reseñas - Carrusel */
 	.fotos-reseñas-container {
-		margin-top: 3rem;
-		padding-top: 3rem;
+		margin-top: 0.5rem;
+		padding-top: 0.5rem;
 		border-top: 2px solid rgba(251, 191, 36, 0.3);
 	}
 
@@ -3202,33 +3176,6 @@
 		color: #290040;
 	}
 
-	.carousel-indicators {
-		display: flex;
-		justify-content: center;
-		gap: 0.75rem;
-		margin-top: 2rem;
-	}
-
-	.indicator {
-		width: 12px;
-		height: 12px;
-		border-radius: 50%;
-		border: none;
-		background: rgba(255, 255, 255, 0.4);
-		cursor: pointer;
-		transition: all 0.3s ease;
-	}
-
-	.indicator.active {
-		background: #fbbf24;
-		transform: scale(1.2);
-		box-shadow: 0 0 15px rgba(251, 191, 36, 0.6);
-	}
-
-	.indicator:hover {
-		background: rgba(255, 255, 255, 0.7);
-		transform: scale(1.1);
-	}
 
 	.carousel-controls {
 		display: flex;
@@ -3331,8 +3278,8 @@
 
 	@media (max-width: 480px) {
 		.fotos-reseñas-container {
-			margin-top: 2rem;
-			padding-top: 2rem;
+			margin-top: 0.25rem;
+			padding-top: 0.25rem;
 		}
 
 		.fotos-title {
@@ -3390,14 +3337,6 @@
 			font-size: 0.8rem;
 		}
 
-		.carousel-indicators {
-			margin-top: 1rem;
-		}
-
-		.indicator {
-			width: 10px;
-			height: 10px;
-		}
 	}
 
 	/* Efectos de validación del formulario */
@@ -3473,7 +3412,7 @@
 
 	/* Sección de Formulario */
 	.formulario-section {
-		padding: 2rem 0 6rem 0;
+		padding: 0.5rem 0 6rem 0;
 		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		position: relative;
 		overflow: hidden;
@@ -3902,7 +3841,7 @@
 	/* Responsive para Formulario */
 	@media (max-width: 768px) {
 		.formulario-section {
-			padding: 4rem 0;
+			padding: 1rem 0;
 		}
 
 		.formulario-card {
