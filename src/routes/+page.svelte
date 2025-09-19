@@ -59,6 +59,47 @@
 		openFaq = openFaq === index ? null : index;
 	}
 
+	// Estado para el carrusel de reseñas
+	let currentReviewIndex = 0;
+	let reviewInterval: number;
+	
+	// Lista de imágenes de reseñas
+	const reviewImages = [
+		'WhatsApp Image 2025-08-18 at 23.37.17.jpeg',
+		'WhatsApp Image 2025-08-18 at 23.38.17.jpeg',
+		'WhatsApp Image 2025-08-18 at 23.40.10.jpeg',
+		'WhatsApp Image 2025-08-18 at 23.41.14.jpeg',
+		'WhatsApp Image 2025-08-19 at 10.44.18 (1).jpeg',
+		'WhatsApp Image 2025-08-19 at 10.44.18.jpeg',
+		'WhatsApp Image 2025-08-19 at 10.44.19 (1).jpeg',
+		'WhatsApp Image 2025-08-19 at 10.44.19.jpeg',
+		'WhatsApp Image 2025-08-19 at 10.44.20 (1).jpeg',
+		'WhatsApp Image 2025-08-19 at 10.44.22.jpeg'
+	];
+
+	function nextReview() {
+		currentReviewIndex = (currentReviewIndex + 1) % reviewImages.length;
+	}
+
+	function prevReview() {
+		currentReviewIndex = currentReviewIndex === 0 ? reviewImages.length - 1 : currentReviewIndex - 1;
+	}
+
+	function goToReview(index: number) {
+		currentReviewIndex = index;
+	}
+
+	// Auto-play del carrusel
+	function startAutoPlay() {
+		reviewInterval = setInterval(nextReview, 4000);
+	}
+
+	function stopAutoPlay() {
+		if (reviewInterval) {
+			clearInterval(reviewInterval);
+		}
+	}
+
 	// Función para validar el formulario
 	function validateForm() {
 		const { parentName, studentName, whatsapp, email } = formData;
@@ -346,6 +387,9 @@
 				createMouseFollower(document.body);
 			}, 3000);
 			
+			// Inicializar carrusel de reseñas
+			startAutoPlay();
+			
 		}, 200);
 
 	});
@@ -356,6 +400,8 @@
 			clearTimeout(redirectTimer);
 			redirectTimer = null;
 		}
+		// Limpiar el intervalo del carrusel
+		stopAutoPlay();
 	});
 </script>
 
@@ -655,80 +701,55 @@
 				</div>
 			</div>
 
-			<div class="reseñas-container">
-				<div class="reseña-item" class:open={openFaq === 0}>
-					<button class="reseña-header" on:click={() => toggleFaq(0)}>
-						<div class="reseña-info">
-							<div class="reseña-avatar">
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-									<circle cx="12" cy="7" r="4"/>
-								</svg>
-							</div>
-							<div class="reseña-details">
-								<h3 class="reseña-nombre">María González</h3>
-								<div class="reseña-rating">
-									⭐⭐⭐⭐⭐
-								</div>
-							</div>
-						</div>
-						<svg class="reseña-icon" class:rotated={openFaq === 0} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<polyline points="6,9 12,15 18,9"/>
+			<!-- Carrusel de Reseñas -->
+			<div class="reviews-carousel-container">
+				<div class="carousel-wrapper">
+					<!-- Botón anterior -->
+					<button class="carousel-btn prev-btn" on:click={prevReview} on:mouseenter={stopAutoPlay} on:mouseleave={startAutoPlay}>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<polyline points="15,18 9,12 15,6"/>
 						</svg>
 					</button>
-					<div class="reseña-content" class:open={openFaq === 0}>
-						<p>"ADNED me ayudó a prepararme para el examen de admisión de la UNAM. Las clases en línea son excelentes y los profesores muy dedicados. Logré entrar a la carrera que quería gracias a su apoyo."</p>
+
+					<!-- Contenedor de imágenes -->
+					<div class="carousel-track">
+						{#each reviewImages as image, index}
+							<div class="carousel-slide" class:active={index === currentReviewIndex}>
+								<img 
+									src="/Resenas/{image}" 
+									alt="Reseña de estudiante {index + 1}"
+									loading="lazy"
+								/>
+							</div>
+						{/each}
 					</div>
+
+					<!-- Botón siguiente -->
+					<button class="carousel-btn next-btn" on:click={nextReview} on:mouseenter={stopAutoPlay} on:mouseleave={startAutoPlay}>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<polyline points="9,18 15,12 9,6"/>
+						</svg>
+					</button>
 				</div>
 
-				<div class="reseña-item" class:open={openFaq === 1}>
-					<button class="reseña-header" on:click={() => toggleFaq(1)}>
-						<div class="reseña-info">
-							<div class="reseña-avatar">
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-									<circle cx="12" cy="7" r="4"/>
-								</svg>
-							</div>
-							<div class="reseña-details">
-								<h3 class="reseña-nombre">Carlos Rodríguez</h3>
-								<div class="reseña-rating">
-									⭐⭐⭐⭐⭐
-								</div>
-							</div>
-						</div>
-						<svg class="reseña-icon" class:rotated={openFaq === 1} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<polyline points="6,9 12,15 18,9"/>
-						</svg>
-					</button>
-					<div class="reseña-content" class:open={openFaq === 1}>
-						<p>"Los simulacros y el banco de preguntas son increíbles. Me sentí muy preparado para el examen del IPN. El acompañamiento personalizado hace la diferencia."</p>
-					</div>
+				<!-- Indicadores -->
+				<div class="carousel-indicators">
+					{#each reviewImages as _, index}
+						<button 
+							class="indicator" 
+							class:active={index === currentReviewIndex}
+							on:click={() => goToReview(index)}
+							on:mouseenter={stopAutoPlay} 
+							on:mouseleave={startAutoPlay}
+						></button>
+					{/each}
 				</div>
 
-				<div class="reseña-item" class:open={openFaq === 2}>
-					<button class="reseña-header" on:click={() => toggleFaq(2)}>
-						<div class="reseña-info">
-							<div class="reseña-avatar">
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-									<circle cx="12" cy="7" r="4"/>
-								</svg>
-							</div>
-							<div class="reseña-details">
-								<h3 class="reseña-nombre">Ana Martínez</h3>
-								<div class="reseña-rating">
-									⭐⭐⭐⭐⭐
-								</div>
-							</div>
-						</div>
-						<svg class="reseña-icon" class:rotated={openFaq === 2} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<polyline points="6,9 12,15 18,9"/>
-						</svg>
-					</button>
-					<div class="reseña-content" class:open={openFaq === 2}>
-						<p>"La metodología de ADNED es única. Los personajes Adni y Ema hacen que aprender sea divertido. Recomiendo totalmente este curso para cualquier estudiante."</p>
-					</div>
+				<!-- Contador -->
+				<div class="carousel-counter">
+					<span class="current">{currentReviewIndex + 1}</span>
+					<span class="separator">/</span>
+					<span class="total">{reviewImages.length}</span>
 				</div>
 			</div>
 
@@ -2712,150 +2733,174 @@
 		}
 	}
 
-	.reseñas-container {
-		max-width: 1000px;
+	/* Carrusel de Reseñas */
+	.reviews-carousel-container {
+		max-width: 1200px;
 		margin: 0 auto;
 		position: relative;
 		z-index: 2;
+		padding: 2rem 0;
 	}
 
-	.reseña-item {
-		background: rgba(255, 255, 255, 0.95);
-		backdrop-filter: blur(20px);
-		border-radius: 1.5rem;
-		margin-bottom: 1.5rem;
-		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-		transition: all 0.3s ease;
-		border: 2px solid rgba(251, 191, 36, 0.3);
-		overflow: hidden;
-	}
-
-	.reseña-item:hover {
-		transform: translateY(-3px);
-		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-		border-color: rgba(251, 191, 36, 0.6);
-		background: rgba(255, 255, 255, 1);
-	}
-
-	.reseña-item.open {
-		border-color: rgba(251, 191, 36, 0.6);
-		box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-		background: rgba(255, 255, 255, 1);
-	}
-
-	.reseña-header {
-		width: 100%;
-		padding: 1.5rem 2rem;
-		background: none;
-		border: none;
-		text-align: left;
-		cursor: pointer;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		transition: all 0.3s ease;
-	}
-
-	.reseña-header:hover {
-		background: rgba(251, 191, 36, 0.05);
-	}
-
-	.reseña-info {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-		flex: 1;
-	}
-
-	.reseña-avatar {
-		width: 50px;
-		height: 50px;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
-		border-radius: 50%;
+	.carousel-wrapper {
+		position: relative;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
-		flex-shrink: 0;
+		margin-bottom: 2rem;
 	}
 
-	.reseña-avatar svg {
+	.carousel-track {
+		position: relative;
+		width: 100%;
+		max-width: 400px;
+		height: 600px;
+		overflow: hidden;
+		border-radius: 1.5rem;
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(20px);
+		border: 2px solid rgba(255, 255, 255, 0.2);
+	}
+
+	.carousel-slide {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		transform: translateX(100%);
+		transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.carousel-slide.active {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	.carousel-slide img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		border-radius: 1.5rem;
+		transition: transform 0.3s ease;
+		background: rgba(255, 255, 255, 0.95);
+	}
+
+	.carousel-slide:hover img {
+		transform: scale(1.02);
+	}
+
+	.carousel-btn {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		background: rgba(255, 255, 255, 0.9);
+		backdrop-filter: blur(20px);
+		border: 2px solid rgba(251, 191, 36, 0.3);
+		border-radius: 50%;
+		width: 50px;
+		height: 50px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		z-index: 10;
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+	}
+
+	.carousel-btn:hover {
+		background: rgba(251, 191, 36, 0.9);
+		border-color: rgba(251, 191, 36, 0.8);
+		transform: translateY(-50%) scale(1.1);
+		box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+	}
+
+	.carousel-btn svg {
 		width: 24px;
 		height: 24px;
+		color: #290040;
+		transition: color 0.3s ease;
+	}
+
+	.carousel-btn:hover svg {
 		color: white;
 	}
 
-	.reseña-details {
-		flex: 1;
+	.prev-btn {
+		left: -25px;
 	}
 
-	.reseña-nombre {
-		font-size: 1.1rem;
-		font-weight: 700;
-		color: #290040;
-		margin: 0 0 0.5rem 0;
-		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	.next-btn {
+		right: -25px;
 	}
 
-	.reseña-rating {
-		font-size: 1.2rem;
-		line-height: 1;
+	.carousel-indicators {
+		display: flex;
+		justify-content: center;
+		gap: 0.75rem;
+		margin-bottom: 1.5rem;
 	}
 
-	.reseña-icon {
-		width: 24px;
-		height: 24px;
-		color: #f97316;
-		transition: transform 0.3s ease;
-		flex-shrink: 0;
+	.indicator {
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.4);
+		border: 2px solid rgba(255, 255, 255, 0.6);
+		cursor: pointer;
+		transition: all 0.3s ease;
 	}
 
-	.reseña-icon.rotated {
-		transform: rotate(180deg);
+	.indicator:hover {
+		background: rgba(251, 191, 36, 0.6);
+		border-color: rgba(251, 191, 36, 0.8);
+		transform: scale(1.2);
 	}
 
-	.reseña-content {
-		max-height: 0;
-		overflow: hidden;
-		transition: max-height 0.3s ease, padding 0.3s ease;
-		background: rgba(251, 191, 36, 0.02);
+	.indicator.active {
+		background: rgba(251, 191, 36, 0.9);
+		border-color: rgba(251, 191, 36, 1);
+		transform: scale(1.3);
+		box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
 	}
 
-	.reseña-content.open {
-		max-height: 200px;
-		padding: 0 2rem 1.5rem 2rem;
-	}
-
-	.reseña-content p {
-		color: #4a5568;
-		line-height: 1.6;
-		margin: 0;
+	.carousel-counter {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 0.5rem;
 		font-size: 1rem;
-		font-style: italic;
-		position: relative;
+		font-weight: 600;
+		color: rgba(255, 255, 255, 0.9);
+		background: rgba(0, 0, 0, 0.3);
+		backdrop-filter: blur(10px);
+		padding: 0.5rem 1rem;
+		border-radius: 2rem;
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		width: fit-content;
+		margin: 0 auto;
 	}
 
-	.reseña-content p::before {
-		content: '"';
-		font-size: 3rem;
-		color: rgba(249, 115, 22, 0.3);
-		position: absolute;
-		top: -0.5rem;
-		left: -0.5rem;
-		font-family: serif;
+	.carousel-counter .current {
+		color: #fbbf24;
+		font-size: 1.1rem;
 	}
 
-	.reseña-content p::after {
-		content: '"';
-		font-size: 3rem;
-		color: rgba(249, 115, 22, 0.3);
-		position: absolute;
-		bottom: -1rem;
-		right: -0.5rem;
-		font-family: serif;
+	.carousel-counter .separator {
+		color: rgba(255, 255, 255, 0.6);
 	}
 
-	/* Responsive para Reseñas */
+	.carousel-counter .total {
+		color: rgba(255, 255, 255, 0.8);
+	}
+
+	/* Responsive para Carrusel de Reseñas */
 	@media (max-width: 768px) {
 		.faq-section {
 			padding: 2rem 0 1rem 0;
@@ -2870,28 +2915,49 @@
 			font-size: 1.3rem;
 		}
 
-		.reseña-header {
-			padding: 1.25rem 1.5rem;
+		.reviews-carousel-container {
+			padding: 1.5rem 0;
 		}
 
-		.reseña-nombre {
-			font-size: 1rem;
+		.carousel-track {
+			max-width: 350px;
+			height: 500px;
 		}
 
-		.reseña-content.open {
-			padding: 0 1.5rem 1.25rem 1.5rem;
+		.carousel-btn {
+			width: 45px;
+			height: 45px;
+		}
+
+		.carousel-btn svg {
+			width: 20px;
+			height: 20px;
+		}
+
+		.prev-btn {
+			left: -22px;
+		}
+
+		.next-btn {
+			right: -22px;
+		}
+
+		.carousel-indicators {
+			gap: 0.5rem;
+		}
+
+		.indicator {
+			width: 10px;
+			height: 10px;
+		}
+
+		.carousel-counter {
+			font-size: 0.9rem;
+			padding: 0.4rem 0.8rem;
 		}
 	}
 
 	@media (max-width: 480px) {
-		.reseña-header {
-			padding: 1rem;
-		}
-
-		.reseña-content.open {
-			padding: 0 1rem 1rem 1rem;
-		}
-
 		.reinforcement-text {
 			font-size: 1rem;
 			padding: 0.75rem 1.25rem;
@@ -2899,6 +2965,48 @@
 
 		.highlight-number {
 			font-size: 1.2rem;
+		}
+
+		.reviews-carousel-container {
+			padding: 1rem 0;
+		}
+
+		.carousel-track {
+			max-width: 280px;
+			height: 400px;
+		}
+
+		.carousel-btn {
+			width: 40px;
+			height: 40px;
+		}
+
+		.carousel-btn svg {
+			width: 18px;
+			height: 18px;
+		}
+
+		.prev-btn {
+			left: -20px;
+		}
+
+		.next-btn {
+			right: -20px;
+		}
+
+		.carousel-indicators {
+			gap: 0.4rem;
+			margin-bottom: 1rem;
+		}
+
+		.indicator {
+			width: 8px;
+			height: 8px;
+		}
+
+		.carousel-counter {
+			font-size: 0.8rem;
+			padding: 0.3rem 0.6rem;
 		}
 	}
 
