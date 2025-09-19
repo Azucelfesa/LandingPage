@@ -128,26 +128,15 @@
 		
 		return progress;
 	})();
-	
-	// Referencias para animaciones
-	let heroTitle: HTMLElement;
-	let heroSubtitle: HTMLElement;
-	let registrationForm: HTMLElement;
-	let heroSection: HTMLElement;
-	let loadingSpinner: HTMLElement;
-	let successIcon: HTMLElement;
-	let sectionTitles: HTMLElement[] = [];
-	let benefitCards: HTMLElement[] = [];
-	let testimonialCards: HTMLElement[] = [];
-	
-	async function handleSubmit(event: any) {
+
+	// Función para manejar el envío del formulario
+	async function handleSubmit(event: Event) {
 		event.preventDefault();
 		
 		// Validar que todos los campos estén llenos
 		if (!formData.parentName.trim() || !formData.studentName.trim() || !formData.whatsapp.trim() || !formData.email.trim()) {
 			console.error('Todos los campos son requeridos');
 			console.log('Estado del formulario:', formData);
-			shakeElement(registrationForm);
 			return;
 		}
 		
@@ -155,16 +144,10 @@
 		const whatsappNumber = parseInt(formData.whatsapp.replace(/\D/g, ''));
 		if (isNaN(whatsappNumber) || whatsappNumber <= 0) {
 			console.error('Número de WhatsApp inválido:', formData.whatsapp);
-			shakeElement(registrationForm);
 			return;
 		}
 		
 		isSubmitting = true;
-		
-		// Animar el spinner de carga
-		if (loadingSpinner) {
-			animateSpinner(loadingSpinner);
-		}
 		
 		try {
 			const dataToSend = {
@@ -190,11 +173,6 @@
 			isSubmitting = false;
 			showThankYou = true;
 			
-			// Animar el ícono de éxito
-			if (successIcon) {
-				animateSuccess(successIcon);
-			}
-			
 			// Configurar redirección automática después de 5 segundos
 			redirectTimer = setTimeout(() => {
 				window.location.href = '/';
@@ -209,15 +187,14 @@
 			}
 			
 			isSubmitting = false;
-			shakeElement(registrationForm);
 		}
 	}
-	
+
 	function joinGroup() {
 		// Redirigir a WhatsApp
 		window.open('https://wa.me/1234567890', '_blank');
 	}
-	
+
 	function goToHomePage() {
 		// Limpiar el timer si existe
 		if (redirectTimer) {
@@ -227,6 +204,26 @@
 		// Redirigir a la página de inicio
 		window.location.href = '/';
 	}
+
+	function scrollToForm() {
+		const formSection = document.getElementById('formulario');
+		if (formSection) {
+			formSection.scrollIntoView({ 
+				behavior: 'smooth',
+				block: 'start'
+			});
+		}
+	}
+
+	
+	// Referencias para animaciones
+	let heroTitle: HTMLElement;
+	let heroSubtitle: HTMLElement;
+	let heroSection: HTMLElement;
+	let sectionTitles: HTMLElement[] = [];
+	let benefitCards: HTMLElement[] = [];
+	let testimonialCards: HTMLElement[] = [];
+	
 
 	function toggleMoreCursos() {
 		showMoreCursos = !showMoreCursos;
@@ -307,9 +304,6 @@
 		if (carouselInterval) {
 			clearInterval(carouselInterval);
 		}
-		if (videoCarouselInterval) {
-			clearInterval(videoCarouselInterval);
-		}
 		carouselInterval = setInterval(nextPhoto, 4000); // Cambia cada 4 segundos
 	}
 
@@ -322,52 +316,16 @@
 
 	
 	onMount(() => {
-		// Asegurar que el formulario sea visible inmediatamente
-		if (registrationForm) {
-			registrationForm.style.opacity = '1';
-			registrationForm.style.transform = 'translateY(0)';
-			registrationForm.style.display = 'block';
-			registrationForm.style.visibility = 'visible';
-		}
-
-		// Asegurar funcionalidad básica de inputs
-		setTimeout(() => {
-			const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]');
-			inputs.forEach(input => {
-				(input as HTMLInputElement).style.pointerEvents = 'auto';
-				(input as HTMLInputElement).style.userSelect = 'text';
-				(input as HTMLInputElement).style.webkitUserSelect = 'text';
-				(input as HTMLInputElement).style.position = 'relative';
-				(input as HTMLInputElement).style.zIndex = '1000';
-				(input as HTMLInputElement).style.transform = 'none';
-				(input as HTMLInputElement).style.animation = 'none';
-			});
-		}, 100);
-		
-		// Fallback adicional después de un tiempo
-		setTimeout(() => {
-			if (registrationForm) {
-				registrationForm.style.opacity = '1';
-				registrationForm.style.transform = 'translateY(0)';
-				registrationForm.style.display = 'block';
-				registrationForm.style.visibility = 'visible';
-			}
-		}, 1000);
 		
 		// Esperar a que los elementos estén disponibles
 		setTimeout(() => {
 			// Ejecutar animación espectacular del hero
-			if (heroTitle && heroSubtitle && registrationForm) {
-				spectacularHeroAnimation(heroTitle, heroSubtitle, registrationForm);
+			if (heroTitle && heroSubtitle) {
+				spectacularHeroAnimation(heroTitle, heroSubtitle, null);
 			}
 			
 			// Ejecutar animaciones de scroll mejoradas
 			animateScrollElements();
-			
-			// Agregar animaciones de hover mejoradas
-			if (registrationForm) {
-				enhancedFormHover(registrationForm);
-			}
 			
 			// Agregar efectos de ondas a botones
 			const buttons = document.querySelectorAll('.btn');
@@ -381,13 +339,8 @@
 				}
 			}, 2000);
 			
-			// Agregar animaciones escalonadas a los campos del formulario
-			setTimeout(() => {
-				staggeredEntryAnimation('.form-group', 0.15);
-			}, 1000);
-			
 			// Agregar efectos 3D a elementos interactivos
-			const interactiveElements = document.querySelectorAll('.btn, .form-group input');
+			const interactiveElements = document.querySelectorAll('.btn');
 			interactiveElements.forEach(element => add3DHoverEffect(element));
 			
 			// Agregar animación de resplandor al título
@@ -504,35 +457,6 @@
 </svelte:head>
 
 <main class="main-content">
-	{#if showThankYou}
-		<!-- Página de agradecimiento -->
-		<section class="hero thank-you-section">
-			<div class="container">
-				<div class="hero-content text-center">
-					<div class="success-icon" bind:this={successIcon}>✅</div>
-					<h1 class="text-5xl font-bold mb-6 text-green-600">
-						¡Registro Exitoso!
-					</h1>
-					<p class="text-xl text-gray-600 mb-8">
-						Gracias por unirte a nuestra comunidad. Ahora puedes acceder al grupo de WhatsApp.
-					</p>
-					<div class="success-buttons">
-					<button class="btn btn-whatsapp text-lg px-8 py-3" on:click={joinGroup}>
-						<span class="whatsapp-icon">📱</span>
-						Entrar al grupo de WhatsApp
-					</button>
-						<button class="btn btn-home text-lg px-8 py-3" on:click={goToHomePage}>
-							<span class="home-icon">🏠</span>
-							Volver al inicio
-						</button>
-					</div>
-					<p class="redirect-message text-sm text-gray-500 mt-4">
-						Serás redirigido automáticamente al inicio en 5 segundos...
-					</p>
-				</div>
-			</div>
-		</section>
-	{:else}
 		<!-- Hero Section -->
 		<section class="hero" bind:this={heroSection}>
 			<div class="container">
@@ -545,85 +469,16 @@
 						Regístrate <strong>GRATIS</strong> y recibe en tu WhatsApp consejos, guías y recordatorios clave del proceso de admisión <strong>ECOEMS 2026</strong>.
 					</h2>
 					
-					<!-- Formulario de registro -->
-					<div class="form-container">
-						<form class="registration-form static-form" bind:this={registrationForm} on:submit={handleSubmit}>
-							<div class="form-group">
-								<label for="parentName">Nombre del padre/tutor</label>
-								<input 
-									type="text" 
-									id="parentName" 
-									bind:value={formData.parentName}
-									on:input={handleInputChange}
-									required 
-									placeholder="Tu nombre completo"
-								>
-							</div>
-							
-							<div class="form-group">
-								<label for="studentName">Nombre del alumno</label>
-								<input 
-									type="text" 
-									id="studentName" 
-									bind:value={formData.studentName}
-									on:input={handleInputChange}
-									required 
-									placeholder="Nombre de tu hijo/a"
-								>
-							</div>
-							
-							<div class="form-group">
-								<label for="whatsapp">WhatsApp</label>
-								<input 
-									type="tel" 
-									id="whatsapp" 
-									bind:value={formData.whatsapp}
-									on:input={handleWhatsappInput}
-									on:keypress={handleWhatsappKeypress}
-									required 
-									placeholder="+52 55 1234 5678"
-								>
-							</div>
-							
-							<div class="form-group">
-								<label for="email">Correo electrónico</label>
-								<input 
-									type="email" 
-									id="email" 
-									bind:value={formData.email}
-									on:input={handleInputChange}
-									required 
-									placeholder="tu@email.com"
-								>
-							</div>
-							
-							<!-- Indicador de progreso -->
-							<div class="form-progress">
-								<div class="progress-bar">
-									<div class="progress-fill" style="width: {formProgress}%"></div>
-								</div>
-								<span class="progress-text">{formProgress}% completado</span>
-							</div>
-
-							<button type="submit" class="btn btn-whatsapp" disabled={isSubmitting || !isFormValid}>
-								{#if isSubmitting}
-									<span class="loading-spinner" bind:this={loadingSpinner}></span>
-									Registrando...
-								{:else}
-									<span class="whatsapp-icon">📱</span>
-									{#if isFormValid}
-										¡Registrarme GRATIS!
-									{:else}
-										Completa todos los campos
-									{/if}
-								{/if}
-							</button>
-						</form>
+					<!-- Botón para ir al formulario -->
+					<div class="cta-container">
+						<button class="btn btn-whatsapp" on:click={scrollToForm}>
+							<span class="whatsapp-icon">📱</span>
+							¡Registrarme GRATIS!
+						</button>
 					</div>
 					</div>
 				</div>
 		</section>
-	{/if}
 
 	<!-- Sección de Misión y Visión -->
 	<section id="beneficios" class="benefits-section">
@@ -1039,6 +894,126 @@
 		</div>
 	</section>
 
+	<!-- Sección de Formulario -->
+	<section id="formulario" class="formulario-section">
+		<div class="container">
+			<div class="section-header">
+				<h2 class="section-title text-glow text-zoom-rotate">Formulario de Registro</h2>
+				<p class="section-subtitle text-zoom-smooth">
+					Completa tus datos para acceder a nuestro grupo de WhatsApp y comenzar tu preparación
+				</p>
+			</div>
+
+			{#if !showThankYou}
+				<div class="formulario-content">
+					<div class="formulario-card">
+						<form class="registration-form" on:submit={handleSubmit}>
+							<div class="form-group">
+								<label for="parentName">Nombre del padre/tutor</label>
+								<input 
+									type="text" 
+									id="parentName" 
+									bind:value={formData.parentName}
+									on:input={handleInputChange}
+									required 
+									placeholder="Tu nombre completo"
+								>
+							</div>
+							
+							<div class="form-group">
+								<label for="studentName">Nombre del alumno</label>
+								<input 
+									type="text" 
+									id="studentName" 
+									bind:value={formData.studentName}
+									on:input={handleInputChange}
+									required 
+									placeholder="Nombre de tu hijo/a"
+								>
+							</div>
+							
+							<div class="form-group">
+								<label for="whatsapp">WhatsApp</label>
+								<input 
+									type="tel" 
+									id="whatsapp" 
+									bind:value={formData.whatsapp}
+									on:input={handleWhatsappInput}
+									on:keypress={handleWhatsappKeypress}
+									required 
+									placeholder="+52 55 1234 5678"
+								>
+							</div>
+							
+							<div class="form-group">
+								<label for="email">Correo electrónico</label>
+								<input 
+									type="email" 
+									id="email" 
+									bind:value={formData.email}
+									on:input={handleInputChange}
+									required 
+									placeholder="tu@email.com"
+								>
+							</div>
+							
+							<!-- Indicador de progreso -->
+							<div class="form-progress">
+								<div class="progress-bar">
+									<div class="progress-fill" style="width: {formProgress}%"></div>
+								</div>
+								<span class="progress-text">{formProgress}% completado</span>
+							</div>
+
+							<button type="submit" class="btn btn-whatsapp" disabled={isSubmitting || !isFormValid}>
+								{#if isSubmitting}
+									<span class="loading-spinner"></span>
+									Registrando...
+								{:else}
+									<span class="whatsapp-icon">📱</span>
+									{#if isFormValid}
+										¡Registrarme GRATIS!
+									{:else}
+										Completa todos los campos
+									{/if}
+								{/if}
+							</button>
+						</form>
+
+						<div class="form-footer">
+							<p class="privacy-text">
+								Al registrarte, aceptas nuestros términos de servicio y política de privacidad.
+							</p>
+						</div>
+					</div>
+				</div>
+			{:else}
+				<!-- Página de Agradecimiento -->
+				<div class="thank-you-container">
+					<div class="thank-you-content">
+						<div class="success-icon">✅</div>
+						<h2 class="thank-you-title">¡Registro Exitoso!</h2>
+						<p class="thank-you-message">
+							Gracias por unirte a nuestra comunidad. Ahora puedes acceder al grupo de WhatsApp.
+						</p>
+						<div class="success-buttons">
+							<button class="btn btn-whatsapp" on:click={joinGroup}>
+								<span class="whatsapp-icon">📱</span>
+								Entrar al grupo de WhatsApp
+							</button>
+							<button class="btn btn-home" on:click={goToHomePage}>
+								<span class="home-icon">🏠</span>
+								Volver al inicio
+							</button>
+						</div>
+						<p class="redirect-message">
+							Serás redirigido automáticamente al inicio en 5 segundos...
+						</p>
+					</div>
+				</div>
+			{/if}
+		</div>
+	</section>
 
 </main>
 
@@ -1511,6 +1486,12 @@
 		opacity: 1;
 		visibility: visible;
 		display: block;
+	}
+
+	.cta-container {
+		margin-top: 2rem;
+		display: flex;
+		justify-content: center;
 	}
 
 	/* Formulario de registro - CON INTERACTIVIDAD SUTIL */
@@ -3488,6 +3469,498 @@
 		font-size: 0.9rem;
 		color: #6b7280;
 		font-weight: 500;
+	}
+
+	/* Sección de Formulario */
+	.formulario-section {
+		padding: 2rem 0 6rem 0;
+		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.formulario-section::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+					radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
+		pointer-events: none;
+		z-index: 1;
+		animation: backgroundShift 8s ease-in-out infinite;
+	}
+
+	.formulario-content {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		z-index: 2;
+	}
+
+	.formulario-card {
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(20px);
+		padding: 3rem 2.5rem;
+		border-radius: 2rem;
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+		transition: all 0.3s ease;
+		border: 2px solid rgba(251, 191, 36, 0.3);
+		position: relative;
+		overflow: hidden;
+		text-align: left;
+		max-width: 600px;
+		width: 100%;
+	}
+
+	.formulario-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+	}
+
+	.formulario-card:hover {
+		transform: translateY(-8px);
+		box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+		border-color: rgba(251, 191, 36, 0.6);
+		background: rgba(255, 255, 255, 1);
+	}
+
+	.formulario-icon {
+		width: 80px;
+		height: 80px;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 auto 2rem auto;
+		box-shadow: 0 10px 25px rgba(249, 115, 22, 0.3);
+		transition: all 0.3s ease;
+	}
+
+	.formulario-card:hover .formulario-icon {
+		transform: scale(1.1);
+		box-shadow: 0 15px 35px rgba(249, 115, 22, 0.4);
+	}
+
+	.formulario-icon svg {
+		width: 40px;
+		height: 40px;
+		color: white;
+	}
+
+	.formulario-title {
+		font-size: 2rem;
+		font-weight: 700;
+		color: #290040;
+		margin-bottom: 1.5rem;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	.formulario-description {
+		font-size: 1.1rem;
+		color: #4a5568;
+		line-height: 1.7;
+		margin-bottom: 2.5rem;
+		text-align: justify;
+	}
+
+	.formulario-actions {
+		display: flex;
+		justify-content: center;
+	}
+
+	.btn-formulario {
+		background: linear-gradient(135deg, #8b5cf6 0%, #f97316 50%, #3b82f6 100%);
+		color: #ffffff;
+		padding: 1.25rem 2.5rem;
+		border: none;
+		border-radius: 2rem;
+		font-weight: 700;
+		font-size: 1.2rem;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		position: relative;
+		overflow: hidden;
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.75rem;
+	}
+
+	.btn-formulario::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 0;
+		height: 0;
+		background: rgba(255, 255, 255, 0.3);
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		transition: width 0.6s, height 0.6s;
+		z-index: 1;
+	}
+
+	.btn-formulario:hover::before {
+		width: 300px;
+		height: 300px;
+	}
+
+	.btn-formulario:hover {
+		background: linear-gradient(135deg, #7c3aed 0%, #ea580c 50%, #2563eb 100%);
+		transform: translateY(-3px);
+		box-shadow: 0 15px 40px rgba(139, 92, 246, 0.6);
+		text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+	}
+
+	.btn-formulario:active {
+		transform: translateY(-1px);
+		box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+	}
+
+	.formulario-icon-btn {
+		font-size: 1.3em;
+		position: relative;
+		z-index: 2;
+	}
+
+	/* Estilos del formulario */
+	.registration-form {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.form-group {
+		position: relative;
+	}
+
+	.form-group label {
+		display: block;
+		font-weight: 600;
+		color: #000000;
+		margin-bottom: 0.5rem;
+		font-size: 0.9rem;
+		transition: all 0.3s ease;
+		cursor: pointer;
+	}
+
+	.form-group:hover label {
+		color: #fbbf24;
+		transform: translateX(5px);
+	}
+
+	.form-group input {
+		width: 100%;
+		padding: 0.75rem 1rem;
+		border: 2px solid rgba(0, 0, 0, 0.1);
+		border-radius: 0.75rem;
+		font-size: 1rem;
+		color: #000000;
+		transition: all 0.3s ease;
+		background: rgba(255, 255, 255, 0.95);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	}
+
+	.form-group input:hover {
+		border-color: rgba(251, 191, 36, 0.3);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		transform: translateY(-1px);
+	}
+
+	.form-group input:focus {
+		outline: none;
+		border-color: #fbbf24;
+		background: rgba(255, 255, 255, 1);
+		box-shadow: 
+			0 0 0 4px rgba(251, 191, 36, 0.2),
+			0 8px 25px rgba(0, 0, 0, 0.15);
+		transform: translateY(-2px);
+	}
+
+	.form-group input:valid {
+		border-color: #10b981;
+		background: rgba(16, 185, 129, 0.05);
+	}
+
+	.form-group input:invalid:not(:placeholder-shown) {
+		border-color: #ef4444;
+		background: rgba(239, 68, 68, 0.05);
+	}
+
+	/* Estilo específico para el campo de WhatsApp */
+	input[type="tel"] {
+		font-family: 'Courier New', monospace;
+		letter-spacing: 0.5px;
+	}
+
+	input[type="tel"]::placeholder {
+		color: rgba(0, 0, 0, 0.4);
+		font-style: italic;
+	}
+
+	/* Indicador de progreso del formulario */
+	.form-progress {
+		margin-bottom: 1.5rem;
+		text-align: center;
+	}
+
+	.progress-bar {
+		width: 100%;
+		height: 8px;
+		background: rgba(0, 0, 0, 0.1);
+		border-radius: 4px;
+		overflow: hidden;
+		margin-bottom: 0.5rem;
+		position: relative;
+	}
+
+	.progress-fill {
+		height: 100%;
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+		border-radius: 4px;
+		transition: width 0.5s ease;
+		position: relative;
+	}
+
+	.progress-fill::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+		animation: progressShine 2s infinite;
+	}
+
+	@keyframes progressShine {
+		0% { transform: translateX(-100%); }
+		100% { transform: translateX(100%); }
+	}
+
+	.progress-text {
+		font-size: 0.9rem;
+		color: #6b7280;
+		font-weight: 500;
+	}
+
+	.form-footer {
+		text-align: center;
+		margin-top: 1.5rem;
+	}
+
+	.privacy-text {
+		font-size: 0.875rem;
+		color: #6b7280;
+		line-height: 1.5;
+	}
+
+	/* Thank You Page */
+	.thank-you-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 60vh;
+	}
+
+	.thank-you-content {
+		text-align: center;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(20px);
+		padding: 3rem;
+		border-radius: 2rem;
+		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+		border: 2px solid rgba(16, 185, 129, 0.3);
+		max-width: 500px;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.thank-you-content::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 4px;
+		background: linear-gradient(135deg, #10b981 0%, #34d399 50%, #6ee7b7 100%);
+	}
+
+	.success-icon {
+		font-size: 4rem;
+		margin-bottom: 1rem;
+	}
+
+	.thank-you-title {
+		font-size: 2rem;
+		font-weight: 700;
+		color: #290040;
+		margin-bottom: 1rem;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	.thank-you-message {
+		font-size: 1.1rem;
+		color: #6b7280;
+		line-height: 1.6;
+		margin-bottom: 2rem;
+	}
+
+	.success-buttons {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		align-items: center;
+		margin-bottom: 1rem;
+	}
+
+	.btn-home {
+		background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%);
+		color: #ffffff;
+		width: 100%;
+		max-width: 300px;
+		padding: 1rem 1.5rem;
+		font-size: 1.1rem;
+		font-weight: 800;
+		border-radius: 1rem;
+		position: relative;
+		overflow: hidden;
+		box-shadow: 
+			0 10px 30px rgba(59, 130, 246, 0.4),
+			0 0 20px rgba(59, 130, 246, 0.2);
+		transition: all 0.3s ease;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		cursor: pointer;
+		display: block;
+		visibility: visible;
+		border: none;
+	}
+
+	.btn-home::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 0;
+		height: 0;
+		background: rgba(255, 255, 255, 0.3);
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		transition: width 0.6s, height 0.6s;
+		z-index: 1;
+	}
+
+	.btn-home:hover::before {
+		width: 300px;
+		height: 300px;
+	}
+
+	.btn-home:hover {
+		transform: translateY(-3px);
+		box-shadow: 
+			0 15px 40px rgba(59, 130, 246, 0.5),
+			0 0 30px rgba(59, 130, 246, 0.3);
+		background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 50%, #1e3a8a 100%);
+	}
+
+	.btn-home:active {
+		transform: translateY(-1px);
+		box-shadow: 
+			0 8px 20px rgba(59, 130, 246, 0.4),
+			0 0 15px rgba(59, 130, 246, 0.2);
+	}
+
+	.home-icon {
+		font-size: 1.2em;
+	}
+
+	.redirect-message {
+		animation: pulse 2s ease-in-out infinite;
+	}
+
+	@keyframes pulse {
+		0%, 100% { opacity: 0.7; }
+		50% { opacity: 1; }
+	}
+
+	/* Responsive para Formulario */
+	@media (max-width: 768px) {
+		.formulario-section {
+			padding: 4rem 0;
+		}
+
+		.formulario-card {
+			padding: 3rem 2rem;
+		}
+
+		.formulario-icon {
+			width: 70px;
+			height: 70px;
+		}
+
+		.formulario-icon svg {
+			width: 35px;
+			height: 35px;
+		}
+
+		.formulario-title {
+			font-size: 1.6rem;
+		}
+
+		.formulario-description {
+			font-size: 1rem;
+			text-align: left;
+		}
+
+		.btn-formulario {
+			padding: 1rem 2rem;
+			font-size: 1.1rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.formulario-card {
+			padding: 2.5rem 1.5rem;
+		}
+
+		.formulario-icon {
+			width: 60px;
+			height: 60px;
+		}
+
+		.formulario-icon svg {
+			width: 30px;
+			height: 30px;
+		}
+
+		.formulario-title {
+			font-size: 1.4rem;
+		}
+
+		.formulario-description {
+			font-size: 0.95rem;
+		}
+
+		.btn-formulario {
+			padding: 0.875rem 1.75rem;
+			font-size: 1rem;
+		}
 	}
 
 </style>

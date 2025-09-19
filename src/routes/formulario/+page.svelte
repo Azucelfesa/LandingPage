@@ -1,13 +1,17 @@
-<script>
+<script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { trpcHttpClient } from '$lib/client';
+	import trpcHttpClient from '$lib/client';
 	import { createMouseFollower } from '$lib/advancedAnimations';
 	import Header from '$lib/Header.svelte';
 	import Footer from '$lib/Footer.svelte';
 
 	// Estado del formulario
 	let registrationForm: HTMLFormElement;
+	let loadingSpinner: HTMLElement;
+	let successIcon: HTMLElement;
+	
 	let formData = {
+		parentName: '',
 		studentName: '',
 		whatsapp: '',
 		email: ''
@@ -20,44 +24,136 @@
 
 	// Función para validar el formulario
 	function validateForm() {
-		const nameValid = formData.studentName.trim().length >= 2;
-		const whatsappValid = formData.whatsapp.trim().length >= 10;
-		const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim());
+		const { parentName, studentName, whatsapp, email } = formData;
 		
-		isFormValid = nameValid && whatsappValid && emailValid;
-		return isFormValid;
+		// Validar que todos los campos tengan contenido
+		const hasParentName = parentName.trim().length > 0;
+		const hasStudentName = studentName.trim().length > 0;
+		const hasWhatsapp = whatsapp.trim().length > 0;
+		const hasEmail = email.trim().length > 0;
+		
+		// Validar formato de email
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		const isValidEmail = emailRegex.test(email);
+		
+		// Validar formato de WhatsApp (solo números, mínimo 10 dígitos)
+		const whatsappRegex = /^[\+]?[0-9\s\-\(\)]{10,}$/;
+		const isValidWhatsapp = whatsappRegex.test(whatsapp) && whatsapp.replace(/[^0-9]/g, '').length >= 10;
+		
+		isFormValid = hasParentName && hasStudentName && hasWhatsapp && hasEmail && isValidEmail && isValidWhatsapp;
 	}
+
+	// Función para manejar cambios en los inputs
+	function handleInputChange() {
+		validateForm();
+	}
+
+	// Función específica para WhatsApp que solo permite números
+	function handleWhatsappInput(event: Event) {
+		const target = event.target as HTMLInputElement;
+		// Remover cualquier carácter que no sea número, +, -, (, ), o espacio
+		const cleanValue = target.value.replace(/[^0-9+\-\(\)\s]/g, '');
+		formData.whatsapp = cleanValue;
+		validateForm();
+	}
+
+	// Función para prevenir teclas no numéricas en WhatsApp
+	function handleWhatsappKeypress(event: KeyboardEvent) {
+		const char = event.key;
+		// Permitir: números, +, -, (, ), espacio, backspace, delete, tab, enter, escape
+		const allowedKeys = /[0-9+\-\(\)\s]|Backspace|Delete|Tab|Enter|Escape|ArrowLeft|ArrowRight|ArrowUp|ArrowDown/;
+		
+		if (!allowedKeys.test(char)) {
+			event.preventDefault();
+		}
+	}
+
+	// Variable reactiva para el progreso del formulario
+	$: formProgress = (() => {
+		const { parentName, studentName, whatsapp, email } = formData;
+		let progress = 0;
+		
+		// Verificar nombre del padre/tutor
+		if (parentName.trim().length > 0) progress += 25;
+		
+		// Verificar nombre del alumno
+		if (studentName.trim().length > 0) progress += 25;
+		
+		// Verificar WhatsApp (solo números, mínimo 10 dígitos)
+		const whatsappRegex = /^[\+]?[0-9\s\-\(\)]{10,}$/;
+		if (whatsapp.trim().length > 0 && whatsappRegex.test(whatsapp) && whatsapp.replace(/[^0-9]/g, '').length >= 10) progress += 25;
+		
+		// Verificar email (formato válido)
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (email.trim().length > 0 && emailRegex.test(email)) progress += 25;
+		
+		return progress;
+	})();
 
 	// Función para manejar el envío del formulario
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
 		
-		if (!validateForm()) {
+		// Validar que todos los campos estén llenos
+		if (!formData.parentName.trim() || !formData.studentName.trim() || !formData.whatsapp.trim() || !formData.email.trim()) {
+			console.error('Todos los campos son requeridos');
+			console.log('Estado del formulario:', formData);
 			return;
 		}
-
+		
+		// Validar el número de WhatsApp
+		const whatsappNumber = parseInt(formData.whatsapp.replace(/\D/g, ''));
+		if (isNaN(whatsappNumber) || whatsappNumber <= 0) {
+			console.error('Número de WhatsApp inválido:', formData.whatsapp);
+			return;
+		}
+		
 		isSubmitting = true;
-
+		
 		try {
-			// Simular llamada a la API
-			await new Promise(resolve => setTimeout(resolve, 2000));
+			const dataToSend = {
+				fathersName: formData.parentName.trim(),
+				childName: formData.studentName.trim(),
+				whatsappNumber: whatsappNumber,
+				email: formData.email.trim()
+			};
 			
-			// Aquí iría la llamada real a la API
-			// await trpcHttpClient.registerForm.create.mutate(formData);
+			console.log('Enviando datos:', dataToSend);
 			
+			const response = await trpcHttpClient.registerForm.create.mutate(dataToSend);
+			
+			if (!response.success) {
+				throw new Error('Error saving form data');
+			}
+			
+			// Simular envío de datos
+			await new Promise(resolve => setTimeout(resolve, 1500));
+			
+			console.log('Datos del formulario guardados:', response);
+			
+			isSubmitting = false;
 			showThankYou = true;
 			
 			// Configurar redirección automática después de 5 segundos
 			redirectTimer = setTimeout(() => {
 				window.location.href = '/';
 			}, 5000);
+		}
+		catch (error: any) {
+			console.error('Error during form submission:', error);
 			
-		} catch (error) {
-			console.error('Error al enviar el formulario:', error);
-			alert('Hubo un error al enviar el formulario. Por favor, inténtalo de nuevo.');
-		} finally {
+			// Si es un error de validación de tRPC, mostrar detalles
+			if (error.data?.code === 'BAD_REQUEST') {
+				console.error('Errores de validación:', error.message);
+			}
+			
 			isSubmitting = false;
 		}
+	}
+
+	function joinGroup() {
+		// Redirigir a WhatsApp
+		window.open('https://wa.me/1234567890', '_blank');
 	}
 
 	function goToHomePage() {
@@ -164,63 +260,73 @@
 
 					<form bind:this={registrationForm} on:submit={handleSubmit} class="registration-form">
 						<div class="form-group">
-							<input
-								type="text"
-								id="studentName"
+							<label for="parentName">Nombre del padre/tutor</label>
+							<input 
+								type="text" 
+								id="parentName" 
+								bind:value={formData.parentName}
+								on:input={handleInputChange}
+								required 
+								placeholder="Tu nombre completo"
+							>
+						</div>
+						
+						<div class="form-group">
+							<label for="studentName">Nombre del alumno</label>
+							<input 
+								type="text" 
+								id="studentName" 
 								bind:value={formData.studentName}
-								on:input={validateForm}
-								required
-								class="form-input"
-								placeholder=" "
-							/>
-							<label for="studentName" class="form-label">Nombre completo del estudiante</label>
+								on:input={handleInputChange}
+								required 
+								placeholder="Nombre de tu hijo/a"
+							>
 						</div>
-
+						
 						<div class="form-group">
-							<input
-								type="tel"
-								id="whatsapp"
+							<label for="whatsapp">WhatsApp</label>
+							<input 
+								type="tel" 
+								id="whatsapp" 
 								bind:value={formData.whatsapp}
-								on:input={validateForm}
-								required
-								class="form-input"
-								placeholder=" "
-							/>
-							<label for="whatsapp" class="form-label">Número de WhatsApp</label>
+								on:input={handleWhatsappInput}
+								on:keypress={handleWhatsappKeypress}
+								required 
+								placeholder="+52 55 1234 5678"
+							>
 						</div>
-
+						
 						<div class="form-group">
-							<input
-								type="email"
-								id="email"
+							<label for="email">Correo electrónico</label>
+							<input 
+								type="email" 
+								id="email" 
 								bind:value={formData.email}
-								on:input={validateForm}
-								required
-								class="form-input"
-								placeholder=" "
-							/>
-							<label for="email" class="form-label">Correo electrónico</label>
+								on:input={handleInputChange}
+								required 
+								placeholder="tu@email.com"
+							>
+						</div>
+						
+						<!-- Indicador de progreso -->
+						<div class="form-progress">
+							<div class="progress-bar">
+								<div class="progress-fill" style="width: {formProgress}%"></div>
+							</div>
+							<span class="progress-text">{formProgress}% completado</span>
 						</div>
 
-						<button
-							type="submit"
-							class="btn btn-primary btn-submit"
-							disabled={!isFormValid || isSubmitting}
-						>
+						<button type="submit" class="btn btn-whatsapp" disabled={isSubmitting || !isFormValid}>
 							{#if isSubmitting}
-								<div class="btn-loading">
-									<div class="spinner"></div>
-									<span>Procesando...</span>
-								</div>
+								<span class="loading-spinner" bind:this={loadingSpinner}></span>
+								Registrando...
 							{:else}
-								<span>Unirme al Grupo</span>
-								<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<path d="M9 12l2 2 4-4"/>
-									<path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
-									<path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
-									<path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
-									<path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
-								</svg>
+								<span class="whatsapp-icon">📱</span>
+								{#if isFormValid}
+									¡Registrarme GRATIS!
+								{:else}
+									Completa todos los campos
+								{/if}
 							{/if}
 						</button>
 					</form>
@@ -235,31 +341,24 @@
 				<!-- Página de Agradecimiento -->
 				<div class="thank-you-container">
 					<div class="thank-you-content">
-						<div class="success-icon">
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M9 12l2 2 4-4"/>
-								<path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
-								<path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
-								<path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
-								<path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
-							</svg>
-						</div>
-						<h2 class="thank-you-title">¡Bienvenido a ADNED!</h2>
+						<div class="success-icon" bind:this={successIcon}>✅</div>
+						<h2 class="thank-you-title">¡Registro Exitoso!</h2>
 						<p class="thank-you-message">
-							Tu registro ha sido exitoso. Te redirigiremos automáticamente a la página principal en unos segundos.
+							Gracias por unirte a nuestra comunidad. Ahora puedes acceder al grupo de WhatsApp.
 						</p>
-						<div class="redirect-info">
-							<p class="redirect-text">
-								Serás redirigido en <span class="countdown">5</span> segundos...
-							</p>
+						<div class="success-buttons">
+							<button class="btn btn-whatsapp" on:click={joinGroup}>
+								<span class="whatsapp-icon">📱</span>
+								Entrar al grupo de WhatsApp
+							</button>
+							<button class="btn btn-home" on:click={goToHomePage}>
+								<span class="home-icon">🏠</span>
+								Volver al inicio
+							</button>
 						</div>
-						<button class="btn btn-secondary" on:click={goToHomePage}>
-							<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-								<polyline points="9,22 9,12 15,12 15,22"/>
-							</svg>
-							Volver al inicio
-						</button>
+						<p class="redirect-message">
+							Serás redirigido automáticamente al inicio en 5 segundos...
+						</p>
 					</div>
 				</div>
 			{/if}
@@ -534,55 +633,75 @@
 	.registration-form {
 		display: flex;
 		flex-direction: column;
-		gap: 2rem;
+		gap: 1.5rem;
 	}
 
 	.form-group {
 		position: relative;
 	}
 
-	.form-input {
-		width: 100%;
-		padding: 1rem 1.25rem;
-		border: 2px solid #e5e7eb;
-		border-radius: 0.75rem;
-		font-size: 1rem;
-		background: #ffffff;
+	.form-group label {
+		display: block;
+		font-weight: 600;
+		color: #000000;
+		margin-bottom: 0.5rem;
+		font-size: 0.9rem;
 		transition: all 0.3s ease;
-		outline: none;
+		cursor: pointer;
 	}
 
-	.form-input:focus {
-		border-color: #f97316;
-		box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+	.form-group:hover label {
+		color: #fbbf24;
+		transform: translateX(5px);
+	}
+
+	.form-group input {
+		width: 100%;
+		padding: 0.75rem 1rem;
+		border: 2px solid rgba(0, 0, 0, 0.1);
+		border-radius: 0.75rem;
+		font-size: 1rem;
+		color: #000000;
+		transition: all 0.3s ease;
+		background: rgba(255, 255, 255, 0.95);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	}
+
+	.form-group input:hover {
+		border-color: rgba(251, 191, 36, 0.3);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		transform: translateY(-1px);
+	}
+
+	.form-group input:focus {
+		outline: none;
+		border-color: #fbbf24;
+		background: rgba(255, 255, 255, 1);
+		box-shadow: 
+			0 0 0 4px rgba(251, 191, 36, 0.2),
+			0 8px 25px rgba(0, 0, 0, 0.15);
 		transform: translateY(-2px);
 	}
 
-	.form-input:valid {
+	.form-group input:valid {
 		border-color: #10b981;
 		background: rgba(16, 185, 129, 0.05);
 	}
 
-	.form-label {
-		position: absolute;
-		left: 1.25rem;
-		top: 50%;
-		transform: translateY(-50%);
-		background: #ffffff;
-		padding: 0 0.5rem;
-		color: #6b7280;
-		font-size: 1rem;
-		transition: all 0.3s ease;
-		pointer-events: none;
-		z-index: 1;
+	.form-group input:invalid:not(:placeholder-shown) {
+		border-color: #ef4444;
+		background: rgba(239, 68, 68, 0.05);
 	}
 
-	.form-input:focus + .form-label,
-	.form-input:not(:placeholder-shown) + .form-label {
-		top: 0;
-		font-size: 0.875rem;
-		color: #f97316;
-		font-weight: 600;
+	/* Estilo específico para el campo de WhatsApp */
+	input[type="tel"] {
+		font-family: 'Courier New', monospace;
+		letter-spacing: 0.5px;
+	}
+
+	input[type="tel"]::placeholder {
+		color: rgba(0, 0, 0, 0.4);
+		font-style: italic;
 	}
 
 	.btn {
@@ -602,27 +721,108 @@
 		overflow: hidden;
 	}
 
-	.btn-primary {
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
-		color: #ffffff;
-		font-weight: 700;
+	.btn-whatsapp {
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+		color: #000000;
+		width: 100%;
+		padding: 1rem 1.5rem;
+		font-size: 1.1rem;
+		font-weight: 800;
+		border-radius: 1rem;
+		position: relative;
+		overflow: hidden;
+		box-shadow: 
+			0 10px 30px rgba(251, 191, 36, 0.4),
+			0 0 20px rgba(251, 191, 36, 0.2);
+		transition: all 0.3s ease;
 		text-transform: uppercase;
-		letter-spacing: 0.5px;
-		box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
-		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		letter-spacing: 1px;
+		cursor: pointer;
+		display: block;
+		visibility: visible;
+		border: none;
+		margin-top: 1rem;
 	}
 
-	.btn-primary:hover:not(:disabled) {
-		background: linear-gradient(135deg, #ea580c 0%, #d97706 50%, #2563eb 100%);
+	.btn-whatsapp::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 0;
+		height: 0;
+		background: rgba(255, 255, 255, 0.3);
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		transition: width 0.6s, height 0.6s;
+		z-index: 1;
+	}
+
+	.btn-whatsapp:hover::before {
+		width: 300px;
+		height: 300px;
+	}
+
+	.btn-whatsapp:hover {
 		transform: translateY(-3px);
-		box-shadow: 0 12px 35px rgba(249, 115, 22, 0.6);
-		text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+		box-shadow: 
+			0 15px 40px rgba(251, 191, 36, 0.5),
+			0 0 30px rgba(251, 191, 36, 0.3);
 	}
 
-	.btn-primary:disabled {
-		opacity: 0.6;
+	.btn-whatsapp:active {
+		transform: translateY(-1px);
+		box-shadow: 
+			0 8px 20px rgba(251, 191, 36, 0.4),
+			0 0 15px rgba(251, 191, 36, 0.2);
+	}
+
+	.btn-whatsapp:disabled {
+		opacity: 0.7;
 		cursor: not-allowed;
 		transform: none;
+		background: linear-gradient(135deg, #9ca3af 0%, #6b7280 50%, #4b5563 100%);
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+		display: block;
+		visibility: visible;
+		position: relative;
+		z-index: 10;
+		width: 100%;
+		padding: 1rem 1.5rem;
+		font-size: 1.1rem;
+		font-weight: 800;
+		border-radius: 1rem;
+		border: none;
+		margin-top: 1rem;
+		color: #ffffff;
+	}
+
+	.btn-whatsapp:disabled:hover {
+		transform: none;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+		background: linear-gradient(135deg, #9ca3af 0%, #6b7280 50%, #4b5563 100%);
+	}
+
+	.btn-whatsapp:disabled::before {
+		display: none;
+	}
+
+	.whatsapp-icon {
+		font-size: 1.2em;
+	}
+
+	.loading-spinner {
+		width: 20px;
+		height: 20px;
+		border: 2px solid transparent;
+		border-top: 2px solid white;
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
 	}
 
 	.btn-secondary {
@@ -677,6 +877,52 @@
 		font-size: 0.875rem;
 		color: #6b7280;
 		line-height: 1.5;
+	}
+
+	/* Indicador de progreso del formulario */
+	.form-progress {
+		margin-bottom: 1.5rem;
+		text-align: center;
+	}
+
+	.progress-bar {
+		width: 100%;
+		height: 8px;
+		background: rgba(0, 0, 0, 0.1);
+		border-radius: 4px;
+		overflow: hidden;
+		margin-bottom: 0.5rem;
+		position: relative;
+	}
+
+	.progress-fill {
+		height: 100%;
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+		border-radius: 4px;
+		transition: width 0.5s ease;
+		position: relative;
+	}
+
+	.progress-fill::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+		animation: progressShine 2s infinite;
+	}
+
+	@keyframes progressShine {
+		0% { transform: translateX(-100%); }
+		100% { transform: translateX(100%); }
+	}
+
+	.progress-text {
+		font-size: 0.9rem;
+		color: #6b7280;
+		font-weight: 500;
 	}
 
 	/* Thank You Page */
@@ -771,6 +1017,84 @@
 		font-weight: 800;
 		font-size: 1.2rem;
 		color: #10b981;
+	}
+
+	.success-buttons {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		align-items: center;
+		margin-bottom: 1rem;
+	}
+
+	.btn-home {
+		background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%);
+		color: #ffffff;
+		width: 100%;
+		max-width: 300px;
+		padding: 1rem 1.5rem;
+		font-size: 1.1rem;
+		font-weight: 800;
+		border-radius: 1rem;
+		position: relative;
+		overflow: hidden;
+		box-shadow: 
+			0 10px 30px rgba(59, 130, 246, 0.4),
+			0 0 20px rgba(59, 130, 246, 0.2);
+		transition: all 0.3s ease;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		cursor: pointer;
+		display: block;
+		visibility: visible;
+		border: none;
+	}
+
+	.btn-home::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 0;
+		height: 0;
+		background: rgba(255, 255, 255, 0.3);
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		transition: width 0.6s, height 0.6s;
+		z-index: 1;
+	}
+
+	.btn-home:hover::before {
+		width: 300px;
+		height: 300px;
+	}
+
+	.btn-home:hover {
+		transform: translateY(-3px);
+		box-shadow: 
+			0 15px 40px rgba(59, 130, 246, 0.5),
+			0 0 30px rgba(59, 130, 246, 0.3);
+		background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 50%, #1e3a8a 100%);
+	}
+
+	.btn-home:active {
+		transform: translateY(-1px);
+		box-shadow: 
+			0 8px 20px rgba(59, 130, 246, 0.4),
+			0 0 15px rgba(59, 130, 246, 0.2);
+	}
+
+	.home-icon {
+		font-size: 1.2em;
+	}
+
+	.redirect-message {
+		animation: pulse 2s ease-in-out infinite;
+	}
+
+	@keyframes pulse {
+		0%, 100% { opacity: 0.7; }
+		50% { opacity: 1; }
 	}
 
 	/* Benefits Section */
