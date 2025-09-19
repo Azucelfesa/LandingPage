@@ -50,8 +50,6 @@
 	let isFormValid = false;
 	let redirectTimer: number | null = null;
 	let showMoreCursos = false;
-	let currentPhotoIndex = 0;
-	let carouselInterval: number | null = null;
 
 	
 	// Estado para controlar qué FAQ está abierto
@@ -229,90 +227,6 @@
 		showMoreCursos = !showMoreCursos;
 	}
 
-	// Funciones del carrusel de fotos
-	const fotosResenas = [
-		{
-			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.18 (1).jpeg",
-			alt: "Reseña ADNED 1",
-			titulo: "Testimonio Real",
-			desc: "Estudiante satisfecho con ADNED"
-		},
-		{
-			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.18.jpeg",
-			alt: "Reseña ADNED 2",
-			titulo: "Experiencia Positiva",
-			desc: "Resultados que hablan por sí solos"
-		},
-		{
-			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.19 (1).jpeg",
-			alt: "Reseña ADNED 3",
-			titulo: "Recomendación",
-			desc: "Estudiantes que recomiendan ADNED"
-		},
-		{
-			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.19.jpeg",
-			alt: "Reseña ADNED 4",
-			titulo: "Éxito Garantizado",
-			desc: "Logros de nuestros estudiantes"
-		},
-		{
-			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.20 (1).jpeg",
-			alt: "Reseña ADNED 5",
-			titulo: "Calidad Educativa",
-			desc: "Excelencia en la enseñanza"
-		},
-		{
-			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.20.jpeg",
-			alt: "Reseña ADNED 6",
-			titulo: "Satisfacción Total",
-			desc: "Estudiantes completamente satisfechos"
-		},
-		{
-			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.21.jpeg",
-			alt: "Reseña ADNED 7",
-			titulo: "Resultados Exitosos",
-			desc: "Metas alcanzadas con ADNED"
-		},
-		{
-			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.22 (1).jpeg",
-			alt: "Reseña ADNED 8",
-			titulo: "Confianza Plena",
-			desc: "Estudiantes que confían en nosotros"
-		},
-		{
-			src: "/Resenas/WhatsApp Image 2025-08-19 at 10.44.22.jpeg",
-			alt: "Reseña ADNED 9",
-			titulo: "Excelencia Comprobada",
-			desc: "Calidad que se demuestra"
-		}
-	];
-
-
-	function nextPhoto() {
-		currentPhotoIndex = (currentPhotoIndex + 1) % fotosResenas.length;
-	}
-
-	function prevPhoto() {
-		currentPhotoIndex = (currentPhotoIndex - 1 + fotosResenas.length) % fotosResenas.length;
-	}
-
-	function goToPhoto(index: number) {
-		currentPhotoIndex = index;
-	}
-
-	function startCarousel() {
-		if (carouselInterval) {
-			clearInterval(carouselInterval);
-		}
-		carouselInterval = setInterval(nextPhoto, 4000); // Cambia cada 4 segundos
-	}
-
-	function stopCarousel() {
-		if (carouselInterval) {
-			clearInterval(carouselInterval);
-			carouselInterval = null;
-		}
-	}
 
 	
 	onMount(() => {
@@ -434,8 +348,6 @@
 			
 		}, 200);
 
-		// Iniciar el carrusel de fotos
-		startCarousel();
 	});
 
 	onDestroy(() => {
@@ -444,8 +356,6 @@
 			clearTimeout(redirectTimer);
 			redirectTimer = null;
 		}
-		// Limpiar el carrusel
-		stopCarousel();
 	});
 </script>
 
@@ -490,37 +400,45 @@
 				</p>
 			</div>
 
-			<div class="benefits-grid">
-				<!-- Misión -->
-				<div class="benefit-card">
-					<div class="benefit-icon">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-						</svg>
+			<div class="benefits-staggered">
+				<!-- Misión - Izquierda -->
+				<div class="benefit-card benefit-left">
+					<div class="benefit-content">
+						<div class="benefit-icon">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+							</svg>
+						</div>
+						<div class="benefit-text">
+							<h3 class="benefit-title">Misión</h3>
+							<p class="benefit-description">
+								Ofrecer cursos innovadores, accesibles y de calidad que preparen a los 
+								estudiantes para superar los exámenes de admisión al bachillerato y la 
+								universidad, brindándoles confianza, motivación y herramientas modernas que los 
+								acerquen a lograr sus sueños académicos.
+							</p>
+						</div>
 					</div>
-					<h3 class="benefit-title">Misión</h3>
-					<p class="benefit-description">
-						Ofrecer cursos innovadores, accesibles y de calidad que preparen a los 
-						estudiantes para superar los exámenes de admisión al bachillerato y la 
-						universidad, brindándoles confianza, motivación y herramientas modernas que los 
-						acerquen a lograr sus sueños académicos.
-					</p>
 				</div>
 
-				<!-- Visión -->
-				<div class="benefit-card">
-					<div class="benefit-icon">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-							<circle cx="12" cy="12" r="3"/>
-						</svg>
+				<!-- Visión - Derecha -->
+				<div class="benefit-card benefit-right">
+					<div class="benefit-content">
+						<div class="benefit-text">
+							<h3 class="benefit-title">Visión</h3>
+							<p class="benefit-description">
+								Convertirse en la comunidad educativa líder en México para la preparación de 
+								exámenes de admisión, reconocida por su enfoque futurista, juvenil y motivador, 
+								que acompaña a cada alumno en su camino al éxito académico.
+							</p>
+						</div>
+						<div class="benefit-icon">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+								<circle cx="12" cy="12" r="3"/>
+							</svg>
+						</div>
 					</div>
-					<h3 class="benefit-title">Visión</h3>
-					<p class="benefit-description">
-						Convertirse en la comunidad educativa líder en México para la preparación de 
-						exámenes de admisión, reconocida por su enfoque futurista, juvenil y motivador, 
-						que acompaña a cada alumno en su camino al éxito académico.
-					</p>
 				</div>
 			</div>
 		</div>
@@ -536,7 +454,7 @@
 				</p>
 			</div>
 
-			<div class="quienes-somos-content">
+			<div class="quienes-somos-content quienes-somos-left">
 				<div class="quienes-somos-text">
 					<p class="main-text">
 						ADNED es mucho más que un curso de preparación: es una comunidad que acompaña a los estudiantes en cada paso de su camino académico, brindando innovación, motivación y cercanía. Nacimos con la misión de ofrecer cursos accesibles y de calidad que permitan a los jóvenes enfrentar con confianza y seguridad los exámenes de admisión al bachillerato y la universidad, especialmente bajo los nuevos procesos ECOEMS, UNAM, IPN y UAM. Nuestra visión es clara: consolidarnos como la comunidad educativa líder en México, reconocida por un enfoque futurista, juvenil y motivador, donde cada alumno encuentre no solo conocimientos, sino inspiración para creer en sí mismo. A través de herramientas digitales, estrategias modernas, inteligencia artificial y personajes como Adni y Ema, transformamos la forma de aprender y hacer frente a los retos educativos. ADNED no es solo preparación académica, es un espacio donde el compromiso, la confianza y la innovación se convierten en aliados para cumplir sueños y abrir las puertas del futuro.
@@ -814,57 +732,6 @@
 				</div>
 			</div>
 
-			<!-- Sección de Fotos de Reseñas - Carrusel -->
-			<div class="fotos-reseñas-container">
-				<div class="fotos-header">
-					<h3 class="fotos-title">Reseñas en Imágenes</h3>
-					<p class="fotos-subtitle">
-						Mira lo que dicen nuestros estudiantes a través de sus capturas de pantalla
-					</p>
-				</div>
-
-				<div class="carousel-container">
-					<div class="carousel-wrapper">
-						<button class="carousel-btn carousel-prev" on:click={prevPhoto} on:mouseenter={stopCarousel} on:mouseleave={startCarousel}>
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<polyline points="15,18 9,12 15,6"/>
-							</svg>
-						</button>
-
-						<div class="carousel-slide">
-							<div class="carousel-track" style="transform: translateX(-{currentPhotoIndex * 33.333}%)">
-								{#each fotosResenas as foto, index}
-									<div class="carousel-item">
-										<div class="foto-item">
-											<img src={foto.src} alt={foto.alt} class="foto-imagen">
-											<div class="foto-overlay">
-												<div class="play-button">
-													<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-														<polygon points="5,3 19,12 5,21"/>
-													</svg>
-												</div>
-											</div>
-											<div class="foto-info">
-												<div class="foto-logo">ADNED</div>
-												<div class="foto-titulo">{foto.titulo}</div>
-												<div class="foto-desc">{foto.desc}</div>
-											</div>
-										</div>
-									</div>
-								{/each}
-							</div>
-						</div>
-
-						<button class="carousel-btn carousel-next" on:click={nextPhoto} on:mouseenter={stopCarousel} on:mouseleave={startCarousel}>
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<polyline points="9,18 15,12 9,6"/>
-							</svg>
-						</button>
-					</div>
-
-
-				</div>
-			</div>
 		</div>
 	</section>
 
@@ -1069,7 +936,7 @@
 	}
 
 	.hero-content-centered {
-		max-width: 600px;
+		max-width: 1000px;
 		margin: 0 auto;
 		text-align: center;
 		position: relative;
@@ -1929,9 +1796,9 @@
 
 
 	.container {
-		max-width: 1200px;
+		max-width: 1400px;
 		margin: 0 auto;
-		padding: 6rem 1rem 4rem 1rem;
+		padding: 6rem 2rem 4rem 2rem;
 		position: relative;
 		z-index: 2;
 	}
@@ -1963,11 +1830,38 @@
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
 
-	.benefits-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-		gap: 2rem;
+	.benefits-staggered {
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
 		margin-top: 3rem;
+		max-width: 1200px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.benefit-left {
+		align-self: flex-start;
+		margin-right: 15%;
+	}
+
+	.benefit-right {
+		align-self: flex-end;
+		margin-left: 15%;
+	}
+
+	.benefit-content {
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+	}
+
+	.benefit-right .benefit-content {
+		flex-direction: row-reverse;
+	}
+
+	.benefit-text {
+		flex: 1;
 	}
 
 	.benefit-card {
@@ -2041,9 +1935,30 @@
 			font-size: 2rem;
 		}
 
-		.benefits-grid {
-			grid-template-columns: 1fr;
+		.benefits-staggered {
+			gap: 2rem;
+		}
+
+		.benefit-left,
+		.benefit-right {
+			margin-left: 0;
+			margin-right: 0;
+			align-self: stretch;
+		}
+
+		.benefit-content {
+			flex-direction: column;
+			text-align: center;
 			gap: 1.5rem;
+		}
+
+		.benefit-right .benefit-content {
+			flex-direction: column;
+		}
+
+		.quienes-somos-left {
+			margin-left: 0;
+			margin-right: 0;
 		}
 
 		.benefit-card {
@@ -2115,6 +2030,11 @@
 	.quienes-somos-text {
 		position: relative;
 		z-index: 2;
+	}
+
+	.quienes-somos-left {
+		margin-left: 0;
+		margin-right: 20%;
 	}
 
 	.main-text {
@@ -2304,7 +2224,7 @@
 		line-height: 1.7;
 		margin: 0;
 		text-align: justify;
-		max-width: 800px;
+		max-width: 1000px;
 		margin: 0 auto;
 	}
 
@@ -2697,7 +2617,7 @@
 
 	/* Reseñas Section */
 	.faq-section {
-		padding: 2rem 0 4rem 0;
+		padding: 2rem 0 1rem 0;
 		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		position: relative;
 		overflow: hidden;
@@ -2793,7 +2713,7 @@
 	}
 
 	.reseñas-container {
-		max-width: 800px;
+		max-width: 1000px;
 		margin: 0 auto;
 		position: relative;
 		z-index: 2;
@@ -2938,7 +2858,7 @@
 	/* Responsive para Reseñas */
 	@media (max-width: 768px) {
 		.faq-section {
-			padding: 4rem 0;
+			padding: 2rem 0 1rem 0;
 		}
 
 		.reinforcement-text {
@@ -2982,44 +2902,8 @@
 		}
 	}
 
-	/* Fotos de Reseñas - Carrusel */
-	.fotos-reseñas-container {
-		margin-top: 0.5rem;
-		padding-top: 0.5rem;
-		border-top: 2px solid rgba(251, 191, 36, 0.3);
-	}
 
-	.fotos-header {
-		text-align: center;
-		margin-bottom: 2.5rem;
-	}
 
-	.fotos-title {
-		font-size: 2rem;
-		font-weight: 700;
-		color: #ffffff;
-		margin-bottom: 1rem;
-		text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-	}
-
-	.fotos-subtitle {
-		font-size: 1.1rem;
-		color: rgba(255, 255, 255, 0.8);
-		line-height: 1.6;
-		max-width: 600px;
-		margin: 0 auto;
-	}
-
-	.carousel-container {
-		max-width: 900px;
-		margin: 0 auto;
-		position: relative;
-		padding: 0 1rem;
-	}
 
 	.carousel-wrapper {
 		position: relative;
@@ -3452,7 +3336,7 @@
 		position: relative;
 		overflow: hidden;
 		text-align: left;
-		max-width: 600px;
+		max-width: 700px;
 		width: 100%;
 	}
 
