@@ -256,6 +256,12 @@
 		}
 	}
 
+	function playVideo() {
+		// Aquí puedes agregar la lógica para reproducir el video
+		console.log('Reproducir video');
+		// Por ejemplo, abrir un modal con el video o redirigir a YouTube
+	}
+
 	
 	// Referencias para animaciones
 	let heroTitle: HTMLElement;
@@ -419,24 +425,48 @@
 		<!-- Hero Section -->
 		<section class="hero" bind:this={heroSection}>
 			<div class="container">
-				<div class="hero-content-centered">
-					<h1 class="hero-title text-glow text-zoom-ultra" bind:this={heroTitle}>
-				
-						La guía que todo padre necesita para que su hijo ingrese a la prepa de sus sueños
-					</h1>
-					<h2 class="hero-subtitle text-zoom-smooth" bind:this={heroSubtitle}>
-						Regístrate <strong>GRATIS</strong> y recibe en tu WhatsApp consejos, guías y recordatorios clave del proceso de admisión <strong>ECOEMS 2026</strong>.
-					</h2>
-					
-					<!-- Botón para ir al formulario -->
-					<div class="cta-container">
-						<button class="btn btn-whatsapp" on:click={scrollToForm}>
-							<span class="whatsapp-icon">📱</span>
-							¡Registrarme GRATIS!
-						</button>
+				<div class="hero-content">
+					<!-- Texto a la izquierda -->
+					<div class="hero-text">
+						<h1 class="hero-title text-glow text-zoom-ultra" bind:this={heroTitle}>
+							La guía que todo padre necesita para que su hijo ingrese a la prepa de sus sueños
+						</h1>
+						<h2 class="hero-subtitle text-zoom-smooth" bind:this={heroSubtitle}>
+							Regístrate <strong>GRATIS</strong> y recibe en tu WhatsApp consejos, guías y recordatorios clave del proceso de admisión <strong>ECOEMS 2026</strong>.
+						</h2>
+						
+						<!-- Botón para ir al formulario -->
+						<div class="cta-container">
+							<button class="btn btn-whatsapp floating-button" on:click={scrollToForm}>
+								<span class="whatsapp-icon">📱</span>
+								Regístrate gratis
+							</button>
+						</div>
 					</div>
+					
+					<!-- Video a la derecha -->
+					<div class="hero-video">
+						<div class="video-container">
+							<div class="video-frame">
+								<img src="/photo_2025-09-12_15-08-29.jpg" alt="Instructor del curso" class="video-thumbnail">
+								<div class="video-overlay">
+									<div class="ai-robot">🤖</div>
+									<button class="play-button" on:click={playVideo} type="button" aria-label="Reproducir video">
+										<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+											<polygon points="5,3 19,12 5,21"></polygon>
+										</svg>
+									</button>
+									<div class="video-shapes">
+										<div class="shape shape-1"></div>
+										<div class="shape shape-2"></div>
+										<div class="shape shape-3"></div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
+			</div>
 		</section>
 
 	<!-- Sección de Misión y Visión -->
@@ -910,10 +940,10 @@
 	.hero {
 		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		color: var(--bg-white);
-		padding: 0 0 4rem 0;
-		min-height: auto;
+		padding: 4rem 0;
+		min-height: 80vh;
 		display: flex;
-		align-items: flex-start;
+		align-items: center;
 		position: relative;
 		overflow: hidden;
 	}
@@ -959,15 +989,148 @@
 		}
 	}
 
-	.hero-content-centered {
-		max-width: 1000px;
+	.hero-content {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 4rem;
+		align-items: center;
+		max-width: 1400px;
 		margin: 0 auto;
-		text-align: center;
 		position: relative;
 		z-index: 2;
-		padding-bottom: 2rem;
-		animation: none !important;
-		transform: none !important;
+	}
+
+	.hero-text {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.hero-video {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.video-container {
+		position: relative;
+		width: 100%;
+		max-width: 500px;
+	}
+
+	.video-frame {
+		position: relative;
+		width: 100%;
+		height: 400px;
+		border-radius: 1rem;
+		overflow: hidden;
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+		background: #1e293b;
+		transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+		transition: all 0.3s ease;
+	}
+
+	.video-frame:hover {
+		transform: perspective(1000px) rotateY(-2deg) rotateX(2deg) scale(1.02);
+		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+	}
+
+	.video-thumbnail {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.video-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.4) 100%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.ai-robot {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		font-size: 2rem;
+		animation: float 3s ease-in-out infinite;
+	}
+
+	@keyframes float {
+		0%, 100% { transform: translateY(0px); }
+		50% { transform: translateY(-10px); }
+	}
+
+	.play-button {
+		width: 80px;
+		height: 80px;
+		background: rgba(255, 255, 255, 0.9);
+		border: none;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+	}
+
+	.play-button:hover {
+		background: rgba(255, 255, 255, 1);
+		transform: scale(1.1);
+		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+	}
+
+	.play-button svg {
+		width: 30px;
+		height: 30px;
+		color: #1e293b;
+		margin-left: 3px;
+	}
+
+	.video-shapes {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		pointer-events: none;
+	}
+
+	.shape {
+		position: absolute;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.1);
+		animation: float 4s ease-in-out infinite;
+	}
+
+	.shape-1 {
+		width: 20px;
+		height: 20px;
+		top: 30%;
+		left: 10%;
+		animation-delay: 0s;
+	}
+
+	.shape-2 {
+		width: 15px;
+		height: 15px;
+		top: 60%;
+		right: 15%;
+		animation-delay: 1s;
+	}
+
+	.shape-3 {
+		width: 25px;
+		height: 25px;
+		bottom: 20%;
+		left: 20%;
+		animation-delay: 2s;
 	}
 
 	.hero-title {
@@ -992,6 +1155,23 @@
 		opacity: 1;
 		visibility: visible;
 		display: block;
+	}
+
+	.hero-subtitle {
+		font-size: 1.1rem;
+		line-height: 1.4;
+		margin-bottom: 1.5rem;
+		color: #ffffff;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		opacity: 1;
+		visibility: visible;
+		display: block;
+	}
+
+	.cta-container {
+		margin-top: 2rem;
+		display: flex;
+		justify-content: center;
 	}
 
 	@keyframes titleFloat {
@@ -1512,6 +1692,55 @@
 		margin-top: 1rem;
 	}
 
+	/* Efecto de flotación para el botón */
+	.floating-button {
+		animation: floating 3s ease-in-out infinite;
+		box-shadow: 
+			0 15px 35px rgba(251, 191, 36, 0.5),
+			0 0 25px rgba(251, 191, 36, 0.3),
+			0 0 0 1px rgba(255, 255, 255, 0.1);
+	}
+
+	@keyframes floating {
+		0%, 100% { 
+			transform: translateY(0px) scale(1);
+			box-shadow: 
+				0 15px 35px rgba(251, 191, 36, 0.5),
+				0 0 25px rgba(251, 191, 36, 0.3),
+				0 0 0 1px rgba(255, 255, 255, 0.1);
+		}
+		25% { 
+			transform: translateY(-8px) scale(1.02);
+			box-shadow: 
+				0 20px 40px rgba(251, 191, 36, 0.6),
+				0 0 30px rgba(251, 191, 36, 0.4),
+				0 0 0 2px rgba(255, 255, 255, 0.2);
+		}
+		50% { 
+			transform: translateY(-12px) scale(1.05);
+			box-shadow: 
+				0 25px 45px rgba(251, 191, 36, 0.7),
+				0 0 35px rgba(251, 191, 36, 0.5),
+				0 0 0 3px rgba(255, 255, 255, 0.3);
+		}
+		75% { 
+			transform: translateY(-8px) scale(1.02);
+			box-shadow: 
+				0 20px 40px rgba(251, 191, 36, 0.6),
+				0 0 30px rgba(251, 191, 36, 0.4),
+				0 0 0 2px rgba(255, 255, 255, 0.2);
+		}
+	}
+
+	.floating-button:hover {
+		animation-play-state: paused;
+		transform: translateY(-15px) scale(1.08);
+		box-shadow: 
+			0 30px 50px rgba(251, 191, 36, 0.8),
+			0 0 40px rgba(251, 191, 36, 0.6),
+			0 0 0 4px rgba(255, 255, 255, 0.4);
+	}
+
 	.btn-whatsapp::before {
 		content: '';
 		position: absolute;
@@ -1734,20 +1963,59 @@
 	/* Responsive Design */
 	@media (max-width: 768px) {
 		.hero {
-			padding: 1rem 0 2rem 0;
+			padding: 2rem 0;
 			min-height: auto;
 		}
 
+		.hero-content {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+			text-align: center;
+		}
+
 		.hero-title {
-			font-size: 1.4rem;
+			font-size: 1.8rem;
 		}
 
 		.hero-subtitle {
 			font-size: 1rem;
 		}
 
+		.video-frame {
+			height: 300px;
+			transform: none;
+		}
+
+		.video-frame:hover {
+			transform: scale(1.02);
+		}
+
+		.play-button {
+			width: 60px;
+			height: 60px;
+		}
+
+		.play-button svg {
+			width: 24px;
+			height: 24px;
+		}
+
 		.registration-form {
 			padding: 1.25rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.hero-title {
+			font-size: 1.5rem;
+		}
+
+		.hero-subtitle {
+			font-size: 0.9rem;
+		}
+
+		.video-frame {
+			height: 250px;
 		}
 	}
 
