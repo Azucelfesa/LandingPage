@@ -126,11 +126,23 @@
 	
 	// Estado para mostrar carruseles adicionales
 	let showAdditionalCarousels = false;
-	
+
 	// Estado para el modal de zoom
 	let showImageModal = false;
 	let selectedImage = '';
 	let selectedImageAlt = '';
+	
+	// Variables para animaciones interactivas
+	let animatedStats = {
+		students: 0,
+		success: 0,
+		years: 0,
+		courses: 0
+	};
+	
+	let isStatsVisible = false;
+	let isCommunityHovered = false;
+	let communitySection: HTMLElement;
 
 	
 	// Lista de imágenes para cada carrusel
@@ -366,6 +378,37 @@
 		startAllCarousels();
 	}
 
+	// Función para animar contadores
+	function animateCounter(target: number, key: keyof typeof animatedStats, duration: number = 2000) {
+		const start = animatedStats[key];
+		const increment = (target - start) / (duration / 16);
+		let current = start;
+		
+		const timer = setInterval(() => {
+			current += increment;
+			if (current >= target) {
+				animatedStats[key] = target;
+				clearInterval(timer);
+			} else {
+				animatedStats[key] = Math.floor(current);
+			}
+		}, 16);
+	}
+
+	// Función para activar animaciones cuando la sección es visible
+	function handleCommunityIntersection(entries: IntersectionObserverEntry[]) {
+		entries.forEach(entry => {
+			if (entry.isIntersecting && !isStatsVisible) {
+				isStatsVisible = true;
+				// Animar contadores con delays escalonados
+				setTimeout(() => animateCounter(1200, 'students'), 200);
+				setTimeout(() => animateCounter(95, 'success'), 400);
+				setTimeout(() => animateCounter(5, 'years'), 600);
+				setTimeout(() => animateCounter(15, 'courses'), 800);
+			}
+		});
+	}
+
 
 	// Función para validar el formulario
 	function validateForm() {
@@ -574,6 +617,14 @@
 				setTimeout(() => {
 					textGlowAnimation(heroTitle);
 				}, 1500);
+			}
+
+			// Configurar Intersection Observer para animaciones de estadísticas
+			if (communitySection) {
+				const observer = new IntersectionObserver(handleCommunityIntersection, {
+					threshold: 0.3
+				});
+				observer.observe(communitySection);
 			}
 
 			// Agregar partículas a la sección de misión y visión
@@ -878,17 +929,57 @@
 			</div>
 
 			<div class="cursos-sections">
-				<!-- Sección 1: Introducción -->
-				<div class="curso-section curso-intro">
-					<div class="curso-icon">
+				<!-- Sección 1: Introducción Interactiva -->
+				<div class="curso-section curso-intro interactive-community" 
+					 bind:this={communitySection}
+					 on:mouseenter={() => isCommunityHovered = true}
+					 on:mouseleave={() => isCommunityHovered = false}>
+					
+					<!-- Fondo con partículas animadas -->
+					<div class="particles-background">
+						{#each Array(20) as _, i}
+							<div class="particle" style="--delay: {i * 0.1}s; --duration: {3 + Math.random() * 2}s;"></div>
+						{/each}
+					</div>
+					
+					<!-- Contenido principal -->
+					<div class="community-content">
+						<div class="curso-icon animated-icon" class:rotating={isCommunityHovered}>
 							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
 							</svg>
+							<div class="icon-glow"></div>
 						</div>
-					<h3 class="curso-title">Nuestra Comunidad Educativa</h3>
-					<p class="curso-text">
+						
+						<h3 class="curso-title text-reveal">Nuestra Comunidad Educativa</h3>
+						<p class="curso-text text-reveal">
 						ADNED es una comunidad educativa creada para transformar la manera en que los estudiantes se preparan rumbo a los exámenes de admisión más importantes de su vida académica. Nuestro propósito va más allá de enseñar; buscamos inspirar y acompañar a cada alumno en un proceso que suele estar lleno de nervios, dudas e incertidumbre.
 						</p>
+						
+						<!-- Estadísticas animadas -->
+						<div class="stats-container">
+							<div class="stat-card" class:animate={isStatsVisible}>
+								<div class="stat-number">{animatedStats.students}+</div>
+								<div class="stat-label">Estudiantes</div>
+								<div class="stat-icon">👥</div>
+							</div>
+							<div class="stat-card" class:animate={isStatsVisible}>
+								<div class="stat-number">{animatedStats.success}%</div>
+								<div class="stat-label">Éxito</div>
+								<div class="stat-icon">🎯</div>
+							</div>
+							<div class="stat-card" class:animate={isStatsVisible}>
+								<div class="stat-number">{animatedStats.years}+</div>
+								<div class="stat-label">Años</div>
+								<div class="stat-icon">⭐</div>
+							</div>
+							<div class="stat-card" class:animate={isStatsVisible}>
+								<div class="stat-number">{animatedStats.courses}+</div>
+								<div class="stat-label">Cursos</div>
+								<div class="stat-icon">📚</div>
+							</div>
+						</div>
+					</div>
 							</div>
 
 				<!-- Botón Ver Más -->
@@ -909,9 +1000,9 @@
 							</div>
 
 				{#if showMoreCursos}
-					<!-- Sección 2: Beneficios Principales -->
-					<div class="curso-section curso-beneficios">
-						<div class="curso-icon">
+					<!-- Sección 2: Beneficios Principales Interactivos -->
+					<div class="curso-section curso-beneficios interactive-benefits">
+						<div class="curso-icon animated-icon">
 							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 								<path d="M9 12l2 2 4-4"/>
 								<path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
@@ -919,32 +1010,37 @@
 								<path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
 								<path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
 							</svg>
+							<div class="icon-glow"></div>
 						</div>
-						<h3 class="curso-title">Beneficios Principales</h3>
+						<h3 class="curso-title text-reveal">Beneficios Principales</h3>
 						<div class="beneficios-grid">
-							<div class="beneficio-item">
+							<div class="beneficio-item interactive-card" data-benefit="online">
 								<div class="beneficio-icon">
 									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 										<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
 										<line x1="8" y1="21" x2="16" y2="21"/>
 										<line x1="12" y1="17" x2="12" y2="21"/>
 									</svg>
+									<div class="icon-pulse"></div>
 					</div>
 								<h4 class="beneficio-title">Clases en Línea</h4>
 								<p class="beneficio-desc">Acceso a clases virtuales desde cualquier lugar</p>
+								<div class="benefit-highlight">💻</div>
 				</div>
 
-							<div class="beneficio-item">
+							<div class="beneficio-item interactive-card" data-benefit="simulacros">
 								<div class="beneficio-icon">
 									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 										<path d="M9 11H5a2 2 0 0 0-2 2v3c0 1.1.9 2 2 2h4m0-7v7m0-7h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H9m0-7V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>
 									</svg>
+									<div class="icon-pulse"></div>
 							</div>
 								<h4 class="beneficio-title">Simulacros</h4>
 								<p class="beneficio-desc">Pruebas de práctica para evaluar tu progreso</p>
+								<div class="benefit-highlight">📊</div>
 							</div>
 							
-							<div class="beneficio-item">
+							<div class="beneficio-item interactive-card" data-benefit="banco">
 								<div class="beneficio-icon">
 									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 										<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -953,12 +1049,14 @@
 										<line x1="16" y1="17" x2="8" y2="17"/>
 										<polyline points="10,9 9,9 8,9"/>
 									</svg>
+									<div class="icon-pulse"></div>
 						</div>
 								<h4 class="beneficio-title">Banco de Preguntas</h4>
 								<p class="beneficio-desc">Amplia base de datos con preguntas de exámenes</p>
+								<div class="benefit-highlight">📚</div>
 					</div>
 
-							<div class="beneficio-item">
+							<div class="beneficio-item interactive-card" data-benefit="acompañamiento">
 								<div class="beneficio-icon">
 									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 										<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -966,9 +1064,11 @@
 										<path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
 										<path d="M16 3.13a4 4 0 0 1 0 7.75"/>
 									</svg>
+									<div class="icon-pulse"></div>
 							</div>
 								<h4 class="beneficio-title">Acompañamiento</h4>
 								<p class="beneficio-desc">Soporte personalizado durante todo el proceso</p>
+								<div class="benefit-highlight">🤝</div>
 							</div>
 						</div>
 					</div>
@@ -994,9 +1094,9 @@
 									<div class="grid-content">
 										<h4 class="grid-title">Ambiente de Estudio</h4>
 										<p class="grid-desc">Espacios diseñados para el aprendizaje</p>
-									</div>
-								</div>
 							</div>
+						</div>
+					</div>
 							
 							<div class="grid-item medium">
 								<img src="/mentor/IMG_7660.jpg" alt="Clases Interactivas" class="grid-image">
@@ -1004,9 +1104,9 @@
 									<div class="grid-content">
 										<h4 class="grid-title">Clases Interactivas</h4>
 										<p class="grid-desc">Aprendizaje dinámico</p>
-									</div>
-								</div>
-							</div>
+				</div>
+			</div>
+		</div>
 							
 							<div class="grid-item small">
 								<img src="/mentor/IMG_7661.jpg" alt="Material Didáctico" class="grid-image">
@@ -1321,9 +1421,9 @@
 									<polyline points="15,18 9,12 15,6"/>
 								</svg>
 							</button>
-								<div class="carousel-track">
-									{#each carousel3Images as image, index}
-										<div class="carousel-slide" class:active={index === carousel3Index}>
+							<div class="carousel-track">
+								{#each carousel3Images as image, index}
+									<div class="carousel-slide" class:active={index === carousel3Index}>
 											<img 
 												src="/carrusel/3/{image}" 
 												alt="Carrusel 3 - Imagen {index + 1}" 
@@ -1331,9 +1431,9 @@
 												on:click={() => openImageModal(`/carrusel/3/${image}`, `Carrusel 3 - Imagen ${index + 1}`)}
 												class="carousel-image-clickable"
 											/>
-										</div>
-									{/each}
-								</div>
+									</div>
+								{/each}
+							</div>
 							<button class="carousel-btn next-btn" on:click={nextCarousel3} on:mouseenter={stopAllCarousels} on:mouseleave={startAllCarousels}>
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<polyline points="9,18 15,12 9,6"/>
@@ -2539,6 +2639,353 @@
 		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 	}
 
+	/* Sección Comunidad Interactiva */
+	.interactive-community {
+		position: relative;
+		overflow: hidden;
+		background: #ffffff;
+		border: 2px solid transparent;
+		background-clip: padding-box;
+		transition: all 0.5s ease;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+	}
+
+	.interactive-community::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(135deg, 
+			rgba(99, 102, 241, 0.5) 0%, 
+			rgba(168, 85, 247, 0.5) 50%, 
+			rgba(236, 72, 153, 0.5) 100%);
+		border-radius: inherit;
+		padding: 2px;
+		mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+		mask-composite: exclude;
+		opacity: 0;
+		transition: opacity 0.5s ease;
+	}
+
+	.interactive-community:hover::before {
+		opacity: 1;
+	}
+
+	.interactive-community:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+	}
+
+	/* Partículas de fondo */
+	.particles-background {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		overflow: hidden;
+	}
+
+	.particle {
+		position: absolute;
+		width: 4px;
+		height: 4px;
+		background: linear-gradient(45deg, #fbbf24, #f59e0b);
+		border-radius: 50%;
+		animation: float var(--duration) ease-in-out infinite;
+		animation-delay: var(--delay);
+		opacity: 0.6;
+	}
+
+	@keyframes float {
+		0%, 100% {
+			transform: translateY(100vh) translateX(0) scale(0);
+			opacity: 0;
+		}
+		10% {
+			opacity: 0.6;
+		}
+		90% {
+			opacity: 0.6;
+		}
+		50% {
+			transform: translateY(-10vh) translateX(20px) scale(1);
+			opacity: 1;
+		}
+	}
+
+	/* Contenido de la comunidad */
+	.community-content {
+		position: relative;
+		z-index: 2;
+	}
+
+	/* Iconos animados */
+	.animated-icon {
+		position: relative;
+		transition: all 0.5s ease;
+	}
+
+	.animated-icon.rotating {
+		animation: rotate 2s ease-in-out infinite;
+	}
+
+	.icon-glow {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 120%;
+		height: 120%;
+		background: radial-gradient(circle, rgba(251, 191, 36, 0.3) 0%, transparent 70%);
+		border-radius: 50%;
+		opacity: 0;
+		transition: opacity 0.5s ease;
+		pointer-events: none;
+	}
+
+	.animated-icon:hover .icon-glow {
+		opacity: 1;
+	}
+
+	@keyframes rotate {
+		0%, 100% { transform: rotate(0deg) scale(1); }
+		50% { transform: rotate(180deg) scale(1.1); }
+	}
+
+	/* Texto con efecto reveal */
+	.text-reveal {
+		opacity: 0;
+		transform: translateY(30px);
+		animation: textReveal 1s ease forwards;
+	}
+
+	@keyframes textReveal {
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	/* Contenedor de estadísticas */
+	.stats-container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 1.5rem;
+		margin-top: 2rem;
+	}
+
+	.stat-card {
+		background: rgba(255, 255, 255, 0.9);
+		backdrop-filter: blur(10px);
+		border-radius: 1rem;
+		padding: 1.5rem;
+		text-align: center;
+		position: relative;
+		overflow: hidden;
+		transition: all 0.5s ease;
+		border: 1px solid rgba(251, 191, 36, 0.2);
+	}
+
+	.stat-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.2), transparent);
+		transition: left 0.5s ease;
+	}
+
+	.stat-card:hover::before {
+		left: 100%;
+	}
+
+	.stat-card.animate {
+		animation: slideInUp 0.8s ease forwards;
+	}
+
+	.stat-card:hover {
+		transform: translateY(-10px) scale(1.05);
+		box-shadow: 0 15px 30px rgba(251, 191, 36, 0.3);
+		border-color: rgba(251, 191, 36, 0.5);
+	}
+
+	@keyframes slideInUp {
+		from {
+			opacity: 0;
+			transform: translateY(50px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.stat-number {
+		font-size: 2.5rem;
+		font-weight: 800;
+		background: linear-gradient(135deg, #fbbf24, #f59e0b);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		margin-bottom: 0.5rem;
+	}
+
+	.stat-label {
+		font-size: 1rem;
+		font-weight: 600;
+		color: #374151;
+		margin-bottom: 0.5rem;
+	}
+
+	.stat-icon {
+		font-size: 1.5rem;
+		opacity: 0.7;
+	}
+
+	/* Beneficios Interactivos */
+	.interactive-benefits {
+		background: linear-gradient(135deg, 
+			rgba(16, 185, 129, 0.05) 0%, 
+			rgba(59, 130, 246, 0.05) 50%, 
+			rgba(168, 85, 247, 0.05) 100%);
+	}
+
+	.interactive-card {
+		position: relative;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(10px);
+		border-radius: 1rem;
+		padding: 2rem;
+		text-align: center;
+		transition: all 0.5s ease;
+		border: 2px solid transparent;
+		overflow: hidden;
+	}
+
+	.interactive-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(135deg, 
+			rgba(99, 102, 241, 0.1) 0%, 
+			rgba(168, 85, 247, 0.1) 50%, 
+			rgba(236, 72, 153, 0.1) 100%);
+		opacity: 0;
+		transition: opacity 0.5s ease;
+		z-index: 1;
+	}
+
+	.interactive-card:hover::before {
+		opacity: 1;
+	}
+
+	.interactive-card:hover {
+		transform: translateY(-15px) scale(1.03);
+		box-shadow: 0 25px 50px rgba(99, 102, 241, 0.2);
+		border-color: rgba(99, 102, 241, 0.3);
+	}
+
+	.interactive-card > * {
+		position: relative;
+		z-index: 2;
+	}
+
+	.beneficio-icon {
+		position: relative;
+		width: 60px;
+		height: 60px;
+		margin: 0 auto 1rem;
+		background: linear-gradient(135deg, #fbbf24, #f59e0b);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.5s ease;
+	}
+
+	.interactive-card:hover .beneficio-icon {
+		transform: scale(1.2) rotate(10deg);
+		box-shadow: 0 10px 25px rgba(251, 191, 36, 0.4);
+	}
+
+	.icon-pulse {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+		background: rgba(251, 191, 36, 0.3);
+		animation: pulse 2s ease-in-out infinite;
+	}
+
+	@keyframes pulse {
+		0%, 100% {
+			transform: translate(-50%, -50%) scale(1);
+			opacity: 0.7;
+		}
+		50% {
+			transform: translate(-50%, -50%) scale(1.2);
+			opacity: 0.3;
+		}
+	}
+
+	.beneficio-title {
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin-bottom: 0.75rem;
+		transition: color 0.3s ease;
+	}
+
+	.interactive-card:hover .beneficio-title {
+		color: #6366f1;
+	}
+
+	.beneficio-desc {
+		color: #6b7280;
+		line-height: 1.6;
+		margin-bottom: 1rem;
+	}
+
+	.benefit-highlight {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		font-size: 1.5rem;
+		opacity: 0;
+		transform: scale(0);
+		transition: all 0.3s ease;
+	}
+
+	.interactive-card:hover .benefit-highlight {
+		opacity: 1;
+		transform: scale(1);
+		animation: bounce 0.6s ease;
+	}
+
+	@keyframes bounce {
+		0%, 20%, 50%, 80%, 100% {
+			transform: scale(1) translateY(0);
+		}
+		40% {
+			transform: scale(1.2) translateY(-10px);
+		}
+		60% {
+			transform: scale(1.1) translateY(-5px);
+		}
+	}
+
 	/* Modal de Zoom */
 	.image-modal-overlay {
 		position: fixed;
@@ -2964,6 +3411,29 @@
 			width: 18px;
 			height: 18px;
 		}
+
+		/* Responsive para sección interactiva */
+		.stats-container {
+			grid-template-columns: repeat(2, 1fr);
+			gap: 1rem;
+		}
+
+		.stat-card {
+			padding: 1rem;
+		}
+
+		.stat-number {
+			font-size: 2rem;
+		}
+
+		.interactive-card {
+			padding: 1.5rem;
+		}
+
+		.beneficio-icon {
+			width: 50px;
+			height: 50px;
+		}
 	}
 
 	@media (max-width: 480px) {
@@ -2988,6 +3458,33 @@
 		.image-modal-close svg {
 			width: 16px;
 			height: 16px;
+		}
+
+		/* Responsive para móviles pequeños */
+		.stats-container {
+			grid-template-columns: 1fr;
+			gap: 0.75rem;
+		}
+
+		.stat-card {
+			padding: 0.75rem;
+		}
+
+		.stat-number {
+			font-size: 1.75rem;
+		}
+
+		.interactive-card {
+			padding: 1rem;
+		}
+
+		.beneficio-icon {
+			width: 45px;
+			height: 45px;
+		}
+
+		.beneficio-title {
+			font-size: 1.1rem;
 		}
 
 		.hero {
