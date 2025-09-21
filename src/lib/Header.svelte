@@ -28,7 +28,6 @@
 			<div class="logo">
 				<a href="/" class="logo-link">
 					<img src="/photo_2025-09-12_15-08-29.jpg" alt="ADNED Logo" class="logo-image">
-				
 				</a>
 			</div>
 
@@ -39,10 +38,10 @@
 						<a href="/" class="nav-link" on:click={closeMenu}>Inicio</a>
 					</li>
 					<li class="nav-item">
-						<a href="/#beneficios" class="nav-link" on:click={closeMenu}>Misión y Visión</a>
+						<a href="/#quienes-somos" class="nav-link" on:click={closeMenu}>Quiénes Somos</a>
 					</li>
 					<li class="nav-item">
-						<a href="/#quienes-somos" class="nav-link" on:click={closeMenu}>Quiénes Somos</a>
+						<a href="/#beneficios" class="nav-link" on:click={closeMenu}>Misión y Visión</a>
 					</li>
 					<li class="nav-item">
 						<a href="/#nuestros-cursos" class="nav-link" on:click={closeMenu}>Nuestros Cursos</a>
@@ -63,12 +62,14 @@
 
 			<!-- CTA Button -->
 			<div class="header-cta">
-				<a href="/formulario" class="btn btn-primary btn-sm">
-					Empezar ahora
+				<a href="/formulario" class="btn btn-primary">
+					EMPEZAR AHORA
 				</a>
 			</div>
 		</div>
 	</div>
+	<!-- Línea separadora -->
+	<div class="header-separator"></div>
 </header>
 
 <style>
@@ -95,8 +96,10 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		height: 80px;
+		height: 140px;
 		position: relative;
+		padding: 0 1rem;
+		gap: 1rem;
 	}
 
 	.logo {
@@ -108,7 +111,7 @@
 	.logo-link {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
+		gap: 0.75rem;
 		text-decoration: none;
 		color: #ffffff;
 		font-weight: 700;
@@ -117,33 +120,15 @@
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
 
-	.logo-link:hover {
-		color: #fbbf24;
-		transform: scale(1.02);
-		text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
-	}
 
 	.logo-image {
-		width: 45px;
-		height: 45px;
+		width: 130px;
+		height: 130px;
 		object-fit: contain;
 		border-radius: 8px;
-		transition: all 0.3s ease;
 	}
 
-	.logo-link:hover .logo-image {
-		transform: scale(1.1);
-		filter: brightness(1.2);
-	}
 
-	.logo-text {
-		font-size: 1.5rem;
-		font-weight: 800;
-		background: linear-gradient(135deg, #FF0000, #FFFF00, #0000FF);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-	}
 
 	.nav {
 		display: flex;
@@ -154,11 +139,11 @@
 	.nav-list {
 		display: flex;
 		align-items: center;
-		gap: 0.8rem;
+		gap: 0.6rem;
 		list-style: none;
 		margin: 0;
 		padding: 0;
-		flex-wrap: wrap;
+		flex-wrap: nowrap;
 	}
 
 	.nav-item {
@@ -180,9 +165,9 @@
 		font-weight: 600;
 		transition: all 0.3s ease;
 		position: relative;
-		padding: 0.3rem 0.4rem;
+		padding: 0.4rem 0.5rem;
 		border-radius: 0.5rem;
-		font-size: 0.75rem;
+		font-size: 0.9rem;
 		text-transform: uppercase;
 		letter-spacing: 0.3px;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -217,6 +202,8 @@
 	.header-cta {
 		display: flex;
 		align-items: center;
+		z-index: 1002;
+		position: relative;
 	}
 
 	.mobile-menu-btn {
@@ -253,48 +240,45 @@
 	/* Tablet Styles */
 	@media (max-width: 1024px) {
 		.nav-list {
-			gap: 0.6rem;
+			gap: 0.4rem;
 		}
 		
 		.nav-link {
-			font-size: 0.7rem;
-			padding: 0.25rem 0.35rem;
+			font-size: 0.8rem;
+			padding: 0.3rem 0.4rem;
 		}
 		
 		.logo-image {
-			width: 40px;
-			height: 40px;
+			width: 120px;
+			height: 120px;
 		}
 		
 		.logo-link {
 			font-size: 1.1rem;
-			gap: 0.4rem;
+			gap: 0.5rem;
 		}
 		
 		.btn-primary {
 			padding: 0.6rem 1.2rem;
-			font-size: 0.85rem;
+			font-size: 0.8rem;
 		}
 	}
 
 	/* Mobile Styles */
 	@media (max-width: 768px) {
 		.header-content {
-			height: 70px;
+			height: 120px;
 		}
 		
 		.logo-image {
-			width: 50px;
-			height: 50px;
+			width: 100px;
+			height: 100px;
 		}
 		
-		.logo-text {
-			font-size: 1.2rem;
-		}
 		
 		.nav {
 			position: fixed;
-			top: 70px;
+			top: 120px;
 			left: 0;
 			right: 0;
 			background: #290040;
@@ -359,7 +343,7 @@
 		}
 
 		.header-cta {
-			display: none;
+			display: flex;
 		}
 		
 		.mobile-menu-btn {
@@ -414,13 +398,10 @@
 		}
 		
 		.logo-image {
-			width: 45px;
-			height: 45px;
+			width: 85px;
+			height: 85px;
 		}
 		
-		.logo-text {
-			font-size: 1.1rem;
-		}
 		
 		.nav-link {
 			padding: 0.875rem 1rem;
@@ -443,16 +424,20 @@
 	}
 
 	.btn-primary {
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #f59e0b 100%);
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 100%);
 		color: #ffffff;
 		font-weight: 700;
-		border-radius: 0.75rem;
+		border-radius: 2rem;
 		position: relative;
 		overflow: hidden;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
-		box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+		box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		padding: 0.75rem 1.5rem;
+		font-size: 0.9rem;
+		min-width: 140px;
+		white-space: nowrap;
 	}
 
 	.btn-primary:hover {
@@ -462,8 +447,21 @@
 		text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 	}
 
-	.btn-sm {
-		padding: 0.375rem 0.75rem;
-		font-size: 0.875rem;
+
+	.header-separator {
+		height: 2px;
+		background: linear-gradient(90deg, transparent 0%, #fbbf24 50%, transparent 100%);
+		position: relative;
+		z-index: 1;
+	}
+
+	.header-separator::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 1px;
+		background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
 	}
 </style>

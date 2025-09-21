@@ -274,18 +274,18 @@ export function createBackgroundParticles(): void {
 	hero.appendChild(particleContainer);
 
 	// Crear partículas más sutiles
-	for (let i = 0; i < 15; i++) {
+	for (let i = 0; i < 40; i++) {
 		const particle = document.createElement('div');
 		particle.className = 'bg-particle';
 		particle.style.cssText = `
 			position: absolute;
-			width: ${Math.random() * 4 + 2}px;
-			height: ${Math.random() * 4 + 2}px;
-			background: rgba(251, 191, 36, ${Math.random() * 0.5 + 0.3});
+			width: ${Math.random() * 6 + 1}px;
+			height: ${Math.random() * 6 + 1}px;
+			background: rgba(251, 191, 36, ${Math.random() * 0.7 + 0.2});
 			border-radius: 50%;
 			left: ${Math.random() * 100}%;
 			top: 100%;
-			box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+			box-shadow: 0 0 12px rgba(251, 191, 36, 0.6);
 		`;
 		
 		particleContainer.appendChild(particle);
@@ -326,19 +326,19 @@ export function createBackgroundParticlesForBenefits(container: HTMLElement): vo
 	container.appendChild(particleContainer);
 
 	// Crear partículas más sutiles para beneficios
-	for (let i = 0; i < 12; i++) {
+	for (let i = 0; i < 25; i++) {
 		const particle = document.createElement('div');
 		particle.className = 'benefits-particle';
 		particle.style.cssText = `
 			position: absolute;
-			width: ${Math.random() * 3 + 1}px;
-			height: ${Math.random() * 3 + 1}px;
-			background: rgba(251, 191, 36, ${Math.random() * 0.4 + 0.2});
+			width: ${Math.random() * 5 + 1}px;
+			height: ${Math.random() * 5 + 1}px;
+			background: rgba(251, 191, 36, ${Math.random() * 0.6 + 0.3});
 			border-radius: 50%;
 			left: ${Math.random() * 100}%;
 			top: 100%;
 			pointer-events: none;
-			box-shadow: 0 0 6px rgba(251, 191, 36, 0.3);
+			box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
 		`;
 		
 		particleContainer.appendChild(particle);

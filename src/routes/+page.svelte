@@ -51,6 +51,51 @@
 	let redirectTimer: number | null = null;
 	let showMoreCursos = false;
 
+	// Contador regresivo
+	let timeLeft = {
+		days: 0,
+		hours: 0,
+		minutes: 0,
+		seconds: 0
+	};
+	let countdownInterval: number | null = null;
+
+	// Fecha objetivo: 15 de enero de 2026
+	const targetDate = new Date('2026-01-15T23:59:59').getTime();
+
+	function updateCountdown() {
+		const now = new Date().getTime();
+		const distance = targetDate - now;
+
+		// Debug: mostrar información en consola
+		console.log('Fecha actual:', new Date(now));
+		console.log('Fecha objetivo:', new Date(targetDate));
+		console.log('Diferencia en ms:', distance);
+
+		if (distance < 0) {
+			timeLeft = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+			if (countdownInterval) {
+				clearInterval(countdownInterval);
+			}
+			console.log('Contador terminado');
+			return;
+		}
+
+		timeLeft = {
+			days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+			hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+			minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+			seconds: Math.floor((distance % (1000 * 60)) / 1000)
+		};
+
+		console.log('Tiempo restante:', timeLeft);
+	}
+
+	function startCountdown() {
+		updateCountdown();
+		countdownInterval = setInterval(updateCountdown, 1000);
+	}
+
 	
 	// Estado para controlar qué FAQ está abierto
 	let openFaq: number | null = null;
@@ -279,6 +324,8 @@
 
 	
 	onMount(() => {
+		// Iniciar contador regresivo
+		startCountdown();
 		
 		// Esperar a que los elementos estén disponibles
 		setTimeout(() => {
@@ -410,6 +457,10 @@
 		}
 		// Limpiar el intervalo del carrusel
 		stopAutoPlay();
+		// Limpiar el contador regresivo
+		if (countdownInterval) {
+			clearInterval(countdownInterval);
+		}
 	});
 </script>
 
@@ -428,19 +479,42 @@
 				<div class="hero-content">
 					<!-- Texto a la izquierda -->
 					<div class="hero-text">
-						<h1 class="hero-title text-glow text-zoom-ultra" bind:this={heroTitle}>
-							La guía que todo padre necesita para que su hijo ingrese a la prepa de sus sueños
-						</h1>
-						<h2 class="hero-subtitle text-zoom-smooth" bind:this={heroSubtitle}>
-							Regístrate <strong>GRATIS</strong> y recibe en tu WhatsApp consejos, guías y recordatorios clave del proceso de admisión <strong>ECOEMS 2026</strong>.
-						</h2>
-						
-						<!-- Botón para ir al formulario -->
-						<div class="cta-container">
+					<h1 class="hero-title text-glow text-zoom-ultra" bind:this={heroTitle}>
+						La guía que todo padre necesita para que su hijo ingrese a la prepa de sus sueños
+					</h1>
+					<h2 class="hero-subtitle text-zoom-smooth" bind:this={heroSubtitle}>
+						Regístrate <strong>GRATIS</strong> y recibe en tu WhatsApp consejos, guías y recordatorios clave del proceso de admisión <strong>ECOEMS 2026</strong>.
+					</h2>
+					
+					<!-- Botón para ir al formulario -->
+					<div class="cta-container">
 							<button class="btn btn-whatsapp floating-button" on:click={scrollToForm}>
-								<span class="whatsapp-icon">📱</span>
+							<span class="whatsapp-icon">📱</span>
 								Regístrate gratis
-							</button>
+						</button>
+					</div>
+
+						<!-- Contador regresivo -->
+						<div class="countdown-container">
+							<h3 class="countdown-title">INICIAMOS EN:</h3>
+							<div class="countdown-timer">
+								<div class="countdown-item" style="--item-index: 0;">
+									<div class="countdown-number">{timeLeft.days.toString().padStart(2, '0')}</div>
+									<div class="countdown-label">Días</div>
+								</div>
+								<div class="countdown-item" style="--item-index: 1;">
+									<div class="countdown-number">{timeLeft.hours.toString().padStart(2, '0')}</div>
+									<div class="countdown-label">Horas</div>
+								</div>
+								<div class="countdown-item" style="--item-index: 2;">
+									<div class="countdown-number">{timeLeft.minutes.toString().padStart(2, '0')}</div>
+									<div class="countdown-label">Min</div>
+								</div>
+								<div class="countdown-item" style="--item-index: 3;">
+									<div class="countdown-number">{timeLeft.seconds.toString().padStart(2, '0')}</div>
+									<div class="countdown-label">Seg</div>
+								</div>
+							</div>
 						</div>
 					</div>
 					
@@ -465,8 +539,8 @@
 							</div>
 						</div>
 					</div>
+					</div>
 				</div>
-			</div>
 		</section>
 
 	<!-- Sección de Misión y Visión -->
@@ -1015,13 +1089,13 @@
 	.video-container {
 		position: relative;
 		width: 100%;
-		max-width: 500px;
+		max-width: 600px;
 	}
 
 	.video-frame {
 		position: relative;
 		width: 100%;
-		height: 400px;
+		height: 500px;
 		border-radius: 1rem;
 		overflow: hidden;
 		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
@@ -1134,7 +1208,7 @@
 	}
 
 	.hero-title {
-		font-size: 2.2rem;
+		font-size: 3rem;
 		font-weight: 700;
 		line-height: 1.1;
 		margin-bottom: 1rem;
@@ -1172,6 +1246,112 @@
 		margin-top: 2rem;
 		display: flex;
 		justify-content: center;
+	}
+
+	/* Contador regresivo */
+	.countdown-container {
+		margin-top: 2.5rem;
+		text-align: center;
+	}
+
+	.countdown-title {
+		color: #ffffff;
+		font-size: 1.2rem;
+		font-weight: 600;
+		margin-bottom: 1.5rem;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		animation: titlePulse 2s ease-in-out infinite;
+		position: relative;
+	}
+
+	@keyframes titlePulse {
+		0%, 100% { 
+			transform: scale(1);
+			text-shadow: 
+				0 2px 4px rgba(0, 0, 0, 0.3),
+				0 0 10px rgba(251, 191, 36, 0.3);
+		}
+		50% { 
+			transform: scale(1.05);
+			text-shadow: 
+				0 2px 4px rgba(0, 0, 0, 0.3),
+				0 0 20px rgba(251, 191, 36, 0.6),
+				0 0 30px rgba(251, 191, 36, 0.4);
+		}
+	}
+
+	.countdown-timer {
+		display: flex;
+		justify-content: center;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+
+	.countdown-item {
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(10px);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: 12px;
+		padding: 1rem 0.8rem;
+		min-width: 70px;
+		text-align: center;
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+		transition: all 0.3s ease;
+	}
+
+	.countdown-item:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+		background: rgba(255, 255, 255, 0.15);
+	}
+
+	.countdown-number {
+		font-size: 2rem;
+		font-weight: 800;
+		color: #ffffff;
+		line-height: 1;
+		margin-bottom: 0.5rem;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		animation: numberGlow 3s ease-in-out infinite;
+		animation-delay: calc(var(--item-index) * 0.2s);
+	}
+
+	@keyframes numberGlow {
+		0%, 100% { 
+			transform: scale(1);
+			text-shadow: 
+				0 2px 4px rgba(0, 0, 0, 0.3),
+				0 0 8px rgba(251, 191, 36, 0.2);
+		}
+		50% { 
+			transform: scale(1.08);
+			text-shadow: 
+				0 2px 4px rgba(0, 0, 0, 0.3),
+				0 0 15px rgba(251, 191, 36, 0.5),
+				0 0 25px rgba(251, 191, 36, 0.3);
+		}
+	}
+
+	.countdown-label {
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: #fbbf24;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+		animation: labelFloat 4s ease-in-out infinite;
+		animation-delay: calc(var(--item-index) * 0.3s);
+	}
+
+	@keyframes labelFloat {
+		0%, 100% { 
+			transform: translateY(0px);
+			opacity: 0.8;
+		}
+		50% { 
+			transform: translateY(-3px);
+			opacity: 1;
+		}
 	}
 
 	@keyframes titleFloat {
@@ -1418,8 +1598,6 @@
 	}
 
 	.btn-whatsapp {
-		animation: none !important;
-		transform: none !important;
 		position: relative;
 		z-index: 101;
 	}
@@ -1694,7 +1872,7 @@
 
 	/* Efecto de flotación para el botón */
 	.floating-button {
-		animation: floating 3s ease-in-out infinite;
+		animation: floating 4s ease-in-out infinite;
 		box-shadow: 
 			0 15px 35px rgba(251, 191, 36, 0.5),
 			0 0 25px rgba(251, 191, 36, 0.3),
@@ -1709,26 +1887,33 @@
 				0 0 25px rgba(251, 191, 36, 0.3),
 				0 0 0 1px rgba(255, 255, 255, 0.1);
 		}
-		25% { 
-			transform: translateY(-8px) scale(1.02);
+		20% { 
+			transform: translateY(-10px) scale(1.03);
 			box-shadow: 
 				0 20px 40px rgba(251, 191, 36, 0.6),
 				0 0 30px rgba(251, 191, 36, 0.4),
 				0 0 0 2px rgba(255, 255, 255, 0.2);
 		}
-		50% { 
-			transform: translateY(-12px) scale(1.05);
+		40% { 
+			transform: translateY(-15px) scale(1.05);
 			box-shadow: 
 				0 25px 45px rgba(251, 191, 36, 0.7),
 				0 0 35px rgba(251, 191, 36, 0.5),
 				0 0 0 3px rgba(255, 255, 255, 0.3);
 		}
-		75% { 
-			transform: translateY(-8px) scale(1.02);
+		60% { 
+			transform: translateY(-10px) scale(1.03);
 			box-shadow: 
 				0 20px 40px rgba(251, 191, 36, 0.6),
 				0 0 30px rgba(251, 191, 36, 0.4),
 				0 0 0 2px rgba(255, 255, 255, 0.2);
+		}
+		80% { 
+			transform: translateY(-5px) scale(1.01);
+			box-shadow: 
+				0 18px 38px rgba(251, 191, 36, 0.55),
+				0 0 28px rgba(251, 191, 36, 0.35),
+				0 0 0 1.5px rgba(255, 255, 255, 0.15);
 		}
 	}
 
@@ -1974,7 +2159,7 @@
 		}
 
 		.hero-title {
-			font-size: 1.8rem;
+			font-size: 2.2rem;
 		}
 
 		.hero-subtitle {
@@ -1982,7 +2167,7 @@
 		}
 
 		.video-frame {
-			height: 300px;
+			height: 350px;
 			transform: none;
 		}
 
@@ -2003,11 +2188,37 @@
 		.registration-form {
 			padding: 1.25rem;
 		}
+
+		/* Contador responsivo */
+		.countdown-container {
+			margin-top: 2rem;
+		}
+
+		.countdown-title {
+			font-size: 1.1rem;
+		}
+
+		.countdown-timer {
+			gap: 0.8rem;
+		}
+
+		.countdown-item {
+			padding: 0.8rem 0.6rem;
+			min-width: 60px;
+		}
+
+		.countdown-number {
+			font-size: 1.6rem;
+		}
+
+		.countdown-label {
+			font-size: 0.7rem;
+		}
 	}
 
 	@media (max-width: 480px) {
 		.hero-title {
-			font-size: 1.5rem;
+			font-size: 1.8rem;
 		}
 
 		.hero-subtitle {
@@ -2015,7 +2226,25 @@
 		}
 
 		.video-frame {
-			height: 250px;
+			height: 300px;
+		}
+
+		/* Contador móvil pequeño */
+		.countdown-timer {
+			gap: 0.5rem;
+		}
+
+		.countdown-item {
+			padding: 0.6rem 0.4rem;
+			min-width: 50px;
+		}
+
+		.countdown-number {
+			font-size: 1.4rem;
+		}
+
+		.countdown-label {
+			font-size: 0.6rem;
 		}
 	}
 
