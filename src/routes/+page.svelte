@@ -819,19 +819,19 @@
 							<div class="countdown-timer">
 								<div class="countdown-item" style="--item-index: 0;">
 									<div class="countdown-number">{timeLeft.days.toString().padStart(2, '0')}</div>
-									<div class="countdown-label">Días</div>
+									<div class="countdown-label">DÍAS</div>
 								</div>
 								<div class="countdown-item" style="--item-index: 1;">
 									<div class="countdown-number">{timeLeft.hours.toString().padStart(2, '0')}</div>
-									<div class="countdown-label">Horas</div>
+									<div class="countdown-label">HORAS</div>
 								</div>
 								<div class="countdown-item" style="--item-index: 2;">
 									<div class="countdown-number">{timeLeft.minutes.toString().padStart(2, '0')}</div>
-									<div class="countdown-label">Min</div>
+									<div class="countdown-label">MIN</div>
 								</div>
 								<div class="countdown-item" style="--item-index: 3;">
 									<div class="countdown-number">{timeLeft.seconds.toString().padStart(2, '0')}</div>
-									<div class="countdown-label">Seg</div>
+									<div class="countdown-label">SEG</div>
 								</div>
 								</div>
 							</div>
@@ -2090,15 +2090,17 @@
 	/* Contenedor horizontal para temporizador y mensaje promocional */
 	.countdown-promo-container {
 		display: flex;
-		gap: 2rem;
+		gap: 3rem;
 		align-items: flex-start;
 		margin-top: 2.5rem;
+		justify-content: space-between;
 	}
 
 	/* Contador regresivo */
 	.countdown-container {
-		flex: 0.8;
-		text-align: center;
+		flex: 0 0 auto;
+		text-align: left;
+		min-width: 300px;
 	}
 
 	.countdown-title {
@@ -2129,45 +2131,48 @@
 
 	.countdown-timer {
 		display: flex;
-		justify-content: center;
+		justify-content: flex-start;
 		gap: 0.8rem;
 		flex-wrap: nowrap;
 	}
 
 	.countdown-item {
-		background: rgba(255, 255, 255, 0.1);
+		background: rgba(41, 0, 64, 0.8);
 		backdrop-filter: blur(10px);
-		border: 1px solid rgba(255, 255, 255, 0.2);
+		border: 1px solid rgba(255, 255, 255, 0.1);
 		border-radius: 12px;
 		padding: 1rem 0.8rem;
 		min-width: 70px;
 		text-align: center;
-		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 		transition: all 0.3s ease;
 	}
 
 	.countdown-item:hover {
 		transform: translateY(-5px);
-		box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
-		background: rgba(255, 255, 255, 0.15);
+		box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+		background: rgba(61, 0, 96, 0.9);
 	}
 
 	/* Mensaje promocional */
 	.promotional-message {
-		flex: 1.5;
-		padding: 1.5rem;
-		background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(251, 191, 36, 0.15) 50%, rgba(59, 130, 246, 0.15) 100%);
+		flex: 1;
+		padding: 2rem;
+		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		backdrop-filter: blur(10px);
-		border: 2px solid rgba(251, 191, 36, 0.3);
+		border: 2px solid transparent;
 		border-radius: 1rem;
-		text-align: left;
+		text-align: center;
 		position: relative;
 		overflow: hidden;
 		animation: promotionalPulse 3s ease-in-out infinite;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		min-width: 0;
+		align-items: center;
+		min-width: 400px;
+		max-width: 500px;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 	}
 
 	.promotional-message::before {
@@ -2176,24 +2181,32 @@
 		top: 0;
 		left: 0;
 		right: 0;
-		height: 3px;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+		height: 4px;
+		background: linear-gradient(90deg, #3b82f6 0%, #f97316 50%, #3b82f6 100%);
+		border-radius: 1rem 1rem 0 0;
 	}
 
 	.promo-icon {
-		font-size: 2rem;
-		margin-bottom: 0.75rem;
+		font-size: 2.5rem;
+		margin-bottom: 1rem;
 		animation: bounce 2s ease-in-out infinite;
+		color: #fbbf24;
+		text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.promo-text {
 		color: #ffffff;
-		font-size: 1.1rem;
-		line-height: 1.5;
+		font-size: 1.2rem;
+		line-height: 1.6;
 		margin: 0;
-		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-		text-align: left;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+		text-align: center;
 		padding: 0.5rem 0;
+		max-width: 100%;
 	}
 
 	.promo-text strong {
@@ -2247,11 +2260,12 @@
 	}
 
 	.countdown-label {
-		font-size: 0.9rem;
-		font-weight: 600;
-		color: #fbbf24;
+		font-size: 0.7rem;
+		font-weight: 700;
+		color: #ffffff;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 		animation: labelFloat 4s ease-in-out infinite;
 		animation-delay: calc(var(--item-index) * 0.3s);
@@ -3713,12 +3727,15 @@
 		.countdown-promo-container {
 			flex-direction: column;
 			gap: 1.5rem;
+			align-items: center;
 		}
 
 		/* Mensaje promocional móvil */
 		.promotional-message {
-			padding: 1rem;
+			padding: 1.5rem;
 			text-align: left;
+			min-width: 300px;
+			max-width: 100%;
 		}
 
 		.promo-icon {

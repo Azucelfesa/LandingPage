@@ -425,19 +425,70 @@
 
 
 	.header-separator {
-		height: 2px;
-		background: linear-gradient(90deg, transparent 0%, #fbbf24 50%, transparent 100%);
+		height: 6px;
+		background: transparent;
 		position: relative;
 		z-index: 1;
+		overflow: hidden;
 	}
 
 	.header-separator::before {
 		content: '';
 		position: absolute;
 		top: 0;
-		left: 0;
-		right: 0;
-		height: 1px;
-		background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+		left: -300px;
+		width: 300px;
+		height: 6px;
+		background: linear-gradient(90deg, 
+			transparent 0%, 
+			#fbbf24 20%, 
+			#f59e0b 40%, 
+			#d97706 60%, 
+			#fbbf24 80%, 
+			transparent 100%);
+		box-shadow: 
+			0 0 15px #fbbf24,
+			0 0 30px #f59e0b,
+			0 0 45px #d97706;
+		animation: shootingStar 4s ease-out infinite;
+		transform: skewX(-15deg);
+	}
+
+	.header-separator::after {
+		content: '';
+		position: absolute;
+		top: 1px;
+		left: -250px;
+		width: 250px;
+		height: 4px;
+		background: linear-gradient(90deg, 
+			transparent 0%, 
+			rgba(251, 191, 36, 0.6) 30%, 
+			rgba(251, 191, 36, 1) 50%, 
+			rgba(251, 191, 36, 0.6) 70%, 
+			transparent 100%);
+		animation: shootingStar 4s ease-out infinite 0.2s;
+		transform: skewX(-15deg);
+	}
+
+	@keyframes shootingStar {
+		0% {
+			left: -300px;
+			opacity: 0;
+			transform: skewX(-15deg) scale(0.5);
+		}
+		10% {
+			opacity: 1;
+			transform: skewX(-15deg) scale(1);
+		}
+		90% {
+			opacity: 1;
+			transform: skewX(-15deg) scale(1);
+		}
+		100% {
+			left: 100vw;
+			opacity: 0;
+			transform: skewX(-15deg) scale(0.3);
+		}
 	}
 </style>
