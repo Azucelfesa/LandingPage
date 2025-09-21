@@ -50,6 +50,7 @@
 	let isFormValid = false;
 	let redirectTimer: number | null = null;
 	let showMoreCursos = false;
+	let youtubeVideoUrl = 'https://www.youtube.com/embed/NsE4zkiyFZ8'; // Video de YouTube
 
 	// Contador regresivo
 	let timeLeft = {
@@ -498,11 +499,6 @@
 		}
 	}
 
-	function playVideo() {
-		// Aquí puedes agregar la lógica para reproducir el video
-		console.log('Reproducir video');
-		// Por ejemplo, abrir un modal con el video o redirigir a YouTube
-	}
 
 	
 	// Referencias para animaciones
@@ -729,7 +725,7 @@
 							<div class="promotional-message">
 								<div class="promo-icon">💰</div>
 								<p class="promo-text">
-									<strong>No lo dejes pasar:</strong> al inscribirte ahora obtienes un costo más accesible y la posibilidad de pagar con facilidades diseñadas para ti. Muchas familias suelen esperar y terminan pagando más o quedándose sin lugar. <strong>Actúa hoy mismo y asegura desde ahora el futuro académico de tu hijo.</strong>
+									<strong>No lo dejes pasar:</strong> al inscribirte ahora obtienes un costo más accesible y la posibilidad de pagar con facilidades diseñadas para ti. Muchas familias suelen esperar y terminan pagando más o quedándose sin lugar. <strong>Actúa hoy mismo y asegura el futuro académico de tu hijo.</strong>
 								</p>
 							</div>
 						</div>
@@ -739,20 +735,15 @@
 					<div class="hero-video">
 						<div class="video-container">
 							<div class="video-frame">
-								<img src="/photo_2025-09-12_15-08-29.jpg" alt="Instructor del curso" class="video-thumbnail">
-								<div class="video-overlay">
-									<div class="ai-robot">🤖</div>
-									<button class="play-button" on:click={playVideo} type="button" aria-label="Reproducir video">
-										<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-											<polygon points="5,3 19,12 5,21"></polygon>
-										</svg>
-									</button>
-									<div class="video-shapes">
-										<div class="shape shape-1"></div>
-										<div class="shape shape-2"></div>
-										<div class="shape shape-3"></div>
-									</div>
-								</div>
+								<!-- Iframe de YouTube -->
+								<iframe 
+									src={youtubeVideoUrl}
+									title="Video del curso"
+									frameborder="0"
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+									allowfullscreen
+									class="youtube-iframe">
+								</iframe>
 							</div>
 						</div>
 					</div>
@@ -1459,25 +1450,33 @@
 	.hero-video {
 		display: flex;
 		justify-content: center;
-		align-items: center;
+		align-items: flex-start;
+		height: 100%;
+		min-height: 500px;
+		padding-top: 0;
+		margin-top: -2rem;
 	}
 
 	.video-container {
 		position: relative;
 		width: 100%;
 		max-width: 600px;
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
 	}
 
 	.video-frame {
 		position: relative;
-		width: 100%;
+		width: 500px;
 		height: 500px;
-		border-radius: 1rem;
+		border-radius: 50%;
 		overflow: hidden;
 		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 		background: #1e293b;
 		transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
 		transition: all 0.3s ease;
+		margin: 0 auto;
 	}
 
 	.video-frame:hover {
@@ -1489,7 +1488,16 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		border-radius: 50%;
 	}
+
+	.youtube-iframe {
+		width: 100%;
+		height: 100%;
+		border: none;
+		border-radius: 50%;
+	}
+
 
 	.video-overlay {
 		position: absolute;
@@ -1634,7 +1642,7 @@
 
 	/* Contador regresivo */
 	.countdown-container {
-		flex: 1;
+		flex: 0.8;
 		text-align: center;
 	}
 
@@ -1691,16 +1699,20 @@
 
 	/* Mensaje promocional */
 	.promotional-message {
-		flex: 1;
+		flex: 1.5;
 		padding: 1.5rem;
 		background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(251, 191, 36, 0.15) 50%, rgba(59, 130, 246, 0.15) 100%);
 		backdrop-filter: blur(10px);
 		border: 2px solid rgba(251, 191, 36, 0.3);
 		border-radius: 1rem;
-		text-align: center;
+		text-align: left;
 		position: relative;
 		overflow: hidden;
 		animation: promotionalPulse 3s ease-in-out infinite;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		min-width: 0;
 	}
 
 	.promotional-message::before {
@@ -1725,6 +1737,8 @@
 		line-height: 1.5;
 		margin: 0;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		text-align: left;
+		padding: 0.5rem 0;
 	}
 
 	.promo-text strong {
@@ -2612,8 +2626,15 @@
 		}
 
 		.video-frame {
+			width: 350px;
 			height: 350px;
 			transform: none;
+		}
+
+		.hero-video {
+			min-height: 400px;
+			padding-top: 0;
+			margin-top: -1.5rem;
 		}
 
 		/* Contenedor horizontal para tablets */
@@ -2625,6 +2646,7 @@
 		.video-frame:hover {
 			transform: scale(1.02);
 		}
+
 
 		.play-button {
 			width: 60px;
@@ -2678,8 +2700,16 @@
 		}
 
 		.video-frame {
+			width: 300px;
 			height: 300px;
 		}
+
+		.hero-video {
+			min-height: 350px;
+			padding-top: 0;
+			margin-top: -1rem;
+		}
+
 
 		/* Contenedor horizontal responsivo */
 		.countdown-promo-container {
@@ -2690,6 +2720,7 @@
 		/* Mensaje promocional móvil */
 		.promotional-message {
 			padding: 1rem;
+			text-align: left;
 		}
 
 		.promo-icon {
@@ -2698,6 +2729,7 @@
 
 		.promo-text {
 			font-size: 0.9rem;
+			line-height: 1.3;
 		}
 
 		/* Contador móvil pequeño */
