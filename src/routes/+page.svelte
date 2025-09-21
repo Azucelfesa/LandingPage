@@ -647,26 +647,39 @@
 						</button>
 					</div>
 
-						<!-- Contador regresivo -->
-						<div class="countdown-container">
-							<h3 class="countdown-title">INICIAMOS EN:</h3>
-							<div class="countdown-timer">
-								<div class="countdown-item" style="--item-index: 0;">
-									<div class="countdown-number">{timeLeft.days.toString().padStart(2, '0')}</div>
-									<div class="countdown-label">Días</div>
+						<!-- Contenedor horizontal para temporizador y mensaje promocional -->
+						<div class="countdown-promo-container">
+							<!-- Contador regresivo -->
+							<div class="countdown-container">
+								<h3 class="countdown-title">INICIAMOS EN:</h3>
+								<div class="countdown-timer">
+									<div class="countdown-item" style="--item-index: 0;">
+										<div class="countdown-number">{timeLeft.days.toString().padStart(2, '0')}</div>
+										<div class="countdown-label">Días</div>
+									</div>
+									<div class="countdown-item" style="--item-index: 1;">
+										<div class="countdown-number">{timeLeft.hours.toString().padStart(2, '0')}</div>
+										<div class="countdown-label">Horas</div>
+									</div>
+									<div class="countdown-item" style="--item-index: 2;">
+										<div class="countdown-number">{timeLeft.minutes.toString().padStart(2, '0')}</div>
+										<div class="countdown-label">Min</div>
+									</div>
+									<div class="countdown-item" style="--item-index: 3;">
+										<div class="countdown-number">{timeLeft.seconds.toString().padStart(2, '0')}</div>
+										<div class="countdown-label">Seg</div>
+									</div>
 								</div>
-								<div class="countdown-item" style="--item-index: 1;">
-									<div class="countdown-number">{timeLeft.hours.toString().padStart(2, '0')}</div>
-									<div class="countdown-label">Horas</div>
-								</div>
-								<div class="countdown-item" style="--item-index: 2;">
-									<div class="countdown-number">{timeLeft.minutes.toString().padStart(2, '0')}</div>
-									<div class="countdown-label">Min</div>
-								</div>
-								<div class="countdown-item" style="--item-index: 3;">
-									<div class="countdown-number">{timeLeft.seconds.toString().padStart(2, '0')}</div>
-									<div class="countdown-label">Seg</div>
-								</div>
+							</div>
+
+							<!-- Mensaje promocional -->
+							<div class="promotional-message">
+								<div class="promo-icon">💰</div>
+								<p class="promo-text">
+									Si te registras ahora, tu curso te sale más barato y con facilidades de pago. 
+									<strong>¡Aprovecha antes de que suba el precio!</strong> 
+									Forma parte de la familia ADNED
+								</p>
 							</div>
 						</div>
 					</div>
@@ -1540,9 +1553,17 @@
 		justify-content: center;
 	}
 
+	/* Contenedor horizontal para temporizador y mensaje promocional */
+	.countdown-promo-container {
+		display: flex;
+		gap: 2rem;
+		align-items: flex-start;
+		margin-top: 2.5rem;
+	}
+
 	/* Contador regresivo */
 	.countdown-container {
-		margin-top: 2.5rem;
+		flex: 1;
 		text-align: center;
 	}
 
@@ -1575,8 +1596,8 @@
 	.countdown-timer {
 		display: flex;
 		justify-content: center;
-		gap: 1rem;
-		flex-wrap: wrap;
+		gap: 0.8rem;
+		flex-wrap: nowrap;
 	}
 
 	.countdown-item {
@@ -1597,8 +1618,69 @@
 		background: rgba(255, 255, 255, 0.15);
 	}
 
-	.countdown-number {
+	/* Mensaje promocional */
+	.promotional-message {
+		flex: 1;
+		padding: 1.5rem;
+		background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(251, 191, 36, 0.15) 50%, rgba(59, 130, 246, 0.15) 100%);
+		backdrop-filter: blur(10px);
+		border: 2px solid rgba(251, 191, 36, 0.3);
+		border-radius: 1rem;
+		text-align: center;
+		position: relative;
+		overflow: hidden;
+		animation: promotionalPulse 3s ease-in-out infinite;
+	}
+
+	.promotional-message::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 3px;
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+	}
+
+	.promo-icon {
 		font-size: 2rem;
+		margin-bottom: 0.75rem;
+		animation: bounce 2s ease-in-out infinite;
+	}
+
+	.promo-text {
+		color: #ffffff;
+		font-size: 1.1rem;
+		line-height: 1.5;
+		margin: 0;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+	}
+
+	.promo-text strong {
+		color: #fbbf24;
+		font-weight: 700;
+		text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+	}
+
+	@keyframes promotionalPulse {
+		0%, 100% { 
+			transform: scale(1);
+			box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
+		}
+		50% { 
+			transform: scale(1.02);
+			box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+		}
+	}
+
+	@keyframes bounce {
+		0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+		40% { transform: translateY(-10px); }
+		60% { transform: translateY(-5px); }
+	}
+
+	.countdown-number {
+		font-size: 2.2rem;
 		font-weight: 800;
 		color: #ffffff;
 		line-height: 1;
@@ -1625,7 +1707,7 @@
 	}
 
 	.countdown-label {
-		font-size: 0.8rem;
+		font-size: 0.9rem;
 		font-weight: 600;
 		color: #fbbf24;
 		text-transform: uppercase;
@@ -2463,6 +2545,12 @@
 			transform: none;
 		}
 
+		/* Contenedor horizontal para tablets */
+		.countdown-promo-container {
+			flex-direction: column;
+			gap: 1.5rem;
+		}
+
 		.video-frame:hover {
 			transform: scale(1.02);
 		}
@@ -2491,12 +2579,13 @@
 		}
 
 		.countdown-timer {
-			gap: 0.8rem;
+			gap: 0.4rem;
+			flex-wrap: nowrap;
 		}
 
 		.countdown-item {
-			padding: 0.8rem 0.6rem;
-			min-width: 60px;
+			padding: 0.6rem 0.4rem;
+			min-width: 45px;
 		}
 
 		.countdown-number {
@@ -2521,14 +2610,34 @@
 			height: 300px;
 		}
 
+		/* Contenedor horizontal responsivo */
+		.countdown-promo-container {
+			flex-direction: column;
+			gap: 1.5rem;
+		}
+
+		/* Mensaje promocional móvil */
+		.promotional-message {
+			padding: 1rem;
+		}
+
+		.promo-icon {
+			font-size: 1.5rem;
+		}
+
+		.promo-text {
+			font-size: 0.9rem;
+		}
+
 		/* Contador móvil pequeño */
 		.countdown-timer {
-			gap: 0.5rem;
+			gap: 0.3rem;
+			flex-wrap: nowrap;
 		}
 
 		.countdown-item {
-			padding: 0.6rem 0.4rem;
-			min-width: 50px;
+			padding: 0.5rem 0.3rem;
+			min-width: 40px;
 		}
 
 		.countdown-number {
