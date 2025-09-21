@@ -19,9 +19,11 @@
 				on:click={toggleMenu}
 				aria-label="Toggle menu"
 			>
-				<span class="hamburger" class:hamburger-open={isMenuOpen}></span>
-				<span class="hamburger" class:hamburger-open={isMenuOpen}></span>
-				<span class="hamburger" class:hamburger-open={isMenuOpen}></span>
+				{#if isMenuOpen}
+					<span class="close-icon">✕</span>
+				{:else}
+					<span class="hamburger-icon">☰</span>
+				{/if}
 			</button>
 
 			<!-- Logo -->
@@ -41,16 +43,16 @@
 						<a href="/#quienes-somos" class="nav-link" on:click={closeMenu}>Quiénes Somos</a>
 					</li>
 					<li class="nav-item">
-						<a href="/#beneficios" class="nav-link" on:click={closeMenu}>Misión y Visión</a>
+						<a href="/#quienes-somos" class="nav-link" on:click={closeMenu}>Misión y Visión</a>
 					</li>
 					<li class="nav-item">
 						<a href="/#nuestros-cursos" class="nav-link" on:click={closeMenu}>Nuestros Cursos</a>
 					</li>
                 <li class="nav-item">
-                    <a href="#reseñas" class="nav-link" on:click={closeMenu}>Reseñas</a>
+                    <a href="/#reseñas" class="nav-link" on:click={closeMenu}>Reseñas</a>
                 </li>
 					<li class="nav-item">
-						<a href="/formulario" class="nav-link" on:click={closeMenu}>Formulario</a>
+						<a href="/#formulario" class="nav-link" on:click={closeMenu}>Formulario</a>
 					</li>
 					<li class="nav-item mobile-cta">
 						<button class="btn btn-primary mobile-cta-btn" on:click={closeMenu}>
@@ -208,32 +210,41 @@
 
 	.mobile-menu-btn {
 		display: none;
-		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 40px;
+		height: 40px;
 		background: none;
 		border: none;
 		cursor: pointer;
-		padding: 0.5rem;
-		gap: 4px;
-	}
-
-	.hamburger {
-		width: 25px;
-		height: 3px;
-		background: var(--color-text);
+		padding: 0;
+		z-index: 1001;
+		position: relative;
+		border-radius: 50%;
 		transition: all 0.3s ease;
-		transform-origin: center;
 	}
 
-	.hamburger-open:nth-child(1) {
-		transform: rotate(45deg) translate(6px, 6px);
+	.mobile-menu-btn:hover {
+		background: rgba(251, 191, 36, 0.2);
+		transform: scale(1.1);
 	}
 
-	.hamburger-open:nth-child(2) {
-		opacity: 0;
+	.hamburger-icon, .close-icon {
+		font-size: 24px;
+		color: #fbbf24;
+		font-weight: bold;
+		transition: all 0.3s ease;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
 
-	.hamburger-open:nth-child(3) {
-		transform: rotate(-45deg) translate(6px, -6px);
+	.close-icon {
+		color: #ffffff;
+		font-size: 20px;
+	}
+
+	.mobile-menu-btn:hover .hamburger-icon,
+	.mobile-menu-btn:hover .close-icon {
+		transform: scale(1.2);
 	}
 
 	/* Mobile Styles */
@@ -348,46 +359,11 @@
 		
 		.mobile-menu-btn {
 			display: flex;
+			order: -1;
 		}
 
 		.mobile-cta {
 			display: block;
-		}
-
-		.mobile-menu-btn {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			width: 40px;
-			height: 40px;
-			background: none;
-			border: none;
-			cursor: pointer;
-			padding: 0;
-			z-index: 1001;
-			order: -1;
-		}
-
-		.hamburger {
-			width: 25px;
-			height: 3px;
-			background: #fbbf24;
-			margin: 3px 0;
-			transition: all 0.3s ease;
-			border-radius: 2px;
-		}
-
-		.hamburger-open:nth-child(1) {
-			transform: rotate(45deg) translate(6px, 6px);
-		}
-
-		.hamburger-open:nth-child(2) {
-			opacity: 0;
-		}
-
-		.hamburger-open:nth-child(3) {
-			transform: rotate(-45deg) translate(6px, -6px);
 		}
 	}
 
@@ -449,19 +425,70 @@
 
 
 	.header-separator {
-		height: 2px;
-		background: linear-gradient(90deg, transparent 0%, #fbbf24 50%, transparent 100%);
+		height: 6px;
+		background: transparent;
 		position: relative;
 		z-index: 1;
+		overflow: hidden;
 	}
 
 	.header-separator::before {
 		content: '';
 		position: absolute;
 		top: 0;
-		left: 0;
-		right: 0;
-		height: 1px;
-		background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+		left: -300px;
+		width: 300px;
+		height: 6px;
+		background: linear-gradient(90deg, 
+			transparent 0%, 
+			#fbbf24 20%, 
+			#f59e0b 40%, 
+			#d97706 60%, 
+			#fbbf24 80%, 
+			transparent 100%);
+		box-shadow: 
+			0 0 15px #fbbf24,
+			0 0 30px #f59e0b,
+			0 0 45px #d97706;
+		animation: shootingStar 4s ease-out infinite;
+		transform: skewX(-15deg);
+	}
+
+	.header-separator::after {
+		content: '';
+		position: absolute;
+		top: 1px;
+		left: -250px;
+		width: 250px;
+		height: 4px;
+		background: linear-gradient(90deg, 
+			transparent 0%, 
+			rgba(251, 191, 36, 0.6) 30%, 
+			rgba(251, 191, 36, 1) 50%, 
+			rgba(251, 191, 36, 0.6) 70%, 
+			transparent 100%);
+		animation: shootingStar 4s ease-out infinite 0.2s;
+		transform: skewX(-15deg);
+	}
+
+	@keyframes shootingStar {
+		0% {
+			left: -300px;
+			opacity: 0;
+			transform: skewX(-15deg) scale(0.5);
+		}
+		10% {
+			opacity: 1;
+			transform: skewX(-15deg) scale(1);
+		}
+		90% {
+			opacity: 1;
+			transform: skewX(-15deg) scale(1);
+		}
+		100% {
+			left: 100vw;
+			opacity: 0;
+			transform: skewX(-15deg) scale(0.3);
+		}
 	}
 </style>

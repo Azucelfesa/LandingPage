@@ -127,6 +127,31 @@
 	// Estado para mostrar carruseles adicionales
 	let showAdditionalCarousels = false;
 
+	// Estado para el modal de zoom
+	let showImageModal = false;
+	let selectedImage = '';
+	let selectedImageAlt = '';
+	
+	// Variables para animaciones interactivas
+	let animatedStats = {
+		students: 0,
+		success: 0,
+		years: 0,
+		courses: 0
+	};
+	
+	let isStatsVisible = false;
+	let isCommunityHovered = false;
+	let communitySection: HTMLElement;
+	
+	// Variables para animaciones del formulario
+	let isFormVisible = false;
+	let isInfoVisible = false;
+	let isTestimonialsVisible = false;
+	let formSection: HTMLElement;
+	let infoSection: HTMLElement;
+	let testimonialsSection: HTMLElement;
+
 	
 	// Lista de imágenes para cada carrusel
 	const carousel1Images = [
@@ -183,7 +208,7 @@
 
 	// Auto-play del carrusel
 	function startAutoPlay() {
-		reviewInterval = setInterval(nextReview, 4000);
+		reviewInterval = setInterval(nextReview, 40000);
 	}
 
 	function stopAutoPlay() {
@@ -300,8 +325,8 @@
 		
 		if (showAdditionalCarousels) {
 			// Iniciar carruseles adicionales cuando se muestran
-			carousel4Interval = setInterval(nextCarousel4, 4500);
-			carousel5Interval = setInterval(nextCarousel5, 5000);
+			carousel4Interval = setInterval(nextCarousel4, 55000);
+			carousel5Interval = setInterval(nextCarousel5, 60000);
 			console.log('Carruseles adicionales iniciados');
 		} else {
 			// Detener carruseles adicionales cuando se ocultan
@@ -313,14 +338,14 @@
 
 	// Auto-play para todos los carruseles
 	function startAllCarousels() {
-		carousel1Interval = setInterval(nextCarousel1, 3000);
-		carousel2Interval = setInterval(nextCarousel2, 3500);
-		carousel3Interval = setInterval(nextCarousel3, 4000);
-		aboutCarouselInterval = setInterval(nextAboutSlide, 8000);
+		carousel1Interval = setInterval(nextCarousel1, 40000);
+		carousel2Interval = setInterval(nextCarousel2, 45000);
+		carousel3Interval = setInterval(nextCarousel3, 50000);
+		aboutCarouselInterval = setInterval(nextAboutSlide, 60000);
 		// Solo iniciar carruseles adicionales si están visibles
 		if (showAdditionalCarousels) {
-			carousel4Interval = setInterval(nextCarousel4, 4500);
-			carousel5Interval = setInterval(nextCarousel5, 5000);
+			carousel4Interval = setInterval(nextCarousel4, 55000);
+			carousel5Interval = setInterval(nextCarousel5, 60000);
 		}
 	}
 
@@ -331,7 +356,7 @@
 		
 		// Iniciar auto-play después de un pequeño delay
 		setTimeout(() => {
-			aboutCarouselInterval = setInterval(nextAboutSlide, 8000);
+			aboutCarouselInterval = setInterval(nextAboutSlide, 60000);
 		}, 1000);
 	}
 
@@ -342,6 +367,80 @@
 		if (aboutCarouselInterval) clearInterval(aboutCarouselInterval);
 		if (carousel4Interval) clearInterval(carousel4Interval);
 		if (carousel5Interval) clearInterval(carousel5Interval);
+	}
+
+	// Funciones para el modal de zoom
+	function openImageModal(imageSrc: string, imageAlt: string) {
+		selectedImage = imageSrc;
+		selectedImageAlt = imageAlt;
+		showImageModal = true;
+		// Detener todos los carruseles cuando se abre el modal
+		stopAllCarousels();
+	}
+
+	function closeImageModal() {
+		showImageModal = false;
+		selectedImage = '';
+		selectedImageAlt = '';
+		// Reiniciar carruseles cuando se cierra el modal
+		startAllCarousels();
+	}
+
+	// Función para animar contadores
+	function animateCounter(target: number, key: keyof typeof animatedStats, duration: number = 2000) {
+		const start = animatedStats[key];
+		const increment = (target - start) / (duration / 16);
+		let current = start;
+		
+		const timer = setInterval(() => {
+			current += increment;
+			if (current >= target) {
+				animatedStats[key] = target;
+				clearInterval(timer);
+			} else {
+				animatedStats[key] = Math.floor(current);
+			}
+		}, 16);
+	}
+
+	// Función para activar animaciones cuando la sección es visible
+	function handleCommunityIntersection(entries: IntersectionObserverEntry[]) {
+		entries.forEach(entry => {
+			if (entry.isIntersecting && !isStatsVisible) {
+				isStatsVisible = true;
+				// Animar contadores con delays escalonados
+				setTimeout(() => animateCounter(1200, 'students'), 200);
+				setTimeout(() => animateCounter(95, 'success'), 400);
+				setTimeout(() => animateCounter(5, 'years'), 600);
+				setTimeout(() => animateCounter(15, 'courses'), 800);
+			}
+		});
+	}
+
+	// Funciones para animaciones del formulario
+	function handleFormIntersection(entries: IntersectionObserverEntry[]) {
+		entries.forEach(entry => {
+			if (entry.isIntersecting && !isFormVisible) {
+				isFormVisible = true;
+				// Animar elementos con delays escalonados
+				setTimeout(() => {
+					isInfoVisible = true;
+				}, 200);
+				setTimeout(() => {
+					isTestimonialsVisible = true;
+				}, 400);
+			}
+		});
+	}
+
+	// Función para animar elementos de forma escalonada
+	function animateStaggeredElements() {
+		const elements = document.querySelectorAll('.info-card, .testimonial-card');
+		elements.forEach((element, index) => {
+			setTimeout(() => {
+				element.classList.add('animate-in');
+			}, index * 200);
+		});
 	}
 
 
@@ -554,6 +653,22 @@
 				}, 1500);
 			}
 
+			// Configurar Intersection Observer para animaciones de estadísticas
+			if (communitySection) {
+				const observer = new IntersectionObserver(handleCommunityIntersection, {
+					threshold: 0.3
+				});
+				observer.observe(communitySection);
+			}
+
+			// Configurar Intersection Observer para animaciones del formulario
+			if (formSection) {
+				const formObserver = new IntersectionObserver(handleFormIntersection, {
+					threshold: 0.2
+				});
+				formObserver.observe(formSection);
+			}
+
 			// Agregar partículas a la sección de misión y visión
 			setTimeout(() => {
 				const benefitsSection = document.querySelector('.benefits-section');
@@ -704,19 +819,19 @@
 							<div class="countdown-timer">
 								<div class="countdown-item" style="--item-index: 0;">
 									<div class="countdown-number">{timeLeft.days.toString().padStart(2, '0')}</div>
-									<div class="countdown-label">Días</div>
+									<div class="countdown-label">DÍAS</div>
 								</div>
 								<div class="countdown-item" style="--item-index: 1;">
 									<div class="countdown-number">{timeLeft.hours.toString().padStart(2, '0')}</div>
-									<div class="countdown-label">Horas</div>
+									<div class="countdown-label">HORAS</div>
 								</div>
 								<div class="countdown-item" style="--item-index: 2;">
 									<div class="countdown-number">{timeLeft.minutes.toString().padStart(2, '0')}</div>
-									<div class="countdown-label">Min</div>
+									<div class="countdown-label">MIN</div>
 								</div>
 								<div class="countdown-item" style="--item-index: 3;">
 									<div class="countdown-number">{timeLeft.seconds.toString().padStart(2, '0')}</div>
-									<div class="countdown-label">Seg</div>
+									<div class="countdown-label">SEG</div>
 								</div>
 								</div>
 							</div>
@@ -856,17 +971,57 @@
 			</div>
 
 			<div class="cursos-sections">
-				<!-- Sección 1: Introducción -->
-				<div class="curso-section curso-intro">
-					<div class="curso-icon">
+				<!-- Sección 1: Introducción Interactiva -->
+				<div class="curso-section curso-intro interactive-community" 
+					 bind:this={communitySection}
+					 on:mouseenter={() => isCommunityHovered = true}
+					 on:mouseleave={() => isCommunityHovered = false}>
+					
+					<!-- Fondo con partículas animadas -->
+					<div class="particles-background">
+						{#each Array(20) as _, i}
+							<div class="particle" style="--delay: {i * 0.1}s; --duration: {3 + Math.random() * 2}s;"></div>
+						{/each}
+					</div>
+					
+					<!-- Contenido principal -->
+					<div class="community-content">
+						<div class="curso-icon animated-icon" class:rotating={isCommunityHovered}>
 							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
 							</svg>
+							<div class="icon-glow"></div>
 						</div>
-					<h3 class="curso-title">Nuestra Comunidad Educativa</h3>
-					<p class="curso-text">
+						
+						<h3 class="curso-title text-reveal">Nuestra Comunidad Educativa</h3>
+						<p class="curso-text text-reveal">
 						ADNED es una comunidad educativa creada para transformar la manera en que los estudiantes se preparan rumbo a los exámenes de admisión más importantes de su vida académica. Nuestro propósito va más allá de enseñar; buscamos inspirar y acompañar a cada alumno en un proceso que suele estar lleno de nervios, dudas e incertidumbre.
 						</p>
+						
+						<!-- Estadísticas animadas -->
+						<div class="stats-container">
+							<div class="stat-card" class:animate={isStatsVisible}>
+								<div class="stat-number">{animatedStats.students}+</div>
+								<div class="stat-label">Estudiantes</div>
+								<div class="stat-icon">👥</div>
+							</div>
+							<div class="stat-card" class:animate={isStatsVisible}>
+								<div class="stat-number">{animatedStats.success}%</div>
+								<div class="stat-label">Éxito</div>
+								<div class="stat-icon">🎯</div>
+							</div>
+							<div class="stat-card" class:animate={isStatsVisible}>
+								<div class="stat-number">{animatedStats.years}+</div>
+								<div class="stat-label">Años</div>
+								<div class="stat-icon">⭐</div>
+							</div>
+							<div class="stat-card" class:animate={isStatsVisible}>
+								<div class="stat-number">{animatedStats.courses}+</div>
+								<div class="stat-label">Cursos</div>
+								<div class="stat-icon">📚</div>
+							</div>
+						</div>
+					</div>
 							</div>
 
 				<!-- Botón Ver Más -->
@@ -887,9 +1042,9 @@
 							</div>
 
 				{#if showMoreCursos}
-					<!-- Sección 2: Beneficios Principales -->
-					<div class="curso-section curso-beneficios">
-						<div class="curso-icon">
+					<!-- Sección 2: Beneficios Principales Interactivos -->
+					<div class="curso-section curso-beneficios interactive-benefits">
+						<div class="curso-icon animated-icon">
 							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 								<path d="M9 12l2 2 4-4"/>
 								<path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
@@ -897,32 +1052,37 @@
 								<path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
 								<path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
 							</svg>
+							<div class="icon-glow"></div>
 						</div>
-						<h3 class="curso-title">Beneficios Principales</h3>
+						<h3 class="curso-title text-reveal">Beneficios Principales</h3>
 						<div class="beneficios-grid">
-							<div class="beneficio-item">
+							<div class="beneficio-item interactive-card" data-benefit="online">
 								<div class="beneficio-icon">
 									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 										<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
 										<line x1="8" y1="21" x2="16" y2="21"/>
 										<line x1="12" y1="17" x2="12" y2="21"/>
 									</svg>
+									<div class="icon-pulse"></div>
 					</div>
 								<h4 class="beneficio-title">Clases en Línea</h4>
 								<p class="beneficio-desc">Acceso a clases virtuales desde cualquier lugar</p>
+								<div class="benefit-highlight">💻</div>
 				</div>
 
-							<div class="beneficio-item">
+							<div class="beneficio-item interactive-card" data-benefit="simulacros">
 								<div class="beneficio-icon">
 									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 										<path d="M9 11H5a2 2 0 0 0-2 2v3c0 1.1.9 2 2 2h4m0-7v7m0-7h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H9m0-7V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>
 									</svg>
+									<div class="icon-pulse"></div>
 							</div>
 								<h4 class="beneficio-title">Simulacros</h4>
 								<p class="beneficio-desc">Pruebas de práctica para evaluar tu progreso</p>
+								<div class="benefit-highlight">📊</div>
 							</div>
 							
-							<div class="beneficio-item">
+							<div class="beneficio-item interactive-card" data-benefit="banco">
 								<div class="beneficio-icon">
 									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 										<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -931,12 +1091,14 @@
 										<line x1="16" y1="17" x2="8" y2="17"/>
 										<polyline points="10,9 9,9 8,9"/>
 									</svg>
+									<div class="icon-pulse"></div>
 						</div>
 								<h4 class="beneficio-title">Banco de Preguntas</h4>
 								<p class="beneficio-desc">Amplia base de datos con preguntas de exámenes</p>
+								<div class="benefit-highlight">📚</div>
 					</div>
 
-							<div class="beneficio-item">
+							<div class="beneficio-item interactive-card" data-benefit="acompañamiento">
 								<div class="beneficio-icon">
 									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 										<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -944,9 +1106,11 @@
 										<path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
 										<path d="M16 3.13a4 4 0 0 1 0 7.75"/>
 									</svg>
+									<div class="icon-pulse"></div>
 							</div>
 								<h4 class="beneficio-title">Acompañamiento</h4>
 								<p class="beneficio-desc">Soporte personalizado durante todo el proceso</p>
+								<div class="benefit-highlight">🤝</div>
 							</div>
 						</div>
 					</div>
@@ -964,53 +1128,224 @@
 						<p class="curso-text">
 							Descubre cómo son nuestras clases y el ambiente de aprendizaje que creamos para nuestros estudiantes.
 						</p>
-						<div class="galeria-grid">
-							<div class="galeria-item">
-								<img src="/cursos/photo_2025-09-18_16-36-26.jpg" alt="Curso ADNED 1" class="galeria-imagen">
-								<div class="galeria-overlay">
-									<div class="galeria-info">
-										<h4 class="galeria-titulo">Clases Interactivas</h4>
-										<p class="galeria-desc">Aprendizaje dinámico y participativo</p>
+						<!-- Grid Responsive con Diferentes Tamaños -->
+						<div class="responsive-grid">
+							<div class="grid-item large">
+								<img src="/mentor/IMG_7655.jpg" alt="Ambiente de Estudio" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Ambiente de Estudio</h4>
+										<p class="grid-desc">Espacios diseñados para el aprendizaje</p>
 							</div>
 						</div>
 					</div>
 							
-							<div class="galeria-item">
-								<img src="/cursos/photo_2025-09-18_16-36-26 (2).jpg" alt="Curso ADNED 2" class="galeria-imagen">
-								<div class="galeria-overlay">
-									<div class="galeria-info">
-										<h4 class="galeria-titulo">Material Didáctico</h4>
-										<p class="galeria-desc">Recursos educativos de alta calidad</p>
+							<div class="grid-item medium">
+								<img src="/mentor/IMG_7660.jpg" alt="Clases Interactivas" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Clases Interactivas</h4>
+										<p class="grid-desc">Aprendizaje dinámico</p>
 				</div>
 			</div>
 		</div>
 							
-							<div class="galeria-item">
-								<img src="/cursos/photo_2025-09-18_16-36-26 (3).jpg" alt="Curso ADNED 3" class="galeria-imagen">
-								<div class="galeria-overlay">
-									<div class="galeria-info">
-										<h4 class="galeria-titulo">Ambiente de Estudio</h4>
-										<p class="galeria-desc">Espacios diseñados para el aprendizaje</p>
+							<div class="grid-item small">
+								<img src="/mentor/IMG_7661.jpg" alt="Material Didáctico" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Material Didáctico</h4>
+										<p class="grid-desc">Recursos de calidad</p>
 									</div>
 								</div>
 							</div>
 							
-							<div class="galeria-item">
-								<img src="/cursos/photo_2025-09-18_16-36-26 (4).jpg" alt="Curso ADNED 4" class="galeria-imagen">
-								<div class="galeria-overlay">
-									<div class="galeria-info">
-										<h4 class="galeria-titulo">Tecnología Educativa</h4>
-										<p class="galeria-desc">Herramientas modernas de enseñanza</p>
+							<div class="grid-item medium">
+								<img src="/mentor/IMG_7662.jpg" alt="Tecnología Educativa" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Tecnología Educativa</h4>
+										<p class="grid-desc">Herramientas modernas</p>
 									</div>
 								</div>
 							</div>
 							
-							<div class="galeria-item">
-								<img src="/cursos/photo_2025-09-18_16-36-26 (5).jpg" alt="Curso ADNED 5" class="galeria-imagen">
-								<div class="galeria-overlay">
-									<div class="galeria-info">
-										<h4 class="galeria-titulo">Resultados Exitosos</h4>
-										<p class="galeria-desc">Estudiantes que logran sus objetivos</p>
+							<div class="grid-item small">
+								<img src="/mentor/IMG_7675.jpg" alt="Resultados" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Resultados</h4>
+										<p class="grid-desc">Éxito garantizado</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item large">
+								<img src="/mentor/IMG_7676.jpg" alt="Mentoría Personalizada" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Mentoría Personalizada</h4>
+										<p class="grid-desc">Acompañamiento individual</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item medium">
+								<img src="/mentor/IMG_7677.jpg" alt="Comunidad de Aprendizaje" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Comunidad de Aprendizaje</h4>
+										<p class="grid-desc">Estudiantes comprometidos</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item small">
+								<img src="/mentor/IMG_7687.jpg" alt="Preparación" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Preparación</h4>
+										<p class="grid-desc">Para el éxito</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item small">
+								<img src="/mentor/IMG_7690.jpg" alt="Confianza" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Confianza</h4>
+										<p class="grid-desc">En cada paso</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item medium">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.42.47.jpg" alt="Metodología Innovadora" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Metodología Innovadora</h4>
+										<p class="grid-desc">Técnicas probadas</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item large">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.42.47 (2).jpg" alt="Trabajo en Equipo" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Trabajo en Equipo</h4>
+										<p class="grid-desc">Colaboración efectiva</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item small">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.42.47 (4).jpg" alt="Motivación" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Motivación</h4>
+										<p class="grid-desc">Constante inspiración</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item medium">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.43.14.jpg" alt="Dedicación" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Dedicación</h4>
+										<p class="grid-desc">Compromiso total</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item small">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.54.jpg" alt="Experiencia Práctica" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Experiencia Práctica</h4>
+										<p class="grid-desc">Aplicación real</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item large">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.54 (2).jpg" alt="Innovación" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Innovación</h4>
+										<p class="grid-desc">Métodos actualizados</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item medium">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.54 (3).jpg" alt="Crecimiento" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Crecimiento</h4>
+										<p class="grid-desc">Desarrollo continuo</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item small">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.54 (4).jpg" alt="Excelencia" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Excelencia</h4>
+										<p class="grid-desc">Calidad superior</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item medium">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.54 (5).jpg" alt="Transformación" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Transformación</h4>
+										<p class="grid-desc">Cambio positivo</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item large">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.54 (6).jpg" alt="Logros" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Logros</h4>
+										<p class="grid-desc">Objetivos cumplidos</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item small">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.54 (7).jpg" alt="Futuro" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Futuro</h4>
+										<p class="grid-desc">Oportunidades brillantes</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item medium">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.55 (1).jpg" alt="Éxito" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Éxito</h4>
+										<p class="grid-desc">Meta alcanzada</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item large">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.55.jpg" alt="ADNED" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">ADNED</h4>
+										<p class="grid-desc">Tu camino al éxito académico</p>
 									</div>
 								</div>
 							</div>
@@ -1051,7 +1386,13 @@
 							<div class="carousel-track">
 								{#each carousel1Images as image, index}
 									<div class="carousel-slide" class:active={index === carousel1Index}>
-										<img src="/carrusel/1/{image}" alt="Carrusel 1 - Imagen {index + 1}" loading="lazy"/>
+										<img 
+											src="/carrusel/1/{image}" 
+											alt="Carrusel 1 - Imagen {index + 1}" 
+											loading="lazy"
+											on:click={() => openImageModal(`/carrusel/1/${image}`, `Carrusel 1 - Imagen ${index + 1}`)}
+											class="carousel-image-clickable"
+										/>
 									</div>
 								{/each}
 							</div>
@@ -1085,7 +1426,13 @@
 					<div class="carousel-track">
 								{#each carousel2Images as image, index}
 									<div class="carousel-slide" class:active={index === carousel2Index}>
-										<img src="/carrusel/2/{image}" alt="Carrusel 2 - Imagen {index + 1}" loading="lazy"/>
+										<img 
+											src="/carrusel/2/{image}" 
+											alt="Carrusel 2 - Imagen {index + 1}" 
+											loading="lazy"
+											on:click={() => openImageModal(`/carrusel/2/${image}`, `Carrusel 2 - Imagen ${index + 1}`)}
+											class="carousel-image-clickable"
+										/>
 							</div>
 						{/each}
 							</div>
@@ -1119,7 +1466,13 @@
 							<div class="carousel-track">
 								{#each carousel3Images as image, index}
 									<div class="carousel-slide" class:active={index === carousel3Index}>
-										<img src="/carrusel/3/{image}" alt="Carrusel 3 - Imagen {index + 1}" loading="lazy"/>
+											<img 
+												src="/carrusel/3/{image}" 
+												alt="Carrusel 3 - Imagen {index + 1}" 
+												loading="lazy"
+												on:click={() => openImageModal(`/carrusel/3/${image}`, `Carrusel 3 - Imagen ${index + 1}`)}
+												class="carousel-image-clickable"
+											/>
 									</div>
 								{/each}
 							</div>
@@ -1169,7 +1522,13 @@
 								<div class="carousel-track">
 									{#each carousel4Images as image, index}
 										<div class="carousel-slide" class:active={index === carousel4Index}>
-											<img src="/carrusel/4/{image}" alt="Carrusel 4 - Imagen {index + 1}" loading="lazy"/>
+											<img 
+												src="/carrusel/4/{image}" 
+												alt="Carrusel 4 - Imagen {index + 1}" 
+												loading="lazy"
+												on:click={() => openImageModal(`/carrusel/4/${image}`, `Carrusel 4 - Imagen ${index + 1}`)}
+												class="carousel-image-clickable"
+											/>
 										</div>
 									{/each}
 								</div>
@@ -1203,7 +1562,13 @@
 								<div class="carousel-track">
 									{#each carousel5Images as image, index}
 										<div class="carousel-slide" class:active={index === carousel5Index}>
-											<img src="/carrusel/5/{image}" alt="Carrusel 5 - Imagen {index + 1}" loading="lazy"/>
+											<img 
+												src="/carrusel/5/{image}" 
+												alt="Carrusel 5 - Imagen {index + 1}" 
+												loading="lazy"
+												on:click={() => openImageModal(`/carrusel/5/${image}`, `Carrusel 5 - Imagen ${index + 1}`)}
+												class="carousel-image-clickable"
+											/>
 										</div>
 									{/each}
 								</div>
@@ -1241,8 +1606,54 @@
 			</div>
 
 			{#if !showThankYou}
-				<div class="formulario-content">
-					<div class="formulario-card">
+				<div class="formulario-content" bind:this={formSection}>
+					<!-- Columna izquierda - Información adicional -->
+					<div class="formulario-info" bind:this={infoSection}>
+						<div class="info-card animated-card" class:animate-in={isInfoVisible}>
+							<div class="info-icon animated-icon">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M9 12l2 2 4-4"/>
+									<path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
+									<path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
+									<path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
+									<path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
+								</svg>
+							</div>
+							<h3>¿Por qué registrarte?</h3>
+							<ul class="benefits-list">
+								<li>✅ Acceso gratuito a nuestro grupo de WhatsApp</li>
+								<li>✅ Material de estudio exclusivo</li>
+								<li>✅ Simulacros de examen</li>
+								<li>✅ Acompañamiento personalizado</li>
+								<li>✅ Comunidad de estudiantes motivados</li>
+							</ul>
+						</div>
+
+						<div class="info-card animated-card" class:animate-in={isInfoVisible}>
+							<div class="info-icon animated-icon">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+									<circle cx="9" cy="7" r="4"/>
+									<path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+									<path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+								</svg>
+							</div>
+							<h3>Nuestra Comunidad</h3>
+							<div class="community-stats">
+								<div class="stat-item">
+									<div class="stat-number">1,200+</div>
+									<div class="stat-label">Estudiantes</div>
+								</div>
+								<div class="stat-item">
+									<div class="stat-number">95%</div>
+									<div class="stat-label">Éxito</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Columna central - Formulario -->
+					<div class="formulario-card animated-card" class:animate-in={isFormVisible}>
 						<form class="registration-form" on:submit={handleSubmit}>
 							<div class="form-group">
 								<label for="parentName">Nombre del padre/tutor</label>
@@ -1322,6 +1733,35 @@
 							</p>
 						</div>
 					</div>
+
+					<!-- Columna derecha - Testimonios -->
+					<div class="formulario-testimonials" bind:this={testimonialsSection}>
+						<div class="testimonial-card animated-card" class:animate-in={isTestimonialsVisible}>
+							<div class="testimonial-header">
+								<div class="testimonial-icon">
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+									</svg>
+								</div>
+								<h3>Lo que dicen nuestros estudiantes</h3>
+							</div>
+							<div class="testimonials-list">
+								<div class="testimonial-item">
+									<p>"ADNED me ayudó a ingresar a la prepa de mis sueños. El material es excelente y el apoyo constante hace la diferencia."</p>
+									<div class="testimonial-author">- María González</div>
+								</div>
+								<div class="testimonial-item">
+									<p>"Mi hijo logró su objetivo gracias a la preparación de ADNED. Los simulacros fueron clave para su éxito."</p>
+									<div class="testimonial-author">- Carlos Ruiz</div>
+								</div>
+								<div class="testimonial-item">
+									<p>"La comunidad de ADNED es increíble. Siempre hay alguien dispuesto a ayudar y motivar."</p>
+									<div class="testimonial-author">- Ana Martínez</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
 				</div>
 			{:else}
 				<!-- Página de Agradecimiento -->
@@ -1350,6 +1790,21 @@
 			{/if}
 		</div>
 	</section>
+
+	<!-- Modal de Zoom para Imágenes -->
+	{#if showImageModal}
+		<div class="image-modal-overlay" on:click={closeImageModal}>
+			<div class="image-modal-content" on:click|stopPropagation>
+				<button class="image-modal-close" on:click={closeImageModal}>
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<line x1="18" y1="6" x2="6" y2="18"></line>
+						<line x1="6" y1="6" x2="18" y2="18"></line>
+					</svg>
+				</button>
+				<img src={selectedImage} alt={selectedImageAlt} class="image-modal-image">
+			</div>
+		</div>
+	{/if}
 
 </main>
 
@@ -1635,15 +2090,17 @@
 	/* Contenedor horizontal para temporizador y mensaje promocional */
 	.countdown-promo-container {
 		display: flex;
-		gap: 2rem;
+		gap: 3rem;
 		align-items: flex-start;
 		margin-top: 2.5rem;
+		justify-content: space-between;
 	}
 
 	/* Contador regresivo */
 	.countdown-container {
-		flex: 0.8;
-		text-align: center;
+		flex: 0 0 auto;
+		text-align: left;
+		min-width: 300px;
 	}
 
 	.countdown-title {
@@ -1674,45 +2131,48 @@
 
 	.countdown-timer {
 		display: flex;
-		justify-content: center;
+		justify-content: flex-start;
 		gap: 0.8rem;
 		flex-wrap: nowrap;
 	}
 
 	.countdown-item {
-		background: rgba(255, 255, 255, 0.1);
+		background: rgba(41, 0, 64, 0.8);
 		backdrop-filter: blur(10px);
-		border: 1px solid rgba(255, 255, 255, 0.2);
+		border: 1px solid rgba(255, 255, 255, 0.1);
 		border-radius: 12px;
 		padding: 1rem 0.8rem;
 		min-width: 70px;
 		text-align: center;
-		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 		transition: all 0.3s ease;
 	}
 
 	.countdown-item:hover {
 		transform: translateY(-5px);
-		box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
-		background: rgba(255, 255, 255, 0.15);
+		box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+		background: rgba(61, 0, 96, 0.9);
 	}
 
 	/* Mensaje promocional */
 	.promotional-message {
-		flex: 1.5;
-		padding: 1.5rem;
-		background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(251, 191, 36, 0.15) 50%, rgba(59, 130, 246, 0.15) 100%);
+		flex: 1;
+		padding: 2rem;
+		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		backdrop-filter: blur(10px);
-		border: 2px solid rgba(251, 191, 36, 0.3);
+		border: 2px solid transparent;
 		border-radius: 1rem;
-		text-align: left;
+		text-align: center;
 		position: relative;
 		overflow: hidden;
 		animation: promotionalPulse 3s ease-in-out infinite;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		min-width: 0;
+		align-items: center;
+		min-width: 400px;
+		max-width: 500px;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 	}
 
 	.promotional-message::before {
@@ -1721,24 +2181,32 @@
 		top: 0;
 		left: 0;
 		right: 0;
-		height: 3px;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+		height: 4px;
+		background: linear-gradient(90deg, #3b82f6 0%, #f97316 50%, #3b82f6 100%);
+		border-radius: 1rem 1rem 0 0;
 	}
 
 	.promo-icon {
-		font-size: 2rem;
-		margin-bottom: 0.75rem;
+		font-size: 2.5rem;
+		margin-bottom: 1rem;
 		animation: bounce 2s ease-in-out infinite;
+		color: #fbbf24;
+		text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.promo-text {
 		color: #ffffff;
-		font-size: 1.1rem;
-		line-height: 1.5;
+		font-size: 1.2rem;
+		line-height: 1.6;
 		margin: 0;
-		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-		text-align: left;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+		text-align: center;
 		padding: 0.5rem 0;
+		max-width: 100%;
 	}
 
 	.promo-text strong {
@@ -1792,11 +2260,12 @@
 	}
 
 	.countdown-label {
-		font-size: 0.9rem;
-		font-weight: 600;
-		color: #fbbf24;
+		font-size: 0.7rem;
+		font-weight: 700;
+		color: #ffffff;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 		animation: labelFloat 4s ease-in-out infinite;
 		animation-delay: calc(var(--item-index) * 0.3s);
@@ -2290,6 +2759,451 @@
 		z-index: 15;
 	}
 
+	/* Imágenes clickeables del carrusel */
+	.carousel-image-clickable {
+		cursor: pointer;
+		transition: all 0.3s ease;
+	}
+
+	.carousel-image-clickable:hover {
+		transform: scale(1.05);
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+	}
+
+	/* Sección Comunidad Interactiva */
+	.interactive-community {
+		position: relative;
+		overflow: hidden;
+		background: #ffffff;
+		border: 2px solid transparent;
+		background-clip: padding-box;
+		transition: all 0.5s ease;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+	}
+
+	.interactive-community::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(135deg, 
+			rgba(99, 102, 241, 0.5) 0%, 
+			rgba(168, 85, 247, 0.5) 50%, 
+			rgba(236, 72, 153, 0.5) 100%);
+		border-radius: inherit;
+		padding: 2px;
+		mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+		mask-composite: exclude;
+		opacity: 0;
+		transition: opacity 0.5s ease;
+	}
+
+	.interactive-community:hover::before {
+		opacity: 1;
+	}
+
+	.interactive-community:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+	}
+
+	/* Partículas de fondo */
+	.particles-background {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		overflow: hidden;
+	}
+
+	.particle {
+		position: absolute;
+		width: 4px;
+		height: 4px;
+		background: linear-gradient(45deg, #fbbf24, #f59e0b);
+		border-radius: 50%;
+		animation: float var(--duration) ease-in-out infinite;
+		animation-delay: var(--delay);
+		opacity: 0.6;
+	}
+
+	@keyframes float {
+		0%, 100% {
+			transform: translateY(100vh) translateX(0) scale(0);
+			opacity: 0;
+		}
+		10% {
+			opacity: 0.6;
+		}
+		90% {
+			opacity: 0.6;
+		}
+		50% {
+			transform: translateY(-10vh) translateX(20px) scale(1);
+			opacity: 1;
+		}
+	}
+
+	/* Contenido de la comunidad */
+	.community-content {
+		position: relative;
+		z-index: 2;
+	}
+
+	/* Iconos animados */
+	.animated-icon {
+		position: relative;
+		transition: all 0.5s ease;
+	}
+
+	.animated-icon.rotating {
+		animation: rotate 2s ease-in-out infinite;
+	}
+
+	.icon-glow {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 120%;
+		height: 120%;
+		background: radial-gradient(circle, rgba(251, 191, 36, 0.3) 0%, transparent 70%);
+		border-radius: 50%;
+		opacity: 0;
+		transition: opacity 0.5s ease;
+		pointer-events: none;
+	}
+
+	.animated-icon:hover .icon-glow {
+		opacity: 1;
+	}
+
+	@keyframes rotate {
+		0%, 100% { transform: rotate(0deg) scale(1); }
+		50% { transform: rotate(180deg) scale(1.1); }
+	}
+
+	/* Texto con efecto reveal */
+	.text-reveal {
+		opacity: 0;
+		transform: translateY(30px);
+		animation: textReveal 1s ease forwards;
+	}
+
+	@keyframes textReveal {
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	/* Contenedor de estadísticas */
+	.stats-container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 1.5rem;
+		margin-top: 2rem;
+	}
+
+	.stat-card {
+		background: rgba(255, 255, 255, 0.9);
+		backdrop-filter: blur(10px);
+		border-radius: 1rem;
+		padding: 1.5rem;
+		text-align: center;
+		position: relative;
+		overflow: hidden;
+		transition: all 0.5s ease;
+		border: 1px solid rgba(251, 191, 36, 0.2);
+	}
+
+	.stat-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.2), transparent);
+		transition: left 0.5s ease;
+	}
+
+	.stat-card:hover::before {
+		left: 100%;
+	}
+
+	.stat-card.animate {
+		animation: slideInUp 0.8s ease forwards;
+	}
+
+	.stat-card:hover {
+		transform: translateY(-10px) scale(1.05);
+		box-shadow: 0 15px 30px rgba(251, 191, 36, 0.3);
+		border-color: rgba(251, 191, 36, 0.5);
+	}
+
+	@keyframes slideInUp {
+		from {
+			opacity: 0;
+			transform: translateY(50px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.stat-number {
+		font-size: 2.5rem;
+		font-weight: 800;
+		background: linear-gradient(135deg, #fbbf24, #f59e0b);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		margin-bottom: 0.5rem;
+	}
+
+	.stat-label {
+		font-size: 1rem;
+		font-weight: 600;
+		color: #374151;
+		margin-bottom: 0.5rem;
+	}
+
+	.stat-icon {
+		font-size: 1.5rem;
+		opacity: 0.7;
+	}
+
+	/* Beneficios Interactivos */
+	.interactive-benefits {
+		background: linear-gradient(135deg, 
+			rgba(16, 185, 129, 0.05) 0%, 
+			rgba(59, 130, 246, 0.05) 50%, 
+			rgba(168, 85, 247, 0.05) 100%);
+	}
+
+	.interactive-card {
+		position: relative;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(10px);
+		border-radius: 1rem;
+		padding: 2rem;
+		text-align: center;
+		transition: all 0.5s ease;
+		border: 2px solid transparent;
+		overflow: hidden;
+	}
+
+	.interactive-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(135deg, 
+			rgba(99, 102, 241, 0.1) 0%, 
+			rgba(168, 85, 247, 0.1) 50%, 
+			rgba(236, 72, 153, 0.1) 100%);
+		opacity: 0;
+		transition: opacity 0.5s ease;
+		z-index: 1;
+	}
+
+	.interactive-card:hover::before {
+		opacity: 1;
+	}
+
+	.interactive-card:hover {
+		transform: translateY(-15px) scale(1.03);
+		box-shadow: 0 25px 50px rgba(99, 102, 241, 0.2);
+		border-color: rgba(99, 102, 241, 0.3);
+	}
+
+	.interactive-card > * {
+		position: relative;
+		z-index: 2;
+	}
+
+	.beneficio-icon {
+		position: relative;
+		width: 60px;
+		height: 60px;
+		margin: 0 auto 1rem;
+		background: linear-gradient(135deg, #fbbf24, #f59e0b);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.5s ease;
+	}
+
+	.interactive-card:hover .beneficio-icon {
+		transform: scale(1.2) rotate(10deg);
+		box-shadow: 0 10px 25px rgba(251, 191, 36, 0.4);
+	}
+
+	.icon-pulse {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+		background: rgba(251, 191, 36, 0.3);
+		animation: pulse 2s ease-in-out infinite;
+	}
+
+	@keyframes pulse {
+		0%, 100% {
+			transform: translate(-50%, -50%) scale(1);
+			opacity: 0.7;
+		}
+		50% {
+			transform: translate(-50%, -50%) scale(1.2);
+			opacity: 0.3;
+		}
+	}
+
+	.beneficio-title {
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin-bottom: 0.75rem;
+		transition: color 0.3s ease;
+	}
+
+	.interactive-card:hover .beneficio-title {
+		color: #6366f1;
+	}
+
+	.beneficio-desc {
+		color: #6b7280;
+		line-height: 1.6;
+		margin-bottom: 1rem;
+	}
+
+	.benefit-highlight {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		font-size: 1.5rem;
+		opacity: 0;
+		transform: scale(0);
+		transition: all 0.3s ease;
+	}
+
+	.interactive-card:hover .benefit-highlight {
+		opacity: 1;
+		transform: scale(1);
+		animation: bounce 0.6s ease;
+	}
+
+	@keyframes bounce {
+		0%, 20%, 50%, 80%, 100% {
+			transform: scale(1) translateY(0);
+		}
+		40% {
+			transform: scale(1.2) translateY(-10px);
+		}
+		60% {
+			transform: scale(1.1) translateY(-5px);
+		}
+	}
+
+	/* Modal de Zoom */
+	.image-modal-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.9);
+		backdrop-filter: blur(10px);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 10000;
+		animation: modalFadeIn 0.3s ease;
+	}
+
+	.image-modal-content {
+		position: relative;
+		max-width: 90vw;
+		max-height: 90vh;
+		width: auto;
+		height: auto;
+		background: transparent;
+		border-radius: 1rem;
+		overflow: visible;
+		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+		animation: modalSlideIn 0.3s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.image-modal-close {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		width: 40px;
+		height: 40px;
+		background: rgba(0, 0, 0, 0.7);
+		border: none;
+		border-radius: 50%;
+		color: white;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 10001;
+		transition: all 0.3s ease;
+	}
+
+	.image-modal-close:hover {
+		background: rgba(0, 0, 0, 0.9);
+		transform: scale(1.1);
+	}
+
+	.image-modal-close svg {
+		width: 20px;
+		height: 20px;
+	}
+
+	.image-modal-image {
+		max-width: 90vw;
+		max-height: 90vh;
+		width: auto;
+		height: auto;
+		object-fit: contain;
+		display: block;
+		border-radius: 0.5rem;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+	}
+
+	@keyframes modalFadeIn {
+		from { opacity: 0; }
+		to { opacity: 1; }
+	}
+
+	@keyframes modalSlideIn {
+		from { 
+			opacity: 0;
+			transform: scale(0.8) translateY(20px);
+		}
+		to { 
+			opacity: 1;
+			transform: scale(1) translateY(0);
+		}
+	}
+
 	/* Botones */
 	.btn {
 		display: inline-flex;
@@ -2606,6 +3520,104 @@
 
 	/* Responsive Design */
 	@media (max-width: 768px) {
+		.image-modal-content {
+			max-width: 95vw;
+			max-height: 95vh;
+			margin: 1rem;
+		}
+
+		.image-modal-image {
+			max-width: 95vw;
+			max-height: 95vh;
+		}
+
+		.image-modal-close {
+			width: 35px;
+			height: 35px;
+			top: 0.5rem;
+			right: 0.5rem;
+		}
+
+		.image-modal-close svg {
+			width: 18px;
+			height: 18px;
+		}
+
+		/* Responsive para sección interactiva */
+		.stats-container {
+			grid-template-columns: repeat(2, 1fr);
+			gap: 1rem;
+		}
+
+		.stat-card {
+			padding: 1rem;
+		}
+
+		.stat-number {
+			font-size: 2rem;
+		}
+
+		.interactive-card {
+			padding: 1.5rem;
+		}
+
+		.beneficio-icon {
+			width: 50px;
+			height: 50px;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.image-modal-content {
+			max-width: 98vw;
+			max-height: 98vh;
+			margin: 0.5rem;
+		}
+
+		.image-modal-image {
+			max-width: 98vw;
+			max-height: 98vh;
+		}
+
+		.image-modal-close {
+			width: 30px;
+			height: 30px;
+			top: 0.25rem;
+			right: 0.25rem;
+		}
+
+		.image-modal-close svg {
+			width: 16px;
+			height: 16px;
+		}
+
+		/* Responsive para móviles pequeños */
+		.stats-container {
+			grid-template-columns: 1fr;
+			gap: 0.75rem;
+		}
+
+		.stat-card {
+			padding: 0.75rem;
+		}
+
+		.stat-number {
+			font-size: 1.75rem;
+		}
+
+		.interactive-card {
+			padding: 1rem;
+		}
+
+		.beneficio-icon {
+			width: 45px;
+			height: 45px;
+		}
+
+		.beneficio-title {
+			font-size: 1.1rem;
+		}
+
 		.hero {
 			padding: 2rem 0;
 			min-height: auto;
@@ -2715,12 +3727,15 @@
 		.countdown-promo-container {
 			flex-direction: column;
 			gap: 1.5rem;
+			align-items: center;
 		}
 
 		/* Mensaje promocional móvil */
 		.promotional-message {
-			padding: 1rem;
+			padding: 1.5rem;
 			text-align: left;
+			min-width: 300px;
+			max-width: 100%;
 		}
 
 		.promo-icon {
@@ -3297,6 +4312,10 @@
 		position: relative;
 		overflow: hidden;
 		text-align: center;
+
+		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+		border-color: rgba(251, 191, 36, 0.6);
+		background: rgba(255, 255, 255, 1);
 	}
 
 	.curso-section::before {
@@ -3309,16 +4328,18 @@
 		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
 	}
 
+	/*
 	.curso-section:hover {
 		transform: translateY(-8px);
 		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
 		border-color: rgba(251, 191, 36, 0.6);
 		background: rgba(255, 255, 255, 1);
 	}
+	*/
 
 	.curso-intro {
 		border-color: rgba(249, 115, 22, 0.4);
-		background: linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(251, 191, 36, 0.05) 50%, rgba(59, 130, 246, 0.05) 100%);
+		/*background: linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(251, 191, 36, 0.05) 50%, rgba(59, 130, 246, 0.05) 100%);*/
 	}
 
 	.curso-intro::before {
@@ -3489,74 +4510,113 @@
 		margin: 0;
 	}
 
-	.galeria-grid {
+	/* Grid Responsive Styles */
+	.responsive-grid {
+		margin-top: 2rem;
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 		gap: 1.5rem;
-		margin-top: 2rem;
+		grid-auto-rows: 200px;
 	}
 
-	.galeria-item {
+	.grid-item {
 		position: relative;
-		border-radius: 1rem;
+		border-radius: 1.5rem;
 		overflow: hidden;
 		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-		transition: all 0.3s ease;
+		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 		background: #ffffff;
+		cursor: pointer;
+		grid-row: span 1;
 	}
 
-	.galeria-item:hover {
-		transform: translateY(-8px);
-		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+	.grid-item:hover {
+		transform: translateY(-8px) scale(1.02);
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+		z-index: 10;
 	}
 
-	.galeria-imagen {
+	.grid-item.large {
+		grid-row: span 2;
+		grid-column: span 1;
+	}
+
+	.grid-item.medium {
+		grid-row: span 1.5;
+		grid-column: span 1;
+	}
+
+	.grid-item.small {
+		grid-row: span 1;
+		grid-column: span 1;
+	}
+
+	.grid-image {
 		width: 100%;
-		height: 200px;
+		height: 100%;
 		object-fit: cover;
-		transition: all 0.3s ease;
+		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
-	.galeria-item:hover .galeria-imagen {
+	.grid-item:hover .grid-image {
 		transform: scale(1.05);
 	}
 
-	.galeria-overlay {
+	.grid-overlay {
 		position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background: linear-gradient(135deg, rgba(139, 92, 246, 0.9) 0%, rgba(249, 115, 22, 0.9) 100%);
+		background: linear-gradient(
+			135deg, 
+			rgba(139, 92, 246, 0.9) 0%, 
+			rgba(59, 130, 246, 0.8) 25%,
+			rgba(249, 115, 22, 0.9) 75%,
+			rgba(251, 191, 36, 0.9) 100%
+		);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		opacity: 0;
-		transition: all 0.3s ease;
+		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+		backdrop-filter: blur(2px);
 	}
 
-	.galeria-item:hover .galeria-overlay {
+	.grid-item:hover .grid-overlay {
 		opacity: 1;
 	}
 
-	.galeria-info {
+	.grid-content {
 		text-align: center;
 		color: white;
-		padding: 1rem;
+		padding: 1.5rem;
+		transform: translateY(15px);
+		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
-	.galeria-titulo {
-		font-size: 1.2rem;
-		font-weight: 700;
+	.grid-item:hover .grid-content {
+		transform: translateY(0);
+	}
+
+	.grid-title {
+		font-size: 1.3rem;
+		font-weight: 800;
 		margin-bottom: 0.5rem;
-		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+		background: linear-gradient(135deg, #ffffff 0%, #fbbf24 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
-	.galeria-desc {
+	.grid-desc {
 		font-size: 0.9rem;
+		opacity: 0.95;
 		line-height: 1.4;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		font-weight: 500;
 		margin: 0;
-		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 	}
 
 	.ver-mas-container {
@@ -3689,20 +4749,30 @@
 			font-size: 0.85rem;
 		}
 
-		.galeria-grid {
+		/* Grid Responsive - Tablet */
+		.responsive-grid {
 			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 			gap: 1rem;
+			grid-auto-rows: 180px;
 		}
 
-		.galeria-imagen {
-			height: 180px;
+		.grid-item.large {
+			grid-row: span 2;
 		}
 
-		.galeria-titulo {
+		.grid-item.medium {
+			grid-row: span 1.5;
+		}
+
+		.grid-item.small {
+			grid-row: span 1;
+		}
+
+		.grid-title {
 			font-size: 1.1rem;
 		}
 
-		.galeria-desc {
+		.grid-desc {
 			font-size: 0.8rem;
 		}
 
@@ -3767,21 +4837,31 @@
 			font-size: 0.8rem;
 		}
 
-		.galeria-grid {
+		/* Grid Responsive - Mobile */
+		.responsive-grid {
 			grid-template-columns: 1fr;
 			gap: 1rem;
+			grid-auto-rows: 200px;
 		}
 
-		.galeria-imagen {
-			height: 160px;
+		.grid-item.large,
+		.grid-item.medium,
+		.grid-item.small {
+			grid-row: span 1;
+			grid-column: span 1;
 		}
 
-		.galeria-titulo {
-			font-size: 1rem;
+		.grid-content {
+			padding: 1rem;
 		}
 
-		.galeria-desc {
-			font-size: 0.75rem;
+		.grid-title {
+			font-size: 1.1rem;
+			margin-bottom: 0.5rem;
+		}
+
+		.grid-desc {
+			font-size: 0.85rem;
 		}
 
 		.btn-ver-mas {
@@ -3835,7 +4915,7 @@
 		padding: 1rem 2rem;
 		border-radius: 1rem;
 		backdrop-filter: blur(10px);
-		background-color: rgba(255, 255, 255, 0.1);
+		/*background-color: rgba(255, 255, 255, 0.1);*/
 		border: 2px solid rgba(251, 191, 36, 0.3);
 		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 		position: relative;
@@ -4680,13 +5760,261 @@
 	}
 
 	.formulario-content {
+		display: grid;
+		grid-template-columns: 1fr 2fr 1fr;
+		gap: 2rem;
+		align-items: start;
+		position: relative;
+		z-index: 2;
+		max-width: 1400px;
+		margin: 0 auto;
+	}
+
+	/* Columna izquierda - Información */
+	.formulario-info {
 		display: flex;
-		justify-content: center;
-		align-items: center;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.info-card {
+		background: rgba(255, 255, 255, 0.9);
+		backdrop-filter: blur(15px);
+		padding: 2rem;
+		border-radius: 1.5rem;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+		transition: all 0.5s ease;
+		border: 1px solid rgba(251, 191, 36, 0.2);
+		position: relative;
+		overflow: hidden;
+	}
+
+	/* Animaciones de entrada */
+	.animated-card {
+		opacity: 0;
+		transform: translateY(50px) scale(0.9);
+		transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	}
+
+	.animated-card.animate-in {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+
+	/* Efectos de hover mejorados */
+	.info-card:hover {
+		transform: translateY(-10px) scale(1.02);
+		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+		border-color: rgba(251, 191, 36, 0.5);
+		background: rgba(255, 255, 255, 1);
+	}
+
+	/* Efecto de brillo en hover */
+	.info-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.2), transparent);
+		transition: left 0.6s ease;
+		z-index: 1;
+	}
+
+	.info-card:hover::before {
+		left: 100%;
+	}
+
+	.info-card > * {
 		position: relative;
 		z-index: 2;
 	}
 
+	.info-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+		border-color: rgba(251, 191, 36, 0.4);
+	}
+
+	.info-icon {
+		width: 50px;
+		height: 50px;
+		background: linear-gradient(135deg, #f97316, #fbbf24);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 1rem;
+		position: relative;
+		transition: all 0.5s ease;
+		animation: iconPulse 2s ease-in-out infinite;
+	}
+
+	.info-icon::before {
+		content: '';
+		position: absolute;
+		top: -5px;
+		left: -5px;
+		right: -5px;
+		bottom: -5px;
+		background: linear-gradient(135deg, #f97316, #fbbf24);
+		border-radius: 50%;
+		opacity: 0;
+		animation: iconGlow 2s ease-in-out infinite;
+		z-index: -1;
+	}
+
+	.info-card:hover .info-icon {
+		transform: scale(1.2) rotate(10deg);
+		animation: iconBounce 0.6s ease;
+	}
+
+	.info-card:hover .info-icon::before {
+		opacity: 0.3;
+		animation: iconGlow 1s ease-in-out infinite;
+	}
+
+	@keyframes iconPulse {
+		0%, 100% {
+			box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4);
+		}
+		50% {
+			box-shadow: 0 0 0 10px rgba(249, 115, 22, 0);
+		}
+	}
+
+	@keyframes iconGlow {
+		0%, 100% {
+			transform: scale(1);
+			opacity: 0.3;
+		}
+		50% {
+			transform: scale(1.1);
+			opacity: 0.6;
+		}
+	}
+
+	@keyframes iconBounce {
+		0%, 20%, 50%, 80%, 100% {
+			transform: scale(1.2) rotate(10deg) translateY(0);
+		}
+		40% {
+			transform: scale(1.3) rotate(15deg) translateY(-5px);
+		}
+		60% {
+			transform: scale(1.25) rotate(12deg) translateY(-2px);
+		}
+	}
+
+	.info-icon svg {
+		width: 24px;
+		height: 24px;
+		color: white;
+	}
+
+	.info-card h3 {
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin-bottom: 1rem;
+	}
+
+	.benefits-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.benefits-list li {
+		padding: 0.5rem 0;
+		color: #4b5563;
+		font-size: 0.95rem;
+		line-height: 1.5;
+		opacity: 0;
+		transform: translateX(-20px);
+		animation: slideInLeft 0.6s ease forwards;
+		transition: all 0.3s ease;
+	}
+
+	.benefits-list li:nth-child(1) { animation-delay: 0.1s; }
+	.benefits-list li:nth-child(2) { animation-delay: 0.2s; }
+	.benefits-list li:nth-child(3) { animation-delay: 0.3s; }
+	.benefits-list li:nth-child(4) { animation-delay: 0.4s; }
+	.benefits-list li:nth-child(5) { animation-delay: 0.5s; }
+
+	.benefits-list li:hover {
+		color: #f59e0b;
+		transform: translateX(5px);
+		font-weight: 600;
+	}
+
+	@keyframes slideInLeft {
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
+	.community-stats {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+		margin-top: 1rem;
+	}
+
+	.stat-item {
+		text-align: center;
+		padding: 1rem;
+		background: rgba(251, 191, 36, 0.1);
+		border-radius: 0.75rem;
+		transition: all 0.3s ease;
+		opacity: 0;
+		transform: scale(0.8);
+		animation: scaleIn 0.6s ease forwards;
+	}
+
+	.stat-item:nth-child(1) { animation-delay: 0.2s; }
+	.stat-item:nth-child(2) { animation-delay: 0.4s; }
+
+	.stat-item:hover {
+		background: rgba(251, 191, 36, 0.2);
+		transform: scale(1.05);
+		box-shadow: 0 5px 15px rgba(251, 191, 36, 0.3);
+	}
+
+	.stat-number {
+		font-size: 1.5rem;
+		font-weight: 800;
+		color: #f59e0b;
+		margin-bottom: 0.25rem;
+		transition: all 0.3s ease;
+	}
+
+	.stat-item:hover .stat-number {
+		transform: scale(1.1);
+		text-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+	}
+
+	.stat-label {
+		font-size: 0.8rem;
+		color: #6b7280;
+		font-weight: 600;
+		transition: color 0.3s ease;
+	}
+
+	.stat-item:hover .stat-label {
+		color: #f59e0b;
+	}
+
+	@keyframes scaleIn {
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	/* Columna central - Formulario */
 	.formulario-card {
 		background: rgba(255, 255, 255, 0.95);
 		backdrop-filter: blur(20px);
@@ -4694,13 +6022,34 @@
 		border-radius: 2rem;
 		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 		transition: all 0.3s ease;
-		border: 2px solid rgba(251, 191, 36, 0.3);
+		border: 2px solid transparent;
 		position: relative;
 		overflow: hidden;
 		text-align: left;
-		max-width: 700px;
 		width: 100%;
 	}
+
+	/* Efecto de borde brillante */
+	.formulario-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(45deg, 
+			#290040 0%, 
+			#3d0060 25%, 
+			#290040 50%, 
+			#3d0060 75%, 
+			#290040 100%);
+		border-radius: inherit;
+		padding: 3px;
+		mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+		mask-composite: exclude;
+		z-index: -1;
+	}
+
 
 	.formulario-card::before {
 		content: '';
@@ -4713,10 +6062,43 @@
 	}
 
 	.formulario-card:hover {
-		transform: translateY(-8px);
+		transform: translateY(-8px) scale(1.02);
 		box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-		border-color: rgba(251, 191, 36, 0.6);
 		background: rgba(255, 255, 255, 1);
+	}
+
+	.formulario-card:hover::before {
+		background: linear-gradient(45deg, 
+			#290040 0%, 
+			#3d0060 25%, 
+			#290040 50%, 
+			#3d0060 75%, 
+			#290040 100%);
+	}
+
+	/* Efecto de resplandor adicional */
+	.formulario-card::after {
+		content: '';
+		position: absolute;
+		top: -2px;
+		left: -2px;
+		right: -2px;
+		bottom: -2px;
+		background: linear-gradient(45deg, 
+			#290040 0%, 
+			#3d0060 25%, 
+			#290040 50%, 
+			#3d0060 75%, 
+			#290040 100%);
+		border-radius: inherit;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		z-index: -2;
+		filter: blur(8px);
+	}
+
+	.formulario-card:hover::after {
+		opacity: 0.6;
 	}
 
 	.formulario-icon {
@@ -4742,6 +6124,120 @@
 		height: 40px;
 		color: white;
 	}
+
+	/* Columna derecha - Testimonios */
+	.formulario-testimonials {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.testimonial-card {
+		background: rgba(255, 255, 255, 0.9);
+		backdrop-filter: blur(15px);
+		padding: 2rem;
+		border-radius: 1.5rem;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+		transition: all 0.3s ease;
+		border: 1px solid rgba(251, 191, 36, 0.2);
+	}
+
+	.testimonial-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+		border-color: rgba(251, 191, 36, 0.4);
+	}
+
+	.testimonial-header {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.testimonial-icon {
+		width: 50px;
+		height: 50px;
+		background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.testimonial-icon svg {
+		width: 24px;
+		height: 24px;
+		color: white;
+	}
+
+	.testimonial-header h3 {
+		font-size: 1.1rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin: 0;
+	}
+
+	.testimonials-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.testimonial-item {
+		padding: 1rem;
+		background: rgba(251, 191, 36, 0.05);
+		border-radius: 0.75rem;
+		border-left: 3px solid #f59e0b;
+		transition: all 0.3s ease;
+		opacity: 0;
+		transform: translateY(20px);
+		animation: slideInUp 0.6s ease forwards;
+		margin-bottom: 1rem;
+	}
+
+	.testimonial-item:nth-child(1) { animation-delay: 0.1s; }
+	.testimonial-item:nth-child(2) { animation-delay: 0.2s; }
+	.testimonial-item:nth-child(3) { animation-delay: 0.3s; }
+
+	.testimonial-item:hover {
+		background: rgba(251, 191, 36, 0.1);
+		transform: translateY(-5px);
+		box-shadow: 0 5px 15px rgba(251, 191, 36, 0.2);
+		border-left-color: #f97316;
+	}
+
+	.testimonial-item p {
+		font-size: 0.9rem;
+		color: #4b5563;
+		line-height: 1.5;
+		margin-bottom: 0.5rem;
+		font-style: italic;
+		transition: color 0.3s ease;
+	}
+
+	.testimonial-item:hover p {
+		color: #1f2937;
+	}
+
+	.testimonial-author {
+		font-size: 0.8rem;
+		color: #6b7280;
+		font-weight: 600;
+		transition: color 0.3s ease;
+	}
+
+	.testimonial-item:hover .testimonial-author {
+		color: #f59e0b;
+	}
+
+	@keyframes slideInUp {
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
 
 	.formulario-title {
 		font-size: 2rem;
@@ -5090,9 +6586,23 @@
 			padding: 1rem 0;
 		}
 
-		.formulario-card {
-			padding: 3rem 2rem;
+		.formulario-content {
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
 		}
+
+		.formulario-card {
+			padding: 2.5rem 2rem;
+		}
+
+		.info-card, .testimonial-card {
+			padding: 1.5rem;
+		}
+
+		.community-stats {
+			grid-template-columns: 1fr;
+		}
+
 
 		.formulario-icon {
 			width: 70px;
@@ -5120,8 +6630,22 @@
 	}
 
 	@media (max-width: 480px) {
+		.formulario-content {
+			gap: 1rem;
+		}
+
 		.formulario-card {
-			padding: 2.5rem 1.5rem;
+			padding: 2rem 1.5rem;
+		}
+
+		.info-card, .testimonial-card {
+			padding: 1.25rem;
+		}
+
+		.testimonial-header {
+			flex-direction: column;
+			text-align: center;
+			gap: 0.5rem;
 		}
 
 		.formulario-icon {
