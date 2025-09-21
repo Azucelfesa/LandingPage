@@ -126,6 +126,11 @@
 	
 	// Estado para mostrar carruseles adicionales
 	let showAdditionalCarousels = false;
+	
+	// Estado para el modal de zoom
+	let showImageModal = false;
+	let selectedImage = '';
+	let selectedImageAlt = '';
 
 	
 	// Lista de imágenes para cada carrusel
@@ -183,7 +188,7 @@
 
 	// Auto-play del carrusel
 	function startAutoPlay() {
-		reviewInterval = setInterval(nextReview, 4000);
+		reviewInterval = setInterval(nextReview, 40000);
 	}
 
 	function stopAutoPlay() {
@@ -300,8 +305,8 @@
 		
 		if (showAdditionalCarousels) {
 			// Iniciar carruseles adicionales cuando se muestran
-			carousel4Interval = setInterval(nextCarousel4, 4500);
-			carousel5Interval = setInterval(nextCarousel5, 5000);
+			carousel4Interval = setInterval(nextCarousel4, 55000);
+			carousel5Interval = setInterval(nextCarousel5, 60000);
 			console.log('Carruseles adicionales iniciados');
 		} else {
 			// Detener carruseles adicionales cuando se ocultan
@@ -313,14 +318,14 @@
 
 	// Auto-play para todos los carruseles
 	function startAllCarousels() {
-		carousel1Interval = setInterval(nextCarousel1, 3000);
-		carousel2Interval = setInterval(nextCarousel2, 3500);
-		carousel3Interval = setInterval(nextCarousel3, 4000);
-		aboutCarouselInterval = setInterval(nextAboutSlide, 8000);
+		carousel1Interval = setInterval(nextCarousel1, 40000);
+		carousel2Interval = setInterval(nextCarousel2, 45000);
+		carousel3Interval = setInterval(nextCarousel3, 50000);
+		aboutCarouselInterval = setInterval(nextAboutSlide, 60000);
 		// Solo iniciar carruseles adicionales si están visibles
 		if (showAdditionalCarousels) {
-			carousel4Interval = setInterval(nextCarousel4, 4500);
-			carousel5Interval = setInterval(nextCarousel5, 5000);
+			carousel4Interval = setInterval(nextCarousel4, 55000);
+			carousel5Interval = setInterval(nextCarousel5, 60000);
 		}
 	}
 
@@ -331,7 +336,7 @@
 		
 		// Iniciar auto-play después de un pequeño delay
 		setTimeout(() => {
-			aboutCarouselInterval = setInterval(nextAboutSlide, 8000);
+			aboutCarouselInterval = setInterval(nextAboutSlide, 60000);
 		}, 1000);
 	}
 
@@ -342,6 +347,23 @@
 		if (aboutCarouselInterval) clearInterval(aboutCarouselInterval);
 		if (carousel4Interval) clearInterval(carousel4Interval);
 		if (carousel5Interval) clearInterval(carousel5Interval);
+	}
+
+	// Funciones para el modal de zoom
+	function openImageModal(imageSrc: string, imageAlt: string) {
+		selectedImage = imageSrc;
+		selectedImageAlt = imageAlt;
+		showImageModal = true;
+		// Detener todos los carruseles cuando se abre el modal
+		stopAllCarousels();
+	}
+
+	function closeImageModal() {
+		showImageModal = false;
+		selectedImage = '';
+		selectedImageAlt = '';
+		// Reiniciar carruseles cuando se cierra el modal
+		startAllCarousels();
 	}
 
 
@@ -1222,7 +1244,13 @@
 							<div class="carousel-track">
 								{#each carousel1Images as image, index}
 									<div class="carousel-slide" class:active={index === carousel1Index}>
-										<img src="/carrusel/1/{image}" alt="Carrusel 1 - Imagen {index + 1}" loading="lazy"/>
+										<img 
+											src="/carrusel/1/{image}" 
+											alt="Carrusel 1 - Imagen {index + 1}" 
+											loading="lazy"
+											on:click={() => openImageModal(`/carrusel/1/${image}`, `Carrusel 1 - Imagen ${index + 1}`)}
+											class="carousel-image-clickable"
+										/>
 									</div>
 								{/each}
 							</div>
@@ -1256,7 +1284,13 @@
 					<div class="carousel-track">
 								{#each carousel2Images as image, index}
 									<div class="carousel-slide" class:active={index === carousel2Index}>
-										<img src="/carrusel/2/{image}" alt="Carrusel 2 - Imagen {index + 1}" loading="lazy"/>
+										<img 
+											src="/carrusel/2/{image}" 
+											alt="Carrusel 2 - Imagen {index + 1}" 
+											loading="lazy"
+											on:click={() => openImageModal(`/carrusel/2/${image}`, `Carrusel 2 - Imagen ${index + 1}`)}
+											class="carousel-image-clickable"
+										/>
 							</div>
 						{/each}
 							</div>
@@ -1287,13 +1321,19 @@
 									<polyline points="15,18 9,12 15,6"/>
 								</svg>
 							</button>
-							<div class="carousel-track">
-								{#each carousel3Images as image, index}
-									<div class="carousel-slide" class:active={index === carousel3Index}>
-										<img src="/carrusel/3/{image}" alt="Carrusel 3 - Imagen {index + 1}" loading="lazy"/>
-									</div>
-								{/each}
-							</div>
+								<div class="carousel-track">
+									{#each carousel3Images as image, index}
+										<div class="carousel-slide" class:active={index === carousel3Index}>
+											<img 
+												src="/carrusel/3/{image}" 
+												alt="Carrusel 3 - Imagen {index + 1}" 
+												loading="lazy"
+												on:click={() => openImageModal(`/carrusel/3/${image}`, `Carrusel 3 - Imagen ${index + 1}`)}
+												class="carousel-image-clickable"
+											/>
+										</div>
+									{/each}
+								</div>
 							<button class="carousel-btn next-btn" on:click={nextCarousel3} on:mouseenter={stopAllCarousels} on:mouseleave={startAllCarousels}>
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<polyline points="9,18 15,12 9,6"/>
@@ -1340,7 +1380,13 @@
 								<div class="carousel-track">
 									{#each carousel4Images as image, index}
 										<div class="carousel-slide" class:active={index === carousel4Index}>
-											<img src="/carrusel/4/{image}" alt="Carrusel 4 - Imagen {index + 1}" loading="lazy"/>
+											<img 
+												src="/carrusel/4/{image}" 
+												alt="Carrusel 4 - Imagen {index + 1}" 
+												loading="lazy"
+												on:click={() => openImageModal(`/carrusel/4/${image}`, `Carrusel 4 - Imagen ${index + 1}`)}
+												class="carousel-image-clickable"
+											/>
 										</div>
 									{/each}
 								</div>
@@ -1374,7 +1420,13 @@
 								<div class="carousel-track">
 									{#each carousel5Images as image, index}
 										<div class="carousel-slide" class:active={index === carousel5Index}>
-											<img src="/carrusel/5/{image}" alt="Carrusel 5 - Imagen {index + 1}" loading="lazy"/>
+											<img 
+												src="/carrusel/5/{image}" 
+												alt="Carrusel 5 - Imagen {index + 1}" 
+												loading="lazy"
+												on:click={() => openImageModal(`/carrusel/5/${image}`, `Carrusel 5 - Imagen ${index + 1}`)}
+												class="carousel-image-clickable"
+											/>
 										</div>
 									{/each}
 								</div>
@@ -1521,6 +1573,21 @@
 			{/if}
 		</div>
 	</section>
+
+	<!-- Modal de Zoom para Imágenes -->
+	{#if showImageModal}
+		<div class="image-modal-overlay" on:click={closeImageModal}>
+			<div class="image-modal-content" on:click|stopPropagation>
+				<button class="image-modal-close" on:click={closeImageModal}>
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<line x1="18" y1="6" x2="6" y2="18"></line>
+						<line x1="6" y1="6" x2="18" y2="18"></line>
+					</svg>
+				</button>
+				<img src={selectedImage} alt={selectedImageAlt} class="image-modal-image">
+			</div>
+		</div>
+	{/if}
 
 </main>
 
@@ -2461,6 +2528,104 @@
 		z-index: 15;
 	}
 
+	/* Imágenes clickeables del carrusel */
+	.carousel-image-clickable {
+		cursor: pointer;
+		transition: all 0.3s ease;
+	}
+
+	.carousel-image-clickable:hover {
+		transform: scale(1.05);
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+	}
+
+	/* Modal de Zoom */
+	.image-modal-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.9);
+		backdrop-filter: blur(10px);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 10000;
+		animation: modalFadeIn 0.3s ease;
+	}
+
+	.image-modal-content {
+		position: relative;
+		max-width: 90vw;
+		max-height: 90vh;
+		width: auto;
+		height: auto;
+		background: transparent;
+		border-radius: 1rem;
+		overflow: visible;
+		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+		animation: modalSlideIn 0.3s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.image-modal-close {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		width: 40px;
+		height: 40px;
+		background: rgba(0, 0, 0, 0.7);
+		border: none;
+		border-radius: 50%;
+		color: white;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 10001;
+		transition: all 0.3s ease;
+	}
+
+	.image-modal-close:hover {
+		background: rgba(0, 0, 0, 0.9);
+		transform: scale(1.1);
+	}
+
+	.image-modal-close svg {
+		width: 20px;
+		height: 20px;
+	}
+
+	.image-modal-image {
+		max-width: 90vw;
+		max-height: 90vh;
+		width: auto;
+		height: auto;
+		object-fit: contain;
+		display: block;
+		border-radius: 0.5rem;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+	}
+
+	@keyframes modalFadeIn {
+		from { opacity: 0; }
+		to { opacity: 1; }
+	}
+
+	@keyframes modalSlideIn {
+		from { 
+			opacity: 0;
+			transform: scale(0.8) translateY(20px);
+		}
+		to { 
+			opacity: 1;
+			transform: scale(1) translateY(0);
+		}
+	}
+
 	/* Botones */
 	.btn {
 		display: inline-flex;
@@ -2777,6 +2942,54 @@
 
 	/* Responsive Design */
 	@media (max-width: 768px) {
+		.image-modal-content {
+			max-width: 95vw;
+			max-height: 95vh;
+			margin: 1rem;
+		}
+
+		.image-modal-image {
+			max-width: 95vw;
+			max-height: 95vh;
+		}
+
+		.image-modal-close {
+			width: 35px;
+			height: 35px;
+			top: 0.5rem;
+			right: 0.5rem;
+		}
+
+		.image-modal-close svg {
+			width: 18px;
+			height: 18px;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.image-modal-content {
+			max-width: 98vw;
+			max-height: 98vh;
+			margin: 0.5rem;
+		}
+
+		.image-modal-image {
+			max-width: 98vw;
+			max-height: 98vh;
+		}
+
+		.image-modal-close {
+			width: 30px;
+			height: 30px;
+			top: 0.25rem;
+			right: 0.25rem;
+		}
+
+		.image-modal-close svg {
+			width: 16px;
+			height: 16px;
+		}
+
 		.hero {
 			padding: 2rem 0;
 			min-height: auto;
