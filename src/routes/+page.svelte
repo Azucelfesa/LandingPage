@@ -104,12 +104,55 @@
 		openFaq = openFaq === index ? null : index;
 	}
 
-	// Estado para el carrusel de reseñas
+	// Estado para los carruseles de reseñas
 	let currentReviewIndex = 0;
 	let reviewInterval: number;
 
+	// Estados para los 5 carruseles
+	let carousel1Index = 0;
+	let carousel2Index = 0;
+	let carousel3Index = 0;
+	let carousel4Index = 0;
+	let carousel5Index = 0;
 	
-	// Lista de imágenes de reseñas
+	let carousel1Interval: number;
+	let carousel2Interval: number;
+	let carousel3Interval: number;
+	let carousel4Interval: number;
+	let carousel5Interval: number;
+	
+	// Estado para mostrar carruseles adicionales
+	let showAdditionalCarousels = false;
+
+	
+	// Lista de imágenes para cada carrusel
+	const carousel1Images = [
+		'1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg', '10.jpg',
+		'11.jpg', '12.jpg', '13.jpg', '14.jpg', '15.jpg', '16.jpg', '17.jpg', '18.jpg', '19.jpg', '20.jpg',
+		'21.jpg', '22.jpg', '23.jpg', '24.jpg'
+	];
+
+	const carousel2Images = [
+		'1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg', '10.jpg',
+		'11.jpg', '12.jpg', '13.jpg', '14.jpg', '15.jpg', '16.jpg', '17.jpg', '18.jpg', '19.jpg', '20.jpg'
+	];
+
+	const carousel3Images = [
+		'1.jpg', '2.jpg', '3.jpg'
+	];
+
+	const carousel4Images = [
+		'1.jpg', '2.jpg', '3.jpg'
+	];
+
+	const carousel5Images = [
+		'1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg', '10.jpg',
+		'11.jpg', '12.jpg', '13.jpg', '14.jpg', '16.jpg', '17.jpg', '18.jpg', '20.jpg', '21.jpg', '22.jpg',
+		'23.jpg', '24.jpg', '25.jpg', '26.jpg', '27.jpg', '28.jpg', '29.jpg', '30.jpg', '31.jpg', '32.jpg',
+		'33.jpg', '34.jpg', '35.jpg', '36.jpg', '37.jpg', '38.jpg', '39.jpg'
+	];
+
+	// Lista de imágenes de reseñas (mantenida para compatibilidad)
 	const reviewImages = [
 		'WhatsApp Image 2025-08-18 at 23.37.17.jpeg',
 		'WhatsApp Image 2025-08-18 at 23.38.17.jpeg',
@@ -144,6 +187,111 @@
 		if (reviewInterval) {
 			clearInterval(reviewInterval);
 		}
+	}
+
+	// Funciones para carrusel 1
+	function nextCarousel1() {
+		carousel1Index = (carousel1Index + 1) % carousel1Images.length;
+	}
+
+	function prevCarousel1() {
+		carousel1Index = carousel1Index === 0 ? carousel1Images.length - 1 : carousel1Index - 1;
+	}
+
+	function goToCarousel1(index: number) {
+		carousel1Index = index;
+	}
+
+	// Funciones para carrusel 2
+	function nextCarousel2() {
+		carousel2Index = (carousel2Index + 1) % carousel2Images.length;
+	}
+
+	function prevCarousel2() {
+		carousel2Index = carousel2Index === 0 ? carousel2Images.length - 1 : carousel2Index - 1;
+	}
+
+	function goToCarousel2(index: number) {
+		carousel2Index = index;
+	}
+
+	// Funciones para carrusel 3
+	function nextCarousel3() {
+		carousel3Index = (carousel3Index + 1) % carousel3Images.length;
+	}
+
+	function prevCarousel3() {
+		carousel3Index = carousel3Index === 0 ? carousel3Images.length - 1 : carousel3Index - 1;
+	}
+
+	function goToCarousel3(index: number) {
+		carousel3Index = index;
+	}
+
+	// Funciones para carrusel 4
+	function nextCarousel4() {
+		carousel4Index = (carousel4Index + 1) % carousel4Images.length;
+	}
+
+	function prevCarousel4() {
+		carousel4Index = carousel4Index === 0 ? carousel4Images.length - 1 : carousel4Index - 1;
+	}
+
+	function goToCarousel4(index: number) {
+		carousel4Index = index;
+	}
+
+	// Funciones para carrusel 5
+	function nextCarousel5() {
+		carousel5Index = (carousel5Index + 1) % carousel5Images.length;
+	}
+
+	function prevCarousel5() {
+		carousel5Index = carousel5Index === 0 ? carousel5Images.length - 1 : carousel5Index - 1;
+	}
+
+	function goToCarousel5(index: number) {
+		carousel5Index = index;
+	}
+
+
+	// Función para toggle de carruseles adicionales
+	function toggleAdditionalCarousels() {
+		console.log('Botón clickeado, estado actual:', showAdditionalCarousels);
+		showAdditionalCarousels = !showAdditionalCarousels;
+		console.log('Nuevo estado:', showAdditionalCarousels);
+		
+		if (showAdditionalCarousels) {
+			// Iniciar carruseles adicionales cuando se muestran
+			carousel4Interval = setInterval(nextCarousel4, 4500);
+			carousel5Interval = setInterval(nextCarousel5, 5000);
+			console.log('Carruseles adicionales iniciados');
+		} else {
+			// Detener carruseles adicionales cuando se ocultan
+			if (carousel4Interval) clearInterval(carousel4Interval);
+			if (carousel5Interval) clearInterval(carousel5Interval);
+			console.log('Carruseles adicionales detenidos');
+		}
+	}
+
+	// Auto-play para todos los carruseles
+	function startAllCarousels() {
+		carousel1Interval = setInterval(nextCarousel1, 3000);
+		carousel2Interval = setInterval(nextCarousel2, 3500);
+		carousel3Interval = setInterval(nextCarousel3, 4000);
+		// Solo iniciar carruseles adicionales si están visibles
+		if (showAdditionalCarousels) {
+			carousel4Interval = setInterval(nextCarousel4, 4500);
+			carousel5Interval = setInterval(nextCarousel5, 5000);
+		}
+	}
+
+	function stopAllCarousels() {
+		if (carousel1Interval) clearInterval(carousel1Interval);
+		if (carousel2Interval) clearInterval(carousel2Interval);
+		if (carousel3Interval) clearInterval(carousel3Interval);
+		if (carousel4Interval) clearInterval(carousel4Interval);
+		if (carousel5Interval) clearInterval(carousel5Interval);
 	}
 
 
@@ -445,6 +593,9 @@
 			// Inicializar carrusel de reseñas
 			startAutoPlay();
 			
+			// Iniciar todos los carruseles
+			startAllCarousels();
+			
 		}, 200);
 
 	});
@@ -457,6 +608,8 @@
 		}
 		// Limpiar el intervalo del carrusel
 		stopAutoPlay();
+		// Limpiar todos los carruseles
+		stopAllCarousels();
 		// Limpiar el contador regresivo
 		if (countdownInterval) {
 			clearInterval(countdownInterval);
@@ -808,56 +961,195 @@
 				</div>
 			</div>
 
-			<!-- Carrusel de Reseñas -->
+			<!-- Grid de Carruseles -->
+			<div class="carousels-grid">
+				<!-- Carrusel 1 -->
+				<div class="carousel-item">
+					<h3 class="carousel-title">"Así nos despidieron nuestros alumnos"</h3>
 			<div class="reviews-carousel-container">
 				<div class="carousel-wrapper">
-					<!-- Botón anterior -->
-					<button class="carousel-btn prev-btn" on:click={prevReview} on:mouseenter={stopAutoPlay} on:mouseleave={startAutoPlay}>
+							<button class="carousel-btn prev-btn" on:click={prevCarousel1} on:mouseenter={stopAllCarousels} on:mouseleave={startAllCarousels}>
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<polyline points="15,18 9,12 15,6"/>
 						</svg>
 					</button>
+							<div class="carousel-track">
+								{#each carousel1Images as image, index}
+									<div class="carousel-slide" class:active={index === carousel1Index}>
+										<img src="/carrusel/1/{image}" alt="Carrusel 1 - Imagen {index + 1}" loading="lazy"/>
+									</div>
+								{/each}
+							</div>
+							<button class="carousel-btn next-btn" on:click={nextCarousel1} on:mouseenter={stopAllCarousels} on:mouseleave={startAllCarousels}>
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<polyline points="9,18 15,12 9,6"/>
+								</svg>
+							</button>
+						</div>
+						<div class="carousel-indicators">
+							{#each carousel1Images.slice(0, 3) as _, index}
+								<button class="indicator" class:active={index === carousel1Index} on:click={() => goToCarousel1(index)}></button>
+							{/each}
+							{#if carousel1Images.length > 3}
+								<span class="more-indicator">+{carousel1Images.length - 3}</span>
+							{/if}
+						</div>
+					</div>
+				</div>
 
-					<!-- Contenedor de imágenes -->
+				<!-- Carrusel 2 -->
+				<div class="carousel-item">
+					<h3 class="carousel-title">"Del no puedo al sí puedo"</h3>
+					<div class="reviews-carousel-container">
+						<div class="carousel-wrapper">
+							<button class="carousel-btn prev-btn" on:click={prevCarousel2} on:mouseenter={stopAllCarousels} on:mouseleave={startAllCarousels}>
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<polyline points="15,18 9,12 15,6"/>
+								</svg>
+							</button>
 					<div class="carousel-track">
-						{#each reviewImages as image, index}
-							<div class="carousel-slide" class:active={index === currentReviewIndex}>
-								<img 
-									src="/Resenas/{image}" 
-									alt="Reseña de estudiante {index + 1}"
-									loading="lazy"
-								/>
+								{#each carousel2Images as image, index}
+									<div class="carousel-slide" class:active={index === carousel2Index}>
+										<img src="/carrusel/2/{image}" alt="Carrusel 2 - Imagen {index + 1}" loading="lazy"/>
 							</div>
 						{/each}
+							</div>
+							<button class="carousel-btn next-btn" on:click={nextCarousel2} on:mouseenter={stopAllCarousels} on:mouseleave={startAllCarousels}>
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<polyline points="9,18 15,12 9,6"/>
+								</svg>
+							</button>
+						</div>
+						<div class="carousel-indicators">
+							{#each carousel2Images.slice(0, 3) as _, index}
+								<button class="indicator" class:active={index === carousel2Index} on:click={() => goToCarousel2(index)}></button>
+							{/each}
+							{#if carousel2Images.length > 3}
+								<span class="more-indicator">+{carousel2Images.length - 3}</span>
+							{/if}
+						</div>
+					</div>
 					</div>
 
-					<!-- Botón siguiente -->
-					<button class="carousel-btn next-btn" on:click={nextReview} on:mouseenter={stopAutoPlay} on:mouseleave={startAutoPlay}>
+				<!-- Carrusel 3 -->
+				<div class="carousel-item">
+					<h3 class="carousel-title">"Estuvieron en otro curso pero no fue lo mismo"</h3>
+					<div class="reviews-carousel-container">
+						<div class="carousel-wrapper">
+							<button class="carousel-btn prev-btn" on:click={prevCarousel3} on:mouseenter={stopAllCarousels} on:mouseleave={startAllCarousels}>
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<polyline points="15,18 9,12 15,6"/>
+								</svg>
+							</button>
+							<div class="carousel-track">
+								{#each carousel3Images as image, index}
+									<div class="carousel-slide" class:active={index === carousel3Index}>
+										<img src="/carrusel/3/{image}" alt="Carrusel 3 - Imagen {index + 1}" loading="lazy"/>
+									</div>
+								{/each}
+							</div>
+							<button class="carousel-btn next-btn" on:click={nextCarousel3} on:mouseenter={stopAllCarousels} on:mouseleave={startAllCarousels}>
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 							<polyline points="9,18 15,12 9,6"/>
 						</svg>
 					</button>
+						</div>
+						<div class="carousel-indicators">
+							{#each carousel3Images.slice(0, 3) as _, index}
+								<button class="indicator" class:active={index === carousel3Index} on:click={() => goToCarousel3(index)}></button>
+							{/each}
+							{#if carousel3Images.length > 3}
+								<span class="more-indicator">+{carousel3Images.length - 3}</span>
+							{/if}
+						</div>
+					</div>
 				</div>
 
-				<!-- Indicadores -->
+				<!-- Botón para mostrar carruseles adicionales -->
+				<button class="carousel-item expand-button" on:click={toggleAdditionalCarousels} type="button" aria-label={showAdditionalCarousels ? 'Ocultar carruseles adicionales' : 'Mostrar carruseles adicionales'}>
+					<div class="expand-content">
+						<div class="expand-icon" class:rotated={showAdditionalCarousels}>
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<polyline points="6,9 12,15 18,9"/>
+							</svg>
+						</div>
+						<h3 class="expand-title">
+							{showAdditionalCarousels ? 'VER MENOS' : 'VER MÁS'}
+						</h3>
+					</div>
+				</button>
+
+				<!-- Carruseles adicionales (solo se muestran si showAdditionalCarousels es true) -->
+				{#if showAdditionalCarousels}
+					<!-- Carrusel 4 -->
+					<div class="carousel-item">
+						<h3 class="carousel-title">"Los papás confiaron y así lo reconocen"</h3>
+						<div class="reviews-carousel-container">
+							<div class="carousel-wrapper">
+								<button class="carousel-btn prev-btn" on:click={prevCarousel4} on:mouseenter={stopAllCarousels} on:mouseleave={startAllCarousels}>
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<polyline points="15,18 9,12 15,6"/>
+									</svg>
+								</button>
+								<div class="carousel-track">
+									{#each carousel4Images as image, index}
+										<div class="carousel-slide" class:active={index === carousel4Index}>
+											<img src="/carrusel/4/{image}" alt="Carrusel 4 - Imagen {index + 1}" loading="lazy"/>
+										</div>
+									{/each}
+								</div>
+								<button class="carousel-btn next-btn" on:click={nextCarousel4} on:mouseenter={stopAllCarousels} on:mouseleave={startAllCarousels}>
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<polyline points="9,18 15,12 9,6"/>
+									</svg>
+								</button>
+							</div>
 				<div class="carousel-indicators">
-					{#each reviewImages as _, index}
-						<button 
-							class="indicator" 
-							class:active={index === currentReviewIndex}
-							on:click={() => goToReview(index)}
-							on:mouseenter={stopAutoPlay} 
-							on:mouseleave={startAutoPlay}
-						></button>
+								{#each carousel4Images.slice(0, 3) as _, index}
+									<button class="indicator" class:active={index === carousel4Index} on:click={() => goToCarousel4(index)}></button>
 					{/each}
+								{#if carousel4Images.length > 3}
+									<span class="more-indicator">+{carousel4Images.length - 3}</span>
+								{/if}
+							</div>
+						</div>
 				</div>
 
-				<!-- Contador -->
-				<div class="carousel-counter">
-					<span class="current">{currentReviewIndex + 1}</span>
-					<span class="separator">/</span>
-					<span class="total">{reviewImages.length}</span>
+					<!-- Carrusel 5 -->
+					<div class="carousel-item">
+						<h3 class="carousel-title">"Y mira lograron cumplir su misión"</h3>
+						<div class="reviews-carousel-container">
+							<div class="carousel-wrapper">
+								<button class="carousel-btn prev-btn" on:click={prevCarousel5} on:mouseenter={stopAllCarousels} on:mouseleave={startAllCarousels}>
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<polyline points="15,18 9,12 15,6"/>
+									</svg>
+								</button>
+								<div class="carousel-track">
+									{#each carousel5Images as image, index}
+										<div class="carousel-slide" class:active={index === carousel5Index}>
+											<img src="/carrusel/5/{image}" alt="Carrusel 5 - Imagen {index + 1}" loading="lazy"/>
+										</div>
+									{/each}
+								</div>
+								<button class="carousel-btn next-btn" on:click={nextCarousel5} on:mouseenter={stopAllCarousels} on:mouseleave={startAllCarousels}>
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<polyline points="9,18 15,12 9,6"/>
+									</svg>
+								</button>
+							</div>
+							<div class="carousel-indicators">
+								{#each carousel5Images.slice(0, 3) as _, index}
+									<button class="indicator" class:active={index === carousel5Index} on:click={() => goToCarousel5(index)}></button>
+								{/each}
+								{#if carousel5Images.length > 3}
+									<span class="more-indicator">+{carousel5Images.length - 3}</span>
+								{/if}
+							</div>
 				</div>
+					</div>
+
+				{/if}
 			</div>
 
 		</div>
@@ -3233,13 +3525,148 @@
 		}
 	}
 
+	/* Grid de Carruseles */
+	.carousels-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(300px, 1fr));
+		gap: 1.5rem;
+		margin: 2rem auto;
+		padding: 2rem 0;
+		max-width: 1200px;
+		width: 100%;
+		justify-items: center;
+		align-items: start;
+	}
+
+	.carousel-item {
+		background: rgba(255, 255, 255, 0.05);
+		backdrop-filter: blur(10px);
+		border-radius: 1rem;
+		padding: 1.5rem;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+		transition: all 0.3s ease;
+		width: 100%;
+		max-width: 500px;
+		min-width: 300px;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+
+	.carousel-item:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+		background: rgba(255, 255, 255, 0.08);
+	}
+
+	.carousel-title {
+		color: #fbbf24;
+		font-size: 1.2rem;
+		font-weight: 700;
+		text-align: center;
+		margin-bottom: 1rem;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+	}
+
+	/* Botón de expansión flotante */
+	.expand-button {
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #87ceeb 100%);
+		border: none;
+		border-radius: 50px;
+		padding: 0.6rem 1.2rem;
+		box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+		transition: all 0.3s ease;
+		position: relative;
+		overflow: hidden;
+		width: fit-content;
+		height: fit-content;
+		margin: 2rem auto;
+		grid-column: 1 / -1;
+		justify-self: center;
+		max-width: 1200px;
+		min-width: auto;
+	}
+
+	.expand-button::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+		border-radius: 50px;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	.expand-button:hover {
+		transform: translateY(-3px);
+		box-shadow: 0 12px 35px rgba(255, 107, 53, 0.4);
+	}
+
+	.expand-button:hover::before {
+		opacity: 1;
+	}
+
+	.expand-content {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		position: relative;
+		z-index: 1;
+	}
+
+	.expand-icon {
+		width: 18px;
+		height: 18px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: transform 0.3s ease;
+	}
+
+	.expand-icon svg {
+		width: 16px;
+		height: 16px;
+		color: white;
+		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+		transition: transform 0.3s ease;
+	}
+
+	.expand-icon.rotated {
+		transform: rotate(180deg);
+	}
+
+	.expand-icon.rotated svg {
+		transform: rotate(180deg);
+	}
+
+	.expand-title {
+		color: white;
+		font-size: 0.9rem;
+		font-weight: 700;
+		margin: 0;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		letter-spacing: 0.5px;
+		text-transform: uppercase;
+	}
+
 	/* Carrusel de Reseñas */
 	.reviews-carousel-container {
-		max-width: 1200px;
+		max-width: 100%;
 		margin: 0 auto;
 		position: relative;
 		z-index: 2;
-		padding: 2rem 0;
+		padding: 1rem 0;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.carousel-wrapper {
@@ -3248,13 +3675,14 @@
 		align-items: center;
 		justify-content: center;
 		margin-bottom: 2rem;
+		flex: 1;
 	}
 
 	.carousel-track {
 		position: relative;
 		width: 100%;
-		max-width: 400px;
-		height: 600px;
+		max-width: 500px;
+		height: 400px;
 		overflow: hidden;
 		border-radius: 1.5rem;
 		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
@@ -3286,9 +3714,11 @@
 		width: 100%;
 		height: 100%;
 		object-fit: contain;
-		border-radius: 1.5rem;
+		object-position: center;
+		border-radius: 1rem;
 		transition: transform 0.3s ease;
 		background: rgba(255, 255, 255, 0.95);
+		padding: 0.5rem;
 	}
 
 	.carousel-slide:hover img {
@@ -3343,8 +3773,10 @@
 	.carousel-indicators {
 		display: flex;
 		justify-content: center;
+		align-items: center;
 		gap: 0.75rem;
 		margin-bottom: 1.5rem;
+		margin-top: auto;
 	}
 
 	.indicator {
@@ -3368,6 +3800,22 @@
 		border-color: rgba(251, 191, 36, 1);
 		transform: scale(1.3);
 		box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
+	}
+
+	.more-indicator {
+		color: #fbbf24;
+		font-size: 0.8rem;
+		font-weight: 600;
+		margin-left: 0.5rem;
+		background: rgba(251, 191, 36, 0.1);
+		padding: 0.2rem 0.5rem;
+		border-radius: 10px;
+		border: 1px solid rgba(251, 191, 36, 0.3);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 24px;
+		height: 20px;
 	}
 
 	.carousel-counter {
@@ -3415,13 +3863,46 @@
 			font-size: 1.3rem;
 		}
 
+		.carousels-grid {
+			grid-template-columns: repeat(3, minmax(250px, 1fr));
+			gap: 1rem;
+			max-width: 1000px;
+		}
+
+		.carousel-item {
+			padding: 1rem;
+		}
+
+		.carousel-title {
+			font-size: 1rem;
+		}
+
+		.expand-button {
+			padding: 0.5rem 1rem;
+			margin: 1.5rem auto;
+		}
+
+		.expand-icon {
+			width: 16px;
+			height: 16px;
+		}
+
+		.expand-icon svg {
+			width: 14px;
+			height: 14px;
+		}
+
+		.expand-title {
+			font-size: 0.85rem;
+		}
+
 		.reviews-carousel-container {
 			padding: 1.5rem 0;
 		}
 
 		.carousel-track {
-			max-width: 350px;
-			height: 500px;
+			max-width: 450px;
+			height: 400px;
 		}
 
 		.carousel-btn {
@@ -3467,13 +3948,51 @@
 			font-size: 1.2rem;
 		}
 
+		.carousels-grid {
+			grid-template-columns: 1fr;
+			gap: 1rem;
+			max-width: 400px;
+		}
+
+		.carousel-item {
+			min-width: 280px;
+		}
+
+		.carousel-item {
+			padding: 0.8rem;
+		}
+
+		.carousel-title {
+			font-size: 0.9rem;
+		}
+
+		.expand-button {
+			padding: 0.5rem 0.9rem;
+			margin: 1rem auto;
+			max-width: 400px;
+		}
+
+		.expand-icon {
+			width: 14px;
+			height: 14px;
+		}
+
+		.expand-icon svg {
+			width: 12px;
+			height: 12px;
+		}
+
+		.expand-title {
+			font-size: 0.8rem;
+		}
+
 		.reviews-carousel-container {
 			padding: 1rem 0;
 		}
 
 		.carousel-track {
-			max-width: 280px;
-			height: 400px;
+			max-width: 350px;
+			height: 300px;
 		}
 
 		.carousel-btn {
