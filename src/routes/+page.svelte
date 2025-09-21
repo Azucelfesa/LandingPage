@@ -3660,7 +3660,6 @@
 	/* Carrusel de Reseñas */
 	.reviews-carousel-container {
 		max-width: 100%;
-		margin: 0 auto;
 		position: relative;
 		z-index: 2;
 		padding: 1rem 0;
@@ -3681,7 +3680,7 @@
 	.carousel-track {
 		position: relative;
 		width: 100%;
-		max-width: 500px;
+		max-width: 700px;
 		height: 400px;
 		overflow: hidden;
 		border-radius: 1.5rem;
@@ -3718,7 +3717,7 @@
 		border-radius: 1rem;
 		transition: transform 0.3s ease;
 		background: rgba(255, 255, 255, 0.95);
-		padding: 0.5rem;
+		padding: 0.2rem;
 	}
 
 	.carousel-slide:hover img {
@@ -3901,7 +3900,7 @@
 		}
 
 		.carousel-track {
-			max-width: 450px;
+			max-width: 650px;
 			height: 400px;
 		}
 
@@ -3964,6 +3963,11 @@
 
 		.carousel-title {
 			font-size: 0.9rem;
+		}
+
+		.carousel-track {
+			max-width: 600px;
+			height: 400px;
 		}
 
 		.expand-button {
