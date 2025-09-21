@@ -964,53 +964,224 @@
 						<p class="curso-text">
 							Descubre cómo son nuestras clases y el ambiente de aprendizaje que creamos para nuestros estudiantes.
 						</p>
-						<div class="galeria-grid">
-							<div class="galeria-item">
-								<img src="/cursos/photo_2025-09-18_16-36-26.jpg" alt="Curso ADNED 1" class="galeria-imagen">
-								<div class="galeria-overlay">
-									<div class="galeria-info">
-										<h4 class="galeria-titulo">Clases Interactivas</h4>
-										<p class="galeria-desc">Aprendizaje dinámico y participativo</p>
-							</div>
-						</div>
-					</div>
-							
-							<div class="galeria-item">
-								<img src="/cursos/photo_2025-09-18_16-36-26 (2).jpg" alt="Curso ADNED 2" class="galeria-imagen">
-								<div class="galeria-overlay">
-									<div class="galeria-info">
-										<h4 class="galeria-titulo">Material Didáctico</h4>
-										<p class="galeria-desc">Recursos educativos de alta calidad</p>
-				</div>
-			</div>
-		</div>
-							
-							<div class="galeria-item">
-								<img src="/cursos/photo_2025-09-18_16-36-26 (3).jpg" alt="Curso ADNED 3" class="galeria-imagen">
-								<div class="galeria-overlay">
-									<div class="galeria-info">
-										<h4 class="galeria-titulo">Ambiente de Estudio</h4>
-										<p class="galeria-desc">Espacios diseñados para el aprendizaje</p>
+						<!-- Grid Responsive con Diferentes Tamaños -->
+						<div class="responsive-grid">
+							<div class="grid-item large">
+								<img src="/mentor/IMG_7655.jpg" alt="Ambiente de Estudio" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Ambiente de Estudio</h4>
+										<p class="grid-desc">Espacios diseñados para el aprendizaje</p>
 									</div>
 								</div>
 							</div>
 							
-							<div class="galeria-item">
-								<img src="/cursos/photo_2025-09-18_16-36-26 (4).jpg" alt="Curso ADNED 4" class="galeria-imagen">
-								<div class="galeria-overlay">
-									<div class="galeria-info">
-										<h4 class="galeria-titulo">Tecnología Educativa</h4>
-										<p class="galeria-desc">Herramientas modernas de enseñanza</p>
+							<div class="grid-item medium">
+								<img src="/mentor/IMG_7660.jpg" alt="Clases Interactivas" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Clases Interactivas</h4>
+										<p class="grid-desc">Aprendizaje dinámico</p>
 									</div>
 								</div>
 							</div>
 							
-							<div class="galeria-item">
-								<img src="/cursos/photo_2025-09-18_16-36-26 (5).jpg" alt="Curso ADNED 5" class="galeria-imagen">
-								<div class="galeria-overlay">
-									<div class="galeria-info">
-										<h4 class="galeria-titulo">Resultados Exitosos</h4>
-										<p class="galeria-desc">Estudiantes que logran sus objetivos</p>
+							<div class="grid-item small">
+								<img src="/mentor/IMG_7661.jpg" alt="Material Didáctico" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Material Didáctico</h4>
+										<p class="grid-desc">Recursos de calidad</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item medium">
+								<img src="/mentor/IMG_7662.jpg" alt="Tecnología Educativa" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Tecnología Educativa</h4>
+										<p class="grid-desc">Herramientas modernas</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item small">
+								<img src="/mentor/IMG_7675.jpg" alt="Resultados" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Resultados</h4>
+										<p class="grid-desc">Éxito garantizado</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item large">
+								<img src="/mentor/IMG_7676.jpg" alt="Mentoría Personalizada" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Mentoría Personalizada</h4>
+										<p class="grid-desc">Acompañamiento individual</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item medium">
+								<img src="/mentor/IMG_7677.jpg" alt="Comunidad de Aprendizaje" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Comunidad de Aprendizaje</h4>
+										<p class="grid-desc">Estudiantes comprometidos</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item small">
+								<img src="/mentor/IMG_7687.jpg" alt="Preparación" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Preparación</h4>
+										<p class="grid-desc">Para el éxito</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item small">
+								<img src="/mentor/IMG_7690.jpg" alt="Confianza" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Confianza</h4>
+										<p class="grid-desc">En cada paso</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item medium">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.42.47.jpg" alt="Metodología Innovadora" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Metodología Innovadora</h4>
+										<p class="grid-desc">Técnicas probadas</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item large">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.42.47 (2).jpg" alt="Trabajo en Equipo" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Trabajo en Equipo</h4>
+										<p class="grid-desc">Colaboración efectiva</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item small">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.42.47 (4).jpg" alt="Motivación" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Motivación</h4>
+										<p class="grid-desc">Constante inspiración</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item medium">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.43.14.jpg" alt="Dedicación" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Dedicación</h4>
+										<p class="grid-desc">Compromiso total</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item small">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.54.jpg" alt="Experiencia Práctica" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Experiencia Práctica</h4>
+										<p class="grid-desc">Aplicación real</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item large">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.54 (2).jpg" alt="Innovación" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Innovación</h4>
+										<p class="grid-desc">Métodos actualizados</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item medium">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.54 (3).jpg" alt="Crecimiento" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Crecimiento</h4>
+										<p class="grid-desc">Desarrollo continuo</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item small">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.54 (4).jpg" alt="Excelencia" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Excelencia</h4>
+										<p class="grid-desc">Calidad superior</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item medium">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.54 (5).jpg" alt="Transformación" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Transformación</h4>
+										<p class="grid-desc">Cambio positivo</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item large">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.54 (6).jpg" alt="Logros" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Logros</h4>
+										<p class="grid-desc">Objetivos cumplidos</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item small">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.54 (7).jpg" alt="Futuro" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Futuro</h4>
+										<p class="grid-desc">Oportunidades brillantes</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item medium">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.55 (1).jpg" alt="Éxito" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">Éxito</h4>
+										<p class="grid-desc">Meta alcanzada</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="grid-item large">
+								<img src="/mentor/WhatsApp Image 2025-08-19 at 12.45.55.jpg" alt="ADNED" class="grid-image">
+								<div class="grid-overlay">
+									<div class="grid-content">
+										<h4 class="grid-title">ADNED</h4>
+										<p class="grid-desc">Tu camino al éxito académico</p>
 									</div>
 								</div>
 							</div>
@@ -3495,74 +3666,113 @@
 		margin: 0;
 	}
 
-	.galeria-grid {
+	/* Grid Responsive Styles */
+	.responsive-grid {
+		margin-top: 2rem;
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 		gap: 1.5rem;
-		margin-top: 2rem;
+		grid-auto-rows: 200px;
 	}
 
-	.galeria-item {
+	.grid-item {
 		position: relative;
-		border-radius: 1rem;
+		border-radius: 1.5rem;
 		overflow: hidden;
 		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-		transition: all 0.3s ease;
+		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 		background: #ffffff;
+		cursor: pointer;
+		grid-row: span 1;
 	}
 
-	.galeria-item:hover {
-		transform: translateY(-8px);
-		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+	.grid-item:hover {
+		transform: translateY(-8px) scale(1.02);
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+		z-index: 10;
 	}
 
-	.galeria-imagen {
+	.grid-item.large {
+		grid-row: span 2;
+		grid-column: span 1;
+	}
+
+	.grid-item.medium {
+		grid-row: span 1.5;
+		grid-column: span 1;
+	}
+
+	.grid-item.small {
+		grid-row: span 1;
+		grid-column: span 1;
+	}
+
+	.grid-image {
 		width: 100%;
-		height: 200px;
+		height: 100%;
 		object-fit: cover;
-		transition: all 0.3s ease;
+		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
-	.galeria-item:hover .galeria-imagen {
+	.grid-item:hover .grid-image {
 		transform: scale(1.05);
 	}
 
-	.galeria-overlay {
+	.grid-overlay {
 		position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background: linear-gradient(135deg, rgba(139, 92, 246, 0.9) 0%, rgba(249, 115, 22, 0.9) 100%);
+		background: linear-gradient(
+			135deg, 
+			rgba(139, 92, 246, 0.9) 0%, 
+			rgba(59, 130, 246, 0.8) 25%,
+			rgba(249, 115, 22, 0.9) 75%,
+			rgba(251, 191, 36, 0.9) 100%
+		);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		opacity: 0;
-		transition: all 0.3s ease;
+		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+		backdrop-filter: blur(2px);
 	}
 
-	.galeria-item:hover .galeria-overlay {
+	.grid-item:hover .grid-overlay {
 		opacity: 1;
 	}
 
-	.galeria-info {
+	.grid-content {
 		text-align: center;
 		color: white;
-		padding: 1rem;
+		padding: 1.5rem;
+		transform: translateY(15px);
+		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
-	.galeria-titulo {
-		font-size: 1.2rem;
-		font-weight: 700;
+	.grid-item:hover .grid-content {
+		transform: translateY(0);
+	}
+
+	.grid-title {
+		font-size: 1.3rem;
+		font-weight: 800;
 		margin-bottom: 0.5rem;
-		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+		background: linear-gradient(135deg, #ffffff 0%, #fbbf24 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
-	.galeria-desc {
+	.grid-desc {
 		font-size: 0.9rem;
+		opacity: 0.95;
 		line-height: 1.4;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		font-weight: 500;
 		margin: 0;
-		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 	}
 
 	.ver-mas-container {
@@ -3695,20 +3905,30 @@
 			font-size: 0.85rem;
 		}
 
-		.galeria-grid {
+		/* Grid Responsive - Tablet */
+		.responsive-grid {
 			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 			gap: 1rem;
+			grid-auto-rows: 180px;
 		}
 
-		.galeria-imagen {
-			height: 180px;
+		.grid-item.large {
+			grid-row: span 2;
 		}
 
-		.galeria-titulo {
+		.grid-item.medium {
+			grid-row: span 1.5;
+		}
+
+		.grid-item.small {
+			grid-row: span 1;
+		}
+
+		.grid-title {
 			font-size: 1.1rem;
 		}
 
-		.galeria-desc {
+		.grid-desc {
 			font-size: 0.8rem;
 		}
 
@@ -3773,21 +3993,31 @@
 			font-size: 0.8rem;
 		}
 
-		.galeria-grid {
+		/* Grid Responsive - Mobile */
+		.responsive-grid {
 			grid-template-columns: 1fr;
 			gap: 1rem;
+			grid-auto-rows: 200px;
 		}
 
-		.galeria-imagen {
-			height: 160px;
+		.grid-item.large,
+		.grid-item.medium,
+		.grid-item.small {
+			grid-row: span 1;
+			grid-column: span 1;
 		}
 
-		.galeria-titulo {
-			font-size: 1rem;
+		.grid-content {
+			padding: 1rem;
 		}
 
-		.galeria-desc {
-			font-size: 0.75rem;
+		.grid-title {
+			font-size: 1.1rem;
+			margin-bottom: 0.5rem;
+		}
+
+		.grid-desc {
+			font-size: 0.85rem;
 		}
 
 		.btn-ver-mas {
