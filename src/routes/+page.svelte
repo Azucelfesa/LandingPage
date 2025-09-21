@@ -143,6 +143,14 @@
 	let isStatsVisible = false;
 	let isCommunityHovered = false;
 	let communitySection: HTMLElement;
+	
+	// Variables para animaciones del formulario
+	let isFormVisible = false;
+	let isInfoVisible = false;
+	let isTestimonialsVisible = false;
+	let formSection: HTMLElement;
+	let infoSection: HTMLElement;
+	let testimonialsSection: HTMLElement;
 
 	
 	// Lista de imágenes para cada carrusel
@@ -409,6 +417,32 @@
 		});
 	}
 
+	// Funciones para animaciones del formulario
+	function handleFormIntersection(entries: IntersectionObserverEntry[]) {
+		entries.forEach(entry => {
+			if (entry.isIntersecting && !isFormVisible) {
+				isFormVisible = true;
+				// Animar elementos con delays escalonados
+				setTimeout(() => {
+					isInfoVisible = true;
+				}, 200);
+				setTimeout(() => {
+					isTestimonialsVisible = true;
+				}, 400);
+			}
+		});
+	}
+
+	// Función para animar elementos de forma escalonada
+	function animateStaggeredElements() {
+		const elements = document.querySelectorAll('.info-card, .testimonial-card');
+		elements.forEach((element, index) => {
+			setTimeout(() => {
+				element.classList.add('animate-in');
+			}, index * 200);
+		});
+	}
+
 
 	// Función para validar el formulario
 	function validateForm() {
@@ -625,6 +659,14 @@
 					threshold: 0.3
 				});
 				observer.observe(communitySection);
+			}
+
+			// Configurar Intersection Observer para animaciones del formulario
+			if (formSection) {
+				const formObserver = new IntersectionObserver(handleFormIntersection, {
+					threshold: 0.2
+				});
+				formObserver.observe(formSection);
 			}
 
 			// Agregar partículas a la sección de misión y visión
@@ -1564,8 +1606,54 @@
 			</div>
 
 			{#if !showThankYou}
-				<div class="formulario-content">
-					<div class="formulario-card">
+				<div class="formulario-content" bind:this={formSection}>
+					<!-- Columna izquierda - Información adicional -->
+					<div class="formulario-info" bind:this={infoSection}>
+						<div class="info-card animated-card" class:animate-in={isInfoVisible}>
+							<div class="info-icon animated-icon">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M9 12l2 2 4-4"/>
+									<path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
+									<path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
+									<path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
+									<path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
+								</svg>
+							</div>
+							<h3>¿Por qué registrarte?</h3>
+							<ul class="benefits-list">
+								<li>✅ Acceso gratuito a nuestro grupo de WhatsApp</li>
+								<li>✅ Material de estudio exclusivo</li>
+								<li>✅ Simulacros de examen</li>
+								<li>✅ Acompañamiento personalizado</li>
+								<li>✅ Comunidad de estudiantes motivados</li>
+							</ul>
+						</div>
+
+						<div class="info-card animated-card" class:animate-in={isInfoVisible}>
+							<div class="info-icon animated-icon">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+									<circle cx="9" cy="7" r="4"/>
+									<path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+									<path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+								</svg>
+							</div>
+							<h3>Nuestra Comunidad</h3>
+							<div class="community-stats">
+								<div class="stat-item">
+									<div class="stat-number">1,200+</div>
+									<div class="stat-label">Estudiantes</div>
+								</div>
+								<div class="stat-item">
+									<div class="stat-number">95%</div>
+									<div class="stat-label">Éxito</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Columna central - Formulario -->
+					<div class="formulario-card animated-card" class:animate-in={isFormVisible}>
 						<form class="registration-form" on:submit={handleSubmit}>
 							<div class="form-group">
 								<label for="parentName">Nombre del padre/tutor</label>
@@ -1644,6 +1732,35 @@
 								Al registrarte, aceptas nuestros términos de servicio y política de privacidad.
 							</p>
 						</div>
+					</div>
+
+					<!-- Columna derecha - Testimonios -->
+					<div class="formulario-testimonials" bind:this={testimonialsSection}>
+						<div class="testimonial-card animated-card" class:animate-in={isTestimonialsVisible}>
+							<div class="testimonial-header">
+								<div class="testimonial-icon">
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+									</svg>
+								</div>
+								<h3>Lo que dicen nuestros estudiantes</h3>
+							</div>
+							<div class="testimonials-list">
+								<div class="testimonial-item">
+									<p>"ADNED me ayudó a ingresar a la prepa de mis sueños. El material es excelente y el apoyo constante hace la diferencia."</p>
+									<div class="testimonial-author">- María González</div>
+								</div>
+								<div class="testimonial-item">
+									<p>"Mi hijo logró su objetivo gracias a la preparación de ADNED. Los simulacros fueron clave para su éxito."</p>
+									<div class="testimonial-author">- Carlos Ruiz</div>
+								</div>
+								<div class="testimonial-item">
+									<p>"La comunidad de ADNED es increíble. Siempre hay alguien dispuesto a ayudar y motivar."</p>
+									<div class="testimonial-author">- Ana Martínez</div>
+								</div>
+							</div>
+						</div>
+
 					</div>
 				</div>
 			{:else}
@@ -5626,13 +5743,261 @@
 	}
 
 	.formulario-content {
+		display: grid;
+		grid-template-columns: 1fr 2fr 1fr;
+		gap: 2rem;
+		align-items: start;
+		position: relative;
+		z-index: 2;
+		max-width: 1400px;
+		margin: 0 auto;
+	}
+
+	/* Columna izquierda - Información */
+	.formulario-info {
 		display: flex;
-		justify-content: center;
-		align-items: center;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.info-card {
+		background: rgba(255, 255, 255, 0.9);
+		backdrop-filter: blur(15px);
+		padding: 2rem;
+		border-radius: 1.5rem;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+		transition: all 0.5s ease;
+		border: 1px solid rgba(251, 191, 36, 0.2);
+		position: relative;
+		overflow: hidden;
+	}
+
+	/* Animaciones de entrada */
+	.animated-card {
+		opacity: 0;
+		transform: translateY(50px) scale(0.9);
+		transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	}
+
+	.animated-card.animate-in {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+
+	/* Efectos de hover mejorados */
+	.info-card:hover {
+		transform: translateY(-10px) scale(1.02);
+		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+		border-color: rgba(251, 191, 36, 0.5);
+		background: rgba(255, 255, 255, 1);
+	}
+
+	/* Efecto de brillo en hover */
+	.info-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.2), transparent);
+		transition: left 0.6s ease;
+		z-index: 1;
+	}
+
+	.info-card:hover::before {
+		left: 100%;
+	}
+
+	.info-card > * {
 		position: relative;
 		z-index: 2;
 	}
 
+	.info-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+		border-color: rgba(251, 191, 36, 0.4);
+	}
+
+	.info-icon {
+		width: 50px;
+		height: 50px;
+		background: linear-gradient(135deg, #f97316, #fbbf24);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 1rem;
+		position: relative;
+		transition: all 0.5s ease;
+		animation: iconPulse 2s ease-in-out infinite;
+	}
+
+	.info-icon::before {
+		content: '';
+		position: absolute;
+		top: -5px;
+		left: -5px;
+		right: -5px;
+		bottom: -5px;
+		background: linear-gradient(135deg, #f97316, #fbbf24);
+		border-radius: 50%;
+		opacity: 0;
+		animation: iconGlow 2s ease-in-out infinite;
+		z-index: -1;
+	}
+
+	.info-card:hover .info-icon {
+		transform: scale(1.2) rotate(10deg);
+		animation: iconBounce 0.6s ease;
+	}
+
+	.info-card:hover .info-icon::before {
+		opacity: 0.3;
+		animation: iconGlow 1s ease-in-out infinite;
+	}
+
+	@keyframes iconPulse {
+		0%, 100% {
+			box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4);
+		}
+		50% {
+			box-shadow: 0 0 0 10px rgba(249, 115, 22, 0);
+		}
+	}
+
+	@keyframes iconGlow {
+		0%, 100% {
+			transform: scale(1);
+			opacity: 0.3;
+		}
+		50% {
+			transform: scale(1.1);
+			opacity: 0.6;
+		}
+	}
+
+	@keyframes iconBounce {
+		0%, 20%, 50%, 80%, 100% {
+			transform: scale(1.2) rotate(10deg) translateY(0);
+		}
+		40% {
+			transform: scale(1.3) rotate(15deg) translateY(-5px);
+		}
+		60% {
+			transform: scale(1.25) rotate(12deg) translateY(-2px);
+		}
+	}
+
+	.info-icon svg {
+		width: 24px;
+		height: 24px;
+		color: white;
+	}
+
+	.info-card h3 {
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin-bottom: 1rem;
+	}
+
+	.benefits-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.benefits-list li {
+		padding: 0.5rem 0;
+		color: #4b5563;
+		font-size: 0.95rem;
+		line-height: 1.5;
+		opacity: 0;
+		transform: translateX(-20px);
+		animation: slideInLeft 0.6s ease forwards;
+		transition: all 0.3s ease;
+	}
+
+	.benefits-list li:nth-child(1) { animation-delay: 0.1s; }
+	.benefits-list li:nth-child(2) { animation-delay: 0.2s; }
+	.benefits-list li:nth-child(3) { animation-delay: 0.3s; }
+	.benefits-list li:nth-child(4) { animation-delay: 0.4s; }
+	.benefits-list li:nth-child(5) { animation-delay: 0.5s; }
+
+	.benefits-list li:hover {
+		color: #f59e0b;
+		transform: translateX(5px);
+		font-weight: 600;
+	}
+
+	@keyframes slideInLeft {
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
+	.community-stats {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+		margin-top: 1rem;
+	}
+
+	.stat-item {
+		text-align: center;
+		padding: 1rem;
+		background: rgba(251, 191, 36, 0.1);
+		border-radius: 0.75rem;
+		transition: all 0.3s ease;
+		opacity: 0;
+		transform: scale(0.8);
+		animation: scaleIn 0.6s ease forwards;
+	}
+
+	.stat-item:nth-child(1) { animation-delay: 0.2s; }
+	.stat-item:nth-child(2) { animation-delay: 0.4s; }
+
+	.stat-item:hover {
+		background: rgba(251, 191, 36, 0.2);
+		transform: scale(1.05);
+		box-shadow: 0 5px 15px rgba(251, 191, 36, 0.3);
+	}
+
+	.stat-number {
+		font-size: 1.5rem;
+		font-weight: 800;
+		color: #f59e0b;
+		margin-bottom: 0.25rem;
+		transition: all 0.3s ease;
+	}
+
+	.stat-item:hover .stat-number {
+		transform: scale(1.1);
+		text-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+	}
+
+	.stat-label {
+		font-size: 0.8rem;
+		color: #6b7280;
+		font-weight: 600;
+		transition: color 0.3s ease;
+	}
+
+	.stat-item:hover .stat-label {
+		color: #f59e0b;
+	}
+
+	@keyframes scaleIn {
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	/* Columna central - Formulario */
 	.formulario-card {
 		background: rgba(255, 255, 255, 0.95);
 		backdrop-filter: blur(20px);
@@ -5640,13 +6005,34 @@
 		border-radius: 2rem;
 		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 		transition: all 0.3s ease;
-		border: 2px solid rgba(251, 191, 36, 0.3);
+		border: 2px solid transparent;
 		position: relative;
 		overflow: hidden;
 		text-align: left;
-		max-width: 700px;
 		width: 100%;
 	}
+
+	/* Efecto de borde brillante */
+	.formulario-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(45deg, 
+			#290040 0%, 
+			#3d0060 25%, 
+			#290040 50%, 
+			#3d0060 75%, 
+			#290040 100%);
+		border-radius: inherit;
+		padding: 3px;
+		mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+		mask-composite: exclude;
+		z-index: -1;
+	}
+
 
 	.formulario-card::before {
 		content: '';
@@ -5659,10 +6045,43 @@
 	}
 
 	.formulario-card:hover {
-		transform: translateY(-8px);
+		transform: translateY(-8px) scale(1.02);
 		box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-		border-color: rgba(251, 191, 36, 0.6);
 		background: rgba(255, 255, 255, 1);
+	}
+
+	.formulario-card:hover::before {
+		background: linear-gradient(45deg, 
+			#290040 0%, 
+			#3d0060 25%, 
+			#290040 50%, 
+			#3d0060 75%, 
+			#290040 100%);
+	}
+
+	/* Efecto de resplandor adicional */
+	.formulario-card::after {
+		content: '';
+		position: absolute;
+		top: -2px;
+		left: -2px;
+		right: -2px;
+		bottom: -2px;
+		background: linear-gradient(45deg, 
+			#290040 0%, 
+			#3d0060 25%, 
+			#290040 50%, 
+			#3d0060 75%, 
+			#290040 100%);
+		border-radius: inherit;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		z-index: -2;
+		filter: blur(8px);
+	}
+
+	.formulario-card:hover::after {
+		opacity: 0.6;
 	}
 
 	.formulario-icon {
@@ -5688,6 +6107,120 @@
 		height: 40px;
 		color: white;
 	}
+
+	/* Columna derecha - Testimonios */
+	.formulario-testimonials {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.testimonial-card {
+		background: rgba(255, 255, 255, 0.9);
+		backdrop-filter: blur(15px);
+		padding: 2rem;
+		border-radius: 1.5rem;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+		transition: all 0.3s ease;
+		border: 1px solid rgba(251, 191, 36, 0.2);
+	}
+
+	.testimonial-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+		border-color: rgba(251, 191, 36, 0.4);
+	}
+
+	.testimonial-header {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.testimonial-icon {
+		width: 50px;
+		height: 50px;
+		background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.testimonial-icon svg {
+		width: 24px;
+		height: 24px;
+		color: white;
+	}
+
+	.testimonial-header h3 {
+		font-size: 1.1rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin: 0;
+	}
+
+	.testimonials-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.testimonial-item {
+		padding: 1rem;
+		background: rgba(251, 191, 36, 0.05);
+		border-radius: 0.75rem;
+		border-left: 3px solid #f59e0b;
+		transition: all 0.3s ease;
+		opacity: 0;
+		transform: translateY(20px);
+		animation: slideInUp 0.6s ease forwards;
+		margin-bottom: 1rem;
+	}
+
+	.testimonial-item:nth-child(1) { animation-delay: 0.1s; }
+	.testimonial-item:nth-child(2) { animation-delay: 0.2s; }
+	.testimonial-item:nth-child(3) { animation-delay: 0.3s; }
+
+	.testimonial-item:hover {
+		background: rgba(251, 191, 36, 0.1);
+		transform: translateY(-5px);
+		box-shadow: 0 5px 15px rgba(251, 191, 36, 0.2);
+		border-left-color: #f97316;
+	}
+
+	.testimonial-item p {
+		font-size: 0.9rem;
+		color: #4b5563;
+		line-height: 1.5;
+		margin-bottom: 0.5rem;
+		font-style: italic;
+		transition: color 0.3s ease;
+	}
+
+	.testimonial-item:hover p {
+		color: #1f2937;
+	}
+
+	.testimonial-author {
+		font-size: 0.8rem;
+		color: #6b7280;
+		font-weight: 600;
+		transition: color 0.3s ease;
+	}
+
+	.testimonial-item:hover .testimonial-author {
+		color: #f59e0b;
+	}
+
+	@keyframes slideInUp {
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
 
 	.formulario-title {
 		font-size: 2rem;
@@ -6036,9 +6569,23 @@
 			padding: 1rem 0;
 		}
 
-		.formulario-card {
-			padding: 3rem 2rem;
+		.formulario-content {
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
 		}
+
+		.formulario-card {
+			padding: 2.5rem 2rem;
+		}
+
+		.info-card, .testimonial-card {
+			padding: 1.5rem;
+		}
+
+		.community-stats {
+			grid-template-columns: 1fr;
+		}
+
 
 		.formulario-icon {
 			width: 70px;
@@ -6066,8 +6613,22 @@
 	}
 
 	@media (max-width: 480px) {
+		.formulario-content {
+			gap: 1rem;
+		}
+
 		.formulario-card {
-			padding: 2.5rem 1.5rem;
+			padding: 2rem 1.5rem;
+		}
+
+		.info-card, .testimonial-card {
+			padding: 1.25rem;
+		}
+
+		.testimonial-header {
+			flex-direction: column;
+			text-align: center;
+			gap: 0.5rem;
 		}
 
 		.formulario-icon {
