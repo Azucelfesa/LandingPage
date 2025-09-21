@@ -729,9 +729,7 @@
 							<div class="promotional-message">
 								<div class="promo-icon">💰</div>
 								<p class="promo-text">
-									Si te registras ahora, tu curso te sale más barato y con facilidades de pago. 
-									<strong>¡Aprovecha antes de que suba el precio!</strong> 
-									Forma parte de la familia ADNED
+									<strong>No lo dejes pasar:</strong> al inscribirte ahora obtienes un costo más accesible y la posibilidad de pagar con facilidades diseñadas para ti. Muchas familias suelen esperar y terminan pagando más o quedándose sin lugar. <strong>Actúa hoy mismo y asegura desde ahora el futuro académico de tu hijo.</strong>
 								</p>
 							</div>
 						</div>
@@ -2830,7 +2828,8 @@
 
 	/* Carrusel de Quiénes Somos */
 	.about-carousel-container {
-		max-width: 1400px;
+		max-width: 95%;
+		width: 100%;
 		margin: 0 auto;
 		position: relative;
 		z-index: 2;
@@ -2847,7 +2846,7 @@
 	.about-slide {
 		width: 33.333%;
 		flex-shrink: 0;
-		padding: 0 2rem;
+		padding: 0 3rem;
 		opacity: 0.6;
 		transform: scale(0.9);
 		transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2865,7 +2864,7 @@
 		background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
 		backdrop-filter: blur(20px);
 		border-radius: 2rem;
-		padding: 4rem 3rem;
+		padding: 5rem 4rem;
 		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
 		border: 1px solid rgba(255, 255, 255, 0.3);
 		position: relative;
@@ -2931,7 +2930,7 @@
 		background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%);
 		backdrop-filter: blur(15px);
 		border-radius: 1.5rem;
-		padding: 3rem 2.5rem;
+		padding: 4rem 3rem;
 		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
 		border: 1px solid rgba(255, 255, 255, 0.2);
 		position: relative;
@@ -3093,7 +3092,7 @@
 	/* Responsive para Quiénes Somos */
 	@media (max-width: 1024px) {
 		.about-carousel-container {
-			max-width: 1200px;
+			max-width: 98%;
 		}
 	}
 
@@ -3108,11 +3107,11 @@
 		}
 
 		.about-slide {
-			padding: 0 1rem;
+			padding: 0 2rem;
 		}
 
 		.about-main-card {
-			padding: 3rem 2rem;
+			padding: 4rem 2.5rem;
 		}
 
 		.card-header {
@@ -3170,11 +3169,11 @@
 		}
 
 		.about-main-card {
-			padding: 2.5rem 1.5rem;
+			padding: 3rem 2rem;
 		}
 
 		.about-card {
-			padding: 2rem 1.5rem;
+			padding: 3rem 2rem;
 		}
 
 		.card-icon {
