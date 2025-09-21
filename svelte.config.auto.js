@@ -8,7 +8,6 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			"@backend": "../adnedtrpcbackend/src/server/index.ts",
-
 		}
 	}
 };

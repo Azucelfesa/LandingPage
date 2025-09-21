@@ -5,6 +5,7 @@
 	import FloatingMolecules from '$lib/FloatingMolecules.svelte';
 	import type { LayoutData } from './$types';
 
+
 	// Props que SvelteKit puede pasar automáticamente
 	export let data: LayoutData = {} as LayoutData;
 </script>

@@ -1,12 +1,17 @@
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-// Registrar ScrollTrigger
-gsap.registerPlugin(ScrollTrigger);
 
 // Tipos para los elementos DOM
 type HTMLElement = Element | null;
 type HTMLElementArray = NodeListOf<Element>;
+
+// Helper to load and register ScrollTrigger only in the browser
+async function ensureScrollTrigger() {
+	if (typeof window !== 'undefined' && !gsap.core.globals().ScrollTrigger) {
+		const pkg = await import('gsap/ScrollTrigger');
+		gsap.registerPlugin(pkg.ScrollTrigger);
+	}
+}
+
 
 // Animación de texto tipo máquina de escribir
 export function typewriterEffect(element: HTMLElement, text: string, speed: number = 0.05): gsap.core.Timeline {
