@@ -19,9 +19,11 @@
 				on:click={toggleMenu}
 				aria-label="Toggle menu"
 			>
-				<span class="hamburger" class:hamburger-open={isMenuOpen}></span>
-				<span class="hamburger" class:hamburger-open={isMenuOpen}></span>
-				<span class="hamburger" class:hamburger-open={isMenuOpen}></span>
+				{#if isMenuOpen}
+					<span class="close-icon">✕</span>
+				{:else}
+					<span class="hamburger-icon">☰</span>
+				{/if}
 			</button>
 
 			<!-- Logo -->
@@ -41,16 +43,16 @@
 						<a href="/#quienes-somos" class="nav-link" on:click={closeMenu}>Quiénes Somos</a>
 					</li>
 					<li class="nav-item">
-						<a href="/#beneficios" class="nav-link" on:click={closeMenu}>Misión y Visión</a>
+						<a href="/#quienes-somos" class="nav-link" on:click={closeMenu}>Misión y Visión</a>
 					</li>
 					<li class="nav-item">
 						<a href="/#nuestros-cursos" class="nav-link" on:click={closeMenu}>Nuestros Cursos</a>
 					</li>
                 <li class="nav-item">
-                    <a href="#reseñas" class="nav-link" on:click={closeMenu}>Reseñas</a>
+                    <a href="/#reseñas" class="nav-link" on:click={closeMenu}>Reseñas</a>
                 </li>
 					<li class="nav-item">
-						<a href="/formulario" class="nav-link" on:click={closeMenu}>Formulario</a>
+						<a href="/#formulario" class="nav-link" on:click={closeMenu}>Formulario</a>
 					</li>
 					<li class="nav-item mobile-cta">
 						<button class="btn btn-primary mobile-cta-btn" on:click={closeMenu}>
@@ -208,32 +210,41 @@
 
 	.mobile-menu-btn {
 		display: none;
-		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 40px;
+		height: 40px;
 		background: none;
 		border: none;
 		cursor: pointer;
-		padding: 0.5rem;
-		gap: 4px;
-	}
-
-	.hamburger {
-		width: 25px;
-		height: 3px;
-		background: var(--color-text);
+		padding: 0;
+		z-index: 1001;
+		position: relative;
+		border-radius: 50%;
 		transition: all 0.3s ease;
-		transform-origin: center;
 	}
 
-	.hamburger-open:nth-child(1) {
-		transform: rotate(45deg) translate(6px, 6px);
+	.mobile-menu-btn:hover {
+		background: rgba(251, 191, 36, 0.2);
+		transform: scale(1.1);
 	}
 
-	.hamburger-open:nth-child(2) {
-		opacity: 0;
+	.hamburger-icon, .close-icon {
+		font-size: 24px;
+		color: #fbbf24;
+		font-weight: bold;
+		transition: all 0.3s ease;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
 
-	.hamburger-open:nth-child(3) {
-		transform: rotate(-45deg) translate(6px, -6px);
+	.close-icon {
+		color: #ffffff;
+		font-size: 20px;
+	}
+
+	.mobile-menu-btn:hover .hamburger-icon,
+	.mobile-menu-btn:hover .close-icon {
+		transform: scale(1.2);
 	}
 
 	/* Mobile Styles */
@@ -348,46 +359,11 @@
 		
 		.mobile-menu-btn {
 			display: flex;
+			order: -1;
 		}
 
 		.mobile-cta {
 			display: block;
-		}
-
-		.mobile-menu-btn {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			width: 40px;
-			height: 40px;
-			background: none;
-			border: none;
-			cursor: pointer;
-			padding: 0;
-			z-index: 1001;
-			order: -1;
-		}
-
-		.hamburger {
-			width: 25px;
-			height: 3px;
-			background: #fbbf24;
-			margin: 3px 0;
-			transition: all 0.3s ease;
-			border-radius: 2px;
-		}
-
-		.hamburger-open:nth-child(1) {
-			transform: rotate(45deg) translate(6px, 6px);
-		}
-
-		.hamburger-open:nth-child(2) {
-			opacity: 0;
-		}
-
-		.hamburger-open:nth-child(3) {
-			transform: rotate(-45deg) translate(6px, -6px);
 		}
 	}
 
