@@ -3297,6 +3297,10 @@
 		position: relative;
 		overflow: hidden;
 		text-align: center;
+
+		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+		border-color: rgba(251, 191, 36, 0.6);
+		background: rgba(255, 255, 255, 1);
 	}
 
 	.curso-section::before {
@@ -3309,16 +3313,18 @@
 		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
 	}
 
+	/*
 	.curso-section:hover {
 		transform: translateY(-8px);
 		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
 		border-color: rgba(251, 191, 36, 0.6);
 		background: rgba(255, 255, 255, 1);
 	}
+	*/
 
 	.curso-intro {
 		border-color: rgba(249, 115, 22, 0.4);
-		background: linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(251, 191, 36, 0.05) 50%, rgba(59, 130, 246, 0.05) 100%);
+		/*background: linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(251, 191, 36, 0.05) 50%, rgba(59, 130, 246, 0.05) 100%);*/
 	}
 
 	.curso-intro::before {
@@ -3835,7 +3841,7 @@
 		padding: 1rem 2rem;
 		border-radius: 1rem;
 		backdrop-filter: blur(10px);
-		background-color: rgba(255, 255, 255, 0.1);
+		/*background-color: rgba(255, 255, 255, 0.1);*/
 		border: 2px solid rgba(251, 191, 36, 0.3);
 		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 		position: relative;
