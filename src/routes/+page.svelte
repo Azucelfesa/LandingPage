@@ -725,7 +725,7 @@
 							<div class="promotional-message">
 								<div class="promo-icon">💰</div>
 								<p class="promo-text">
-									<strong>No lo dejes pasar:</strong> al inscribirte ahora obtienes un costo más accesible y la posibilidad de pagar con facilidades diseñadas para ti. Muchas familias suelen esperar y terminan pagando más o quedándose sin lugar. <strong>Actúa hoy mismo y asegura el futuro académico de tu hijo.</strong>
+									<strong>No lo dejes pasar:</strong> al inscribirte ahora obtienes un costo más accesible y la posibilidad de pagar con facilidades diseñadas para ti. <strong>Actúa hoy mismo y asegura el futuro académico de tu hijo.</strong>
 								</p>
 							</div>
 						</div>
