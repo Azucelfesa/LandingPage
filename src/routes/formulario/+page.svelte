@@ -1235,7 +1235,7 @@
 	}
 
 	/* Animaciones de texto */
-	.text-glow {
+	/* .text-glow {
 		animation: textGlow 3s ease-in-out infinite;
 	}
 
@@ -1246,7 +1246,7 @@
 		50% {
 			text-shadow: 0 0 30px rgba(249, 115, 22, 0.8), 0 0 40px rgba(251, 191, 36, 0.6);
 		}
-	}
+	} */
 
 	.text-zoom-rotate {
 		animation: zoomRotate 4s ease-in-out infinite;

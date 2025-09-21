@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { slideInFromDirection } from '$lib/animations';
 	import { onMount } from 'svelte';
-	import { spectacularHeroAnimation, slideInFromDirection, textGlowAnimation } from '$lib/animations';
 
 	let heroTitle: HTMLElement | null;
 	let heroSubtitle: HTMLElement | null;
@@ -10,7 +10,7 @@
 
 	onMount(() => {
 		// Animar elementos al cargar la página
-		if (heroTitle) spectacularHeroAnimation(heroTitle, heroSubtitle, null);
+		// if (heroTitle) spectacularHeroAnimation(heroTitle, heroSubtitle, null);
 		if (missionSection) slideInFromDirection(missionSection, 'left', 0.3);
 		if (visionSection) slideInFromDirection(visionSection, 'right', 0.5);
 		if (ctaSection) slideInFromDirection(ctaSection, 'top', 0.7);

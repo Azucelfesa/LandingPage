@@ -509,17 +509,17 @@ export function slideInFromDirection(element: HTMLElement, direction: 'left' | '
 }
 
 // Animación de resplandor en texto
-export function textGlowAnimation(element: HTMLElement): void {
-	if (!element) return;
+// export function textGlowAnimation(element: HTMLElement): void {
+// 	if (!element) return;
 	
-	gsap.to(element, {
-		duration: 2,
-		textShadow: "0 0 20px rgba(251, 191, 36, 0.8), 0 0 40px rgba(251, 191, 36, 0.4), 0 0 60px rgba(251, 191, 36, 0.2)",
-		ease: "power2.inOut",
-		repeat: -1,
-		yoyo: true
-	});
-}
+// 	gsap.to(element, {
+// 		duration: 2,
+// 		textShadow: "0 0 20px rgba(251, 191, 36, 0.8), 0 0 40px rgba(251, 191, 36, 0.4), 0 0 60px rgba(251, 191, 36, 0.2)",
+// 		ease: "power2.inOut",
+// 		repeat: -1,
+// 		yoyo: true
+// 	});
+// }
 
 // Animación de rotación 3D en hover
 export function add3DHoverEffect(element: HTMLElement): void {

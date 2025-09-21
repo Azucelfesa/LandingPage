@@ -471,7 +471,7 @@
 		transform: skewX(-15deg);
 	}
 
-	@keyframes shootingStar {
+	/* @keyframes shootingStar {
 		0% {
 			left: -300px;
 			opacity: 0;
@@ -490,5 +490,5 @@
 			opacity: 0;
 			transform: skewX(-15deg) scale(0.3);
 		}
-	}
+	} */
 </style>

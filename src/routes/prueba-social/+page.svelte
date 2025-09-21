@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { add3DHoverEffect, slideInFromDirection } from '$lib/animations';
 	import { onMount } from 'svelte';
-	import { spectacularHeroAnimation, slideInFromDirection, textGlowAnimation, add3DHoverEffect } from '$lib/animations';
 
 	let heroTitle: HTMLElement;
 	let heroSubtitle: HTMLElement;
@@ -9,7 +9,7 @@
 
 	onMount(() => {
 		// Animar elementos al cargar la página
-		if (heroTitle) spectacularHeroAnimation(heroTitle, heroSubtitle, null);
+		// if (heroTitle) spectacularHeroAnimation(heroTitle, heroSubtitle, null);
 		if (testimonialsGrid) slideInFromDirection(testimonialsGrid, 'bottom', 0.3);
 		if (ctaSection) slideInFromDirection(ctaSection, 'top', 0.5);
 		

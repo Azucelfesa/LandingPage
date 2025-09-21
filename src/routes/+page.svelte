@@ -1,33 +1,19 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
-	import type { PageData } from './$types';
-	import { 
-		animateHero, 
-		animateScrollElements, 
-		addHoverAnimations, 
-		addPulseAnimation,
-		animateSpinner,
-		animateSuccess,
-		shakeElement,
-		spectacularHeroAnimation,
-		addRippleEffect,
-		staggeredEntryAnimation,
-		enhancedFormHover,
-		typewriterTitle,
-		enhancedPulseAnimation,
-		slideInFromDirection,
-		textGlowAnimation,
-		add3DHoverEffect,
-		createBackgroundParticles,
-		createBackgroundParticlesForBenefits
-	} from '$lib/animations';
-	import { 
-		createRippleEffect, 
-		createMouseFollower, 
-		revealTextByWords,
-		slideInFromDirection as advancedSlideIn
+	import {
+	    slideInFromDirection as advancedSlideIn,
+	    createMouseFollower,
+	    createRippleEffect
 	} from '$lib/advancedAnimations';
-    import trpcHttpClient from '$lib/client';
+	import {
+	    add3DHoverEffect,
+	    addRippleEffect,
+	    animateScrollElements,
+	    createBackgroundParticlesForBenefits,
+	    enhancedPulseAnimation
+	} from '$lib/animations';
+	import trpcHttpClient from '$lib/client';
+	import { onDestroy, onMount } from 'svelte';
+	import type { PageData } from './$types';
 	// import { 
 	// 	createRippleEffect, 
 	// 	createMouseFollower, 
@@ -623,12 +609,12 @@
 		// Esperar a que los elementos estén disponibles
 		setTimeout(() => {
 			// Ejecutar animación espectacular del hero
-			if (heroTitle && heroSubtitle) {
-				spectacularHeroAnimation(heroTitle, heroSubtitle, null);
-			}
+			// if (heroTitle && heroSubtitle) {
+			// 	spectacularHeroAnimation(heroTitle, heroSubtitle, null);
+			// }
 			
 			// Ejecutar animaciones de scroll mejoradas
-			animateScrollElements();
+			//animateScrollElements();
 			
 			// Agregar efectos de ondas a botones
 			const buttons = document.querySelectorAll('.btn');
@@ -647,11 +633,11 @@
 			interactiveElements.forEach(element => add3DHoverEffect(element));
 			
 			// Agregar animación de resplandor al título
-			if (heroTitle) {
-				setTimeout(() => {
-					textGlowAnimation(heroTitle);
-				}, 1500);
-			}
+			// if (heroTitle) {
+			// 	setTimeout(() => {
+			// 		textGlowAnimation(heroTitle);
+			// 	}, 1500);
+			// }
 
 			// Configurar Intersection Observer para animaciones de estadísticas
 			if (communitySection) {
@@ -805,7 +791,7 @@
 					
 					<!-- Botón para ir al formulario -->
 					<div class="cta-container">
-							<button class="btn btn-whatsapp floating-button" on:click={scrollToForm}>
+						<button class="btn btn-whatsapp floating-button" on:click={scrollToForm}>
 							<span class="whatsapp-icon">📱</span>
 								Regístrate gratis
 						</button>
@@ -2116,16 +2102,16 @@
 	@keyframes titlePulse {
 		0%, 100% { 
 			transform: scale(1);
-			text-shadow: 
+			/* text-shadow: 
 				0 2px 4px rgba(0, 0, 0, 0.3),
-				0 0 10px rgba(251, 191, 36, 0.3);
+				0 0 10px rgba(251, 191, 36, 0.3); */
 		}
 		50% { 
 			transform: scale(1.05);
-			text-shadow: 
+			/* text-shadow: 
 				0 2px 4px rgba(0, 0, 0, 0.3),
 				0 0 20px rgba(251, 191, 36, 0.6),
-				0 0 30px rgba(251, 191, 36, 0.4);
+				0 0 30px rgba(251, 191, 36, 0.4); */
 		}
 	}
 
@@ -2218,11 +2204,11 @@
 	@keyframes promotionalPulse {
 		0%, 100% { 
 			transform: scale(1);
-			box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
+			/* box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2); */
 		}
 		50% { 
 			transform: scale(1.02);
-			box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+			/* box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4); */
 		}
 	}
 
@@ -2246,16 +2232,16 @@
 	@keyframes numberGlow {
 		0%, 100% { 
 			transform: scale(1);
-			text-shadow: 
+			/* text-shadow: 
 				0 2px 4px rgba(0, 0, 0, 0.3),
-				0 0 8px rgba(251, 191, 36, 0.2);
+				0 0 8px rgba(251, 191, 36, 0.2); */
 		}
 		50% { 
 			transform: scale(1.08);
-			text-shadow: 
+			/* text-shadow: 
 				0 2px 4px rgba(0, 0, 0, 0.3),
 				0 0 15px rgba(251, 191, 36, 0.5),
-				0 0 25px rgba(251, 191, 36, 0.3);
+				0 0 25px rgba(251, 191, 36, 0.3); */
 		}
 	}
 
@@ -2346,7 +2332,7 @@
 
 	h1:hover, h2:hover, h3:hover {
 		transform: scale(1.05) translateY(-2px);
-		text-shadow: 0 0 20px rgba(249, 115, 22, 0.6);
+		/* text-shadow: 0 0 20px rgba(249, 115, 22, 0.6); */
 	}
 
 	/* Animación de ondas en texto */
@@ -2362,10 +2348,10 @@
 	}
 
 	/* Animación de brillo en texto */
-	.text-glow {
+	/* .text-glow {
 		animation: textGlow 2s ease-in-out infinite alternate;
-	}
-
+	} */
+/* 
 	@keyframes textGlow {
 		from {
 			text-shadow: 0 0 10px rgba(249, 115, 22, 0.3);
@@ -2373,7 +2359,7 @@
 		to {
 			text-shadow: 0 0 25px rgba(249, 115, 22, 0.9), 0 0 40px rgba(251, 191, 36, 0.6), 0 0 50px rgba(59, 130, 246, 0.4);
 		}
-	}
+	} */
 
 	/* Animación de rotación sutil */
 	.text-rotate {
@@ -2395,11 +2381,11 @@
 	@keyframes textPulse {
 		0%, 100% { 
 			transform: scale(1) translateY(0px);
-			text-shadow: 0 0 10px rgba(249, 115, 22, 0.3);
+			/* text-shadow: 0 0 10px rgba(249, 115, 22, 0.3); */
 		}
 		50% { 
 			transform: scale(1.08) translateY(-8px);
-			text-shadow: 0 0 30px rgba(249, 115, 22, 0.8), 0 0 40px rgba(251, 191, 36, 0.5);
+			/* text-shadow: 0 0 30px rgba(249, 115, 22, 0.8), 0 0 40px rgba(251, 191, 36, 0.5); */
 		}
 	}
 
@@ -2423,11 +2409,11 @@
 	@keyframes textZoom {
 		0%, 100% { 
 			transform: scale(1) translateY(0px);
-			text-shadow: 0 0 10px rgba(249, 115, 22, 0.3);
+			/* text-shadow: 0 0 10px rgba(249, 115, 22, 0.3); */
 		}
 		50% { 
 			transform: scale(1.3) translateY(-10px);
-			text-shadow: 0 0 30px rgba(249, 115, 22, 0.8), 0 0 40px rgba(251, 191, 36, 0.6), 0 0 50px rgba(59, 130, 246, 0.4);
+			/* text-shadow: 0 0 30px rgba(249, 115, 22, 0.8), 0 0 40px rgba(251, 191, 36, 0.6), 0 0 50px rgba(59, 130, 246, 0.4); */
 		}
 	}
 
@@ -2439,11 +2425,11 @@
 	@keyframes textZoomSmooth {
 		0%, 100% { 
 			transform: scale(1) translateY(0px);
-			text-shadow: 0 0 8px rgba(251, 191, 36, 0.2);
+			/* text-shadow: 0 0 8px rgba(251, 191, 36, 0.2); */
 		}
 		50% { 
 			transform: scale(1.2) translateY(-8px);
-			text-shadow: 0 0 16px rgba(251, 191, 36, 0.6), 0 0 24px rgba(249, 115, 22, 0.3);
+			/* text-shadow: 0 0 16px rgba(251, 191, 36, 0.6), 0 0 24px rgba(249, 115, 22, 0.3); */
 		}
 	}
 
@@ -2455,11 +2441,11 @@
 	@keyframes textZoomRotate {
 		0%, 100% { 
 			transform: scale(1) rotate(0deg) translateY(0px);
-			text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+			/* text-shadow: 0 0 10px rgba(59, 130, 246, 0.3); */
 		}
 		50% { 
 			transform: scale(1.25) rotate(0deg) translateY(-6px);
-			text-shadow: 0 0 25px rgba(59, 130, 246, 0.8), 0 0 35px rgba(251, 191, 36, 0.6), 0 0 45px rgba(249, 115, 22, 0.4);
+			/* text-shadow: 0 0 25px rgba(59, 130, 246, 0.8), 0 0 35px rgba(251, 191, 36, 0.6), 0 0 45px rgba(249, 115, 22, 0.4); */
 		}
 	}
 
@@ -2471,11 +2457,11 @@
 	@keyframes textZoomUltra {
 		0%, 100% { 
 			transform: scale(1) translateY(0px);
-			text-shadow: 0 0 15px rgba(249, 115, 22, 0.4);
+			/* text-shadow: 0 0 15px rgba(249, 115, 22, 0.4); */
 		}
 		50% { 
 			transform: scale(1.2) translateY(-8px);
-			text-shadow: 0 0 27px rgba(249, 115, 22, 0.8), 0 0 40px rgba(251, 191, 36, 0.6), 0 0 50px rgba(59, 130, 246, 0.4);
+			/* text-shadow: 0 0 27px rgba(249, 115, 22, 0.8), 0 0 40px rgba(251, 191, 36, 0.6), 0 0 50px rgba(59, 130, 246, 0.4); */
 		}
 	}
 
@@ -2669,7 +2655,7 @@
 		border-color: rgba(251, 191, 36, 0.5);
 		transform: translateY(-2px) !important;
 	}
-
+/* 
 	@keyframes formGlow {
 		0%, 100% { 
 			box-shadow: 
@@ -2684,7 +2670,7 @@
 				0 0 0 3px rgba(251, 191, 36, 0.4),
 				0 0 20px rgba(251, 191, 36, 0.2);
 		}
-	}
+	} */
 
 	.registration-form:hover {
 		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -3246,57 +3232,57 @@
 	/* Efecto de flotación para el botón */
 	.floating-button {
 		animation: floating 4s ease-in-out infinite;
-		box-shadow: 
+		/* box-shadow: 
 			0 15px 35px rgba(251, 191, 36, 0.5),
 			0 0 25px rgba(251, 191, 36, 0.3),
-			0 0 0 1px rgba(255, 255, 255, 0.1);
+			0 0 0 1px rgba(255, 255, 255, 0.1); */
 	}
 
 	@keyframes floating {
 		0%, 100% { 
 			transform: translateY(0px) scale(1);
-			box-shadow: 
+			/* box-shadow: 
 				0 15px 35px rgba(251, 191, 36, 0.5),
 				0 0 25px rgba(251, 191, 36, 0.3),
-				0 0 0 1px rgba(255, 255, 255, 0.1);
+				0 0 0 1px rgba(255, 255, 255, 0.1); */
 		}
 		20% { 
 			transform: translateY(-10px) scale(1.03);
-			box-shadow: 
+			/* box-shadow: 
 				0 20px 40px rgba(251, 191, 36, 0.6),
 				0 0 30px rgba(251, 191, 36, 0.4),
-				0 0 0 2px rgba(255, 255, 255, 0.2);
+				0 0 0 2px rgba(255, 255, 255, 0.2); */
 		}
 		40% { 
 			transform: translateY(-15px) scale(1.05);
-			box-shadow: 
+			/* box-shadow: 
 				0 25px 45px rgba(251, 191, 36, 0.7),
 				0 0 35px rgba(251, 191, 36, 0.5),
-				0 0 0 3px rgba(255, 255, 255, 0.3);
+				0 0 0 3px rgba(255, 255, 255, 0.3); */
 		}
 		60% { 
 			transform: translateY(-10px) scale(1.03);
-			box-shadow: 
+			/* box-shadow: 
 				0 20px 40px rgba(251, 191, 36, 0.6),
 				0 0 30px rgba(251, 191, 36, 0.4),
-				0 0 0 2px rgba(255, 255, 255, 0.2);
+				0 0 0 2px rgba(255, 255, 255, 0.2); */
 		}
 		80% { 
 			transform: translateY(-5px) scale(1.01);
-			box-shadow: 
+			/* box-shadow: 
 				0 18px 38px rgba(251, 191, 36, 0.55),
 				0 0 28px rgba(251, 191, 36, 0.35),
-				0 0 0 1.5px rgba(255, 255, 255, 0.15);
+				0 0 0 1.5px rgba(255, 255, 255, 0.15); */
 		}
 	}
 
 	.floating-button:hover {
 		animation-play-state: paused;
 		transform: translateY(-15px) scale(1.08);
-		box-shadow: 
+		/* box-shadow: 
 			0 30px 50px rgba(251, 191, 36, 0.8),
 			0 0 40px rgba(251, 191, 36, 0.6),
-			0 0 0 4px rgba(255, 255, 255, 0.4);
+			0 0 0 4px rgba(255, 255, 255, 0.4); */
 	}
 
 	.btn-whatsapp::before {
@@ -4920,7 +4906,7 @@
 		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 		position: relative;
 		overflow: hidden;
-		animation: pulseGlow 3s ease-in-out infinite;
+		/* animation: pulseGlow 3s ease-in-out infinite; */
 	}
 
 	.reinforcement-text::before {
@@ -4945,14 +4931,14 @@
 		animation: numberPulse 2s ease-in-out infinite;
 	}
 
-	@keyframes pulseGlow {
+	/* @keyframes pulseGlow {
 		0%, 100% {
 			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 		}
 		50% {
 			box-shadow: 0 12px 35px rgba(251, 191, 36, 0.4);
 		}
-	}
+	} */
 
 	@keyframes shimmer {
 		0% {
