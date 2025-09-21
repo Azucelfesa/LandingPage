@@ -114,12 +114,14 @@
 	let carousel3Index = 0;
 	let carousel4Index = 0;
 	let carousel5Index = 0;
+	let aboutCarouselIndex = 0;
 	
 	let carousel1Interval: number;
 	let carousel2Interval: number;
 	let carousel3Interval: number;
 	let carousel4Interval: number;
 	let carousel5Interval: number;
+	let aboutCarouselInterval: number;
 	
 	// Estado para mostrar carruseles adicionales
 	let showAdditionalCarousels = false;
@@ -254,6 +256,40 @@
 		carousel5Index = index;
 	}
 
+	// Funciones para carrusel de Quiénes Somos
+	function nextAboutSlide() {
+		aboutCarouselIndex = (aboutCarouselIndex + 1) % 3;
+		updateAboutCarousel();
+	}
+
+	function prevAboutSlide() {
+		aboutCarouselIndex = aboutCarouselIndex === 0 ? 2 : aboutCarouselIndex - 1;
+		updateAboutCarousel();
+	}
+
+	function goToAboutSlide(index: number) {
+		aboutCarouselIndex = index;
+		updateAboutCarousel();
+	}
+
+	function updateAboutCarousel() {
+		if (aboutCarouselTrack) {
+			const slides = aboutCarouselTrack.querySelectorAll('.about-slide');
+			const dots = document.querySelectorAll('.about-dot');
+			
+			// Remover clase active de todos los slides y dots
+			slides.forEach(slide => slide.classList.remove('active'));
+			dots.forEach(dot => dot.classList.remove('active'));
+			
+			// Agregar clase active al slide y dot actual
+			slides[aboutCarouselIndex].classList.add('active');
+			dots[aboutCarouselIndex].classList.add('active');
+			
+			// Mover el track con transición suave
+			aboutCarouselTrack.style.transform = `translateX(-${aboutCarouselIndex * 33.333}%)`;
+		}
+	}
+
 
 	// Función para toggle de carruseles adicionales
 	function toggleAdditionalCarousels() {
@@ -279,6 +315,7 @@
 		carousel1Interval = setInterval(nextCarousel1, 3000);
 		carousel2Interval = setInterval(nextCarousel2, 3500);
 		carousel3Interval = setInterval(nextCarousel3, 4000);
+		aboutCarouselInterval = setInterval(nextAboutSlide, 8000);
 		// Solo iniciar carruseles adicionales si están visibles
 		if (showAdditionalCarousels) {
 			carousel4Interval = setInterval(nextCarousel4, 4500);
@@ -286,10 +323,22 @@
 		}
 	}
 
+	// Inicializar carrusel de Quiénes Somos
+	function initAboutCarousel() {
+		// Inicializar el carrusel
+		updateAboutCarousel();
+		
+		// Iniciar auto-play después de un pequeño delay
+		setTimeout(() => {
+			aboutCarouselInterval = setInterval(nextAboutSlide, 8000);
+		}, 1000);
+	}
+
 	function stopAllCarousels() {
 		if (carousel1Interval) clearInterval(carousel1Interval);
 		if (carousel2Interval) clearInterval(carousel2Interval);
 		if (carousel3Interval) clearInterval(carousel3Interval);
+		if (aboutCarouselInterval) clearInterval(aboutCarouselInterval);
 		if (carousel4Interval) clearInterval(carousel4Interval);
 		if (carousel5Interval) clearInterval(carousel5Interval);
 	}
@@ -460,6 +509,7 @@
 	let heroTitle: HTMLElement;
 	let heroSubtitle: HTMLElement;
 	let heroSection: HTMLElement;
+	let aboutCarouselTrack: HTMLElement;
 	let sectionTitles: HTMLElement[] = [];
 	let benefitCards: HTMLElement[] = [];
 	let testimonialCards: HTMLElement[] = [];
@@ -593,6 +643,9 @@
 			// Inicializar carrusel de reseñas
 			startAutoPlay();
 			
+			// Inicializar carrusel de Quiénes Somos
+			initAboutCarousel();
+			
 			// Iniciar todos los carruseles
 			startAllCarousels();
 			
@@ -649,26 +702,26 @@
 
 						<!-- Contenedor horizontal para temporizador y mensaje promocional -->
 						<div class="countdown-promo-container">
-							<!-- Contador regresivo -->
-							<div class="countdown-container">
-								<h3 class="countdown-title">INICIAMOS EN:</h3>
-								<div class="countdown-timer">
-									<div class="countdown-item" style="--item-index: 0;">
-										<div class="countdown-number">{timeLeft.days.toString().padStart(2, '0')}</div>
-										<div class="countdown-label">Días</div>
-									</div>
-									<div class="countdown-item" style="--item-index: 1;">
-										<div class="countdown-number">{timeLeft.hours.toString().padStart(2, '0')}</div>
-										<div class="countdown-label">Horas</div>
-									</div>
-									<div class="countdown-item" style="--item-index: 2;">
-										<div class="countdown-number">{timeLeft.minutes.toString().padStart(2, '0')}</div>
-										<div class="countdown-label">Min</div>
-									</div>
-									<div class="countdown-item" style="--item-index: 3;">
-										<div class="countdown-number">{timeLeft.seconds.toString().padStart(2, '0')}</div>
-										<div class="countdown-label">Seg</div>
-									</div>
+						<!-- Contador regresivo -->
+						<div class="countdown-container">
+							<h3 class="countdown-title">INICIAMOS EN:</h3>
+							<div class="countdown-timer">
+								<div class="countdown-item" style="--item-index: 0;">
+									<div class="countdown-number">{timeLeft.days.toString().padStart(2, '0')}</div>
+									<div class="countdown-label">Días</div>
+								</div>
+								<div class="countdown-item" style="--item-index: 1;">
+									<div class="countdown-number">{timeLeft.hours.toString().padStart(2, '0')}</div>
+									<div class="countdown-label">Horas</div>
+								</div>
+								<div class="countdown-item" style="--item-index: 2;">
+									<div class="countdown-number">{timeLeft.minutes.toString().padStart(2, '0')}</div>
+									<div class="countdown-label">Min</div>
+								</div>
+								<div class="countdown-item" style="--item-index: 3;">
+									<div class="countdown-number">{timeLeft.seconds.toString().padStart(2, '0')}</div>
+									<div class="countdown-label">Seg</div>
+								</div>
 								</div>
 							</div>
 
@@ -709,59 +762,6 @@
 				</div>
 		</section>
 
-	<!-- Sección de Misión y Visión -->
-	<section id="beneficios" class="benefits-section">
-		<div class="container">
-			<div class="section-header">
-				<h2 class="section-title text-glow text-zoom-rotate">ADNED</h2>
-				<p class="section-subtitle text-zoom-smooth">
-					Conoce los valores y objetivos que nos impulsan a ayudarte
-				</p>
-			</div>
-
-			<div class="benefits-staggered">
-				<!-- Misión - Izquierda -->
-				<div class="benefit-card benefit-left">
-					<div class="benefit-content">
-						<div class="benefit-icon">
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-							</svg>
-						</div>
-						<div class="benefit-text">
-							<h3 class="benefit-title">Misión</h3>
-							<p class="benefit-description">
-								Ofrecer cursos innovadores, accesibles y de calidad que preparen a los 
-								estudiantes para superar los exámenes de admisión al bachillerato y la 
-								universidad, brindándoles confianza, motivación y herramientas modernas que los 
-								acerquen a lograr sus sueños académicos.
-							</p>
-						</div>
-					</div>
-				</div>
-
-				<!-- Visión - Derecha -->
-				<div class="benefit-card benefit-right">
-					<div class="benefit-content">
-						<div class="benefit-text">
-							<h3 class="benefit-title">Visión</h3>
-							<p class="benefit-description">
-								Convertirse en la comunidad educativa líder en México para la preparación de 
-								exámenes de admisión, reconocida por su enfoque futurista, juvenil y motivador, 
-								que acompaña a cada alumno en su camino al éxito académico.
-							</p>
-						</div>
-						<div class="benefit-icon">
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-								<circle cx="12" cy="12" r="3"/>
-							</svg>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
 
 	<!-- Sección Quiénes Somos -->
 	<section id="quienes-somos" class="quienes-somos-section">
@@ -769,15 +769,88 @@
 			<div class="section-header">
 				<h2 class="section-title text-glow text-zoom-rotate">Quiénes Somos</h2>
 				<p class="section-subtitle text-zoom-smooth">
-					Conoce más sobre nuestro equipo y nuestra misión
+					Conoce nuestra misión, visión y el equipo que te acompaña
 				</p>
 			</div>
 
-			<div class="quienes-somos-content quienes-somos-left">
-				<div class="quienes-somos-text">
-					<p class="main-text">
-						ADNED es mucho más que un curso de preparación: es una comunidad que acompaña a los estudiantes en cada paso de su camino académico, brindando innovación, motivación y cercanía. Nacimos con la misión de ofrecer cursos accesibles y de calidad que permitan a los jóvenes enfrentar con confianza y seguridad los exámenes de admisión al bachillerato y la universidad, especialmente bajo los nuevos procesos ECOEMS, UNAM, IPN y UAM. Nuestra visión es clara: consolidarnos como la comunidad educativa líder en México, reconocida por un enfoque futurista, juvenil y motivador, donde cada alumno encuentre no solo conocimientos, sino inspiración para creer en sí mismo. A través de herramientas digitales, estrategias modernas, inteligencia artificial y personajes como Adni y Ema, transformamos la forma de aprender y hacer frente a los retos educativos. ADNED no es solo preparación académica, es un espacio donde el compromiso, la confianza y la innovación se convierten en aliados para cumplir sueños y abrir las puertas del futuro.
-					</p>
+			<!-- Carrusel de diapositivas -->
+			<div class="about-carousel-container">
+				<div class="about-carousel-track" bind:this={aboutCarouselTrack}>
+					<!-- Slide 1: Nuestra Historia -->
+					<div class="about-slide active">
+						<div class="about-main-card">
+							<div class="card-header">
+								<div class="icon-wrapper">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+										<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+										<circle cx="9" cy="7" r="4"/>
+										<path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+										<path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+							</svg>
+						</div>
+								<h3 class="card-title">Nuestra Historia</h3>
+							</div>
+							<div class="card-content">
+								<p class="main-description">
+									ADNED es mucho más que un curso de preparación: es una comunidad que acompaña a los estudiantes en cada paso de su camino académico, brindando innovación, motivación y cercanía. Nacimos con la misión de ofrecer cursos accesibles y de calidad que permitan a los jóvenes enfrentar con confianza y seguridad los exámenes de admisión al bachillerato y la universidad, especialmente bajo los nuevos procesos ECOEMS, UNAM, IPN y UAM.
+							</p>
+						</div>
+					</div>
+				</div>
+
+					<!-- Slide 2: Misión -->
+					<div class="about-slide">
+						<div class="about-card mission-card">
+							<div class="card-icon">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+								</svg>
+							</div>
+							<div class="card-content">
+								<h3 class="card-title">Misión</h3>
+								<p class="card-description">
+									Ofrecer cursos innovadores, accesibles y de calidad que preparen a los estudiantes para superar los exámenes de admisión al bachillerato y la universidad, brindándoles confianza, motivación y herramientas modernas que los acerquen a lograr sus sueños académicos.
+							</p>
+						</div>
+						</div>
+					</div>
+
+					<!-- Slide 3: Visión -->
+					<div class="about-slide">
+						<div class="about-card vision-card">
+							<div class="card-icon">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+								<circle cx="12" cy="12" r="3"/>
+							</svg>
+						</div>
+							<div class="card-content">
+								<h3 class="card-title">Visión</h3>
+								<p class="card-description">
+									Convertirse en la comunidad educativa líder en México para la preparación de exámenes de admisión, reconocida por su enfoque futurista, juvenil y motivador, que acompaña a cada alumno en su camino al éxito académico.
+								</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+				<!-- Controles de navegación -->
+				<div class="about-carousel-controls">
+					<button class="about-prev-btn" on:click={prevAboutSlide}>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<path d="M15 18l-6-6 6-6"/>
+						</svg>
+					</button>
+					<div class="about-dots">
+						<button class="about-dot active" on:click={() => goToAboutSlide(0)}></button>
+						<button class="about-dot" on:click={() => goToAboutSlide(1)}></button>
+						<button class="about-dot" on:click={() => goToAboutSlide(2)}></button>
+			</div>
+					<button class="about-next-btn" on:click={nextAboutSlide}>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<path d="M9 18l6-6-6-6"/>
+						</svg>
+					</button>
 				</div>
 			</div>
 		</div>
@@ -2692,29 +2765,6 @@
 		padding-bottom: 0.75rem;
 	}
 
-	/* Sección de Misión y Visión */
-	.benefits-section {
-		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
-		padding: 0;
-		position: relative;
-		overflow: hidden;
-		margin-top: -2rem;
-	}
-
-	.benefits-section::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-					radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-					radial-gradient(circle at 40% 40%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
-		pointer-events: none;
-		z-index: 1;
-		animation: backgroundShift 8s ease-in-out infinite;
-	}
 
 
 	.container {
@@ -2752,151 +2802,12 @@
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
 
-	.benefits-staggered {
-		display: flex;
-		flex-direction: column;
-		gap: 3rem;
-		margin-top: 3rem;
-		max-width: 1200px;
-		margin-left: auto;
-		margin-right: auto;
-	}
 
-	.benefit-left {
-		align-self: flex-start;
-		margin-right: 15%;
-	}
 
-	.benefit-right {
-		align-self: flex-end;
-		margin-left: 15%;
-	}
-
-	.benefit-content {
-		display: flex;
-		align-items: center;
-		gap: 2rem;
-	}
-
-	.benefit-right .benefit-content {
-		flex-direction: row-reverse;
-	}
-
-	.benefit-text {
-		flex: 1;
-	}
-
-	.benefit-card {
-		background: rgba(255, 255, 255, 0.95);
-		backdrop-filter: blur(20px);
-		padding: 2.5rem 2rem;
-		border-radius: 1.5rem;
-		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-		transition: all 0.3s ease;
-		border: 2px solid rgba(251, 191, 36, 0.3);
-		position: relative;
-		overflow: hidden;
-	}
-
-	.benefit-card::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 4px;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
-	}
-
-	.benefit-card:hover {
-		transform: translateY(-10px);
-		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-		border-color: rgba(251, 191, 36, 0.6);
-		background: rgba(255, 255, 255, 1);
-	}
-
-	.benefit-icon {
-		width: 60px;
-		height: 60px;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
-		border-radius: 1rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin-bottom: 1.5rem;
-		box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
-	}
-
-	.benefit-icon svg {
-		width: 30px;
-		height: 30px;
-		color: white;
-	}
-
-	.benefit-title {
-		font-size: 1.5rem;
-		font-weight: 700;
-		color: #290040;
-		margin-bottom: 1rem;
-		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	}
-
-	.benefit-description {
-		color: #4a5568;
-		line-height: 1.6;
-		font-size: 1rem;
-	}
-
-	/* Responsive para misión y visión */
-	@media (max-width: 768px) {
-		.benefits-section {
-			padding: 3rem 0;
-		}
-
-		.section-title {
-			font-size: 2rem;
-		}
-
-		.benefits-staggered {
-			gap: 2rem;
-		}
-
-		.benefit-left,
-		.benefit-right {
-			margin-left: 0;
-			margin-right: 0;
-			align-self: stretch;
-		}
-
-		.benefit-content {
-			flex-direction: column;
-			text-align: center;
-			gap: 1.5rem;
-		}
-
-		.benefit-right .benefit-content {
-			flex-direction: column;
-		}
-
-		.quienes-somos-left {
-			margin-left: 0;
-			margin-right: 0;
-		}
-
-		.benefit-card {
-			padding: 2rem 1.5rem;
-		}
-	}
-
-	@media (max-width: 480px) {
-		.benefit-card {
-			padding: 1.5rem 1rem;
-		}
-	}
 
 	/* Quiénes Somos Section */
 	.quienes-somos-section {
-		padding: 2rem 0 6rem 0;
+		padding: 4rem 0 6rem 0;
 		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
 		position: relative;
 		overflow: hidden;
@@ -2917,46 +2828,256 @@
 		animation: backgroundShift 8s ease-in-out infinite;
 	}
 
-	.quienes-somos-content {
-		background: rgba(255, 255, 255, 0.95);
-		backdrop-filter: blur(20px);
-		padding: 4rem 3rem;
-		border-radius: 2rem;
-		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-		transition: all 0.3s ease;
-		border: 2px solid rgba(251, 191, 36, 0.3);
-		position: relative;
-		overflow: hidden;
-		text-align: center;
-		max-width: 900px;
+	/* Carrusel de Quiénes Somos */
+	.about-carousel-container {
+		max-width: 1400px;
 		margin: 0 auto;
+		position: relative;
+		z-index: 2;
+		overflow: hidden;
+		border-radius: 2rem;
 	}
 
-	.quienes-somos-content::before {
+	.about-carousel-track {
+		display: flex;
+		transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+		width: 300%;
+	}
+
+	.about-slide {
+		width: 33.333%;
+		flex-shrink: 0;
+		padding: 0 2rem;
+		opacity: 0.6;
+		transform: scale(0.9);
+		transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+		filter: blur(1px);
+	}
+
+	.about-slide.active {
+		opacity: 1;
+		transform: scale(1);
+		filter: blur(0);
+	}
+
+	/* Card principal - ocupa toda la slide */
+	.about-main-card {
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+		backdrop-filter: blur(20px);
+		border-radius: 2rem;
+		padding: 4rem 3rem;
+		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		position: relative;
+		overflow: hidden;
+		transition: all 0.4s ease;
+	}
+
+	.about-main-card::before {
 		content: '';
 		position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
 		height: 4px;
+		background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #f97316 100%);
+	}
+
+	.about-main-card:hover {
+		transform: translateY(-10px);
+		box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3);
+	}
+
+	.card-header {
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.icon-wrapper {
+		width: 70px;
+		height: 70px;
+		background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+		border-radius: 1rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+		transition: all 0.3s ease;
+	}
+
+	.icon-wrapper svg {
+		width: 35px;
+		height: 35px;
+		color: white;
+	}
+
+	.about-main-card:hover .icon-wrapper {
+		transform: scale(1.1) rotate(5deg);
+		box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
+	}
+
+	.main-description {
+		font-size: 1.1rem;
+		line-height: 1.8;
+		color: #374151;
+		margin: 0;
+		text-align: left;
+	}
+
+	/* Cards secundarias */
+	.about-card {
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%);
+		backdrop-filter: blur(15px);
+		border-radius: 1.5rem;
+		padding: 3rem 2.5rem;
+		box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		position: relative;
+		overflow: hidden;
+		transition: all 0.4s ease;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.about-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 3px;
 		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
 	}
 
-	.quienes-somos-content:hover {
-		transform: translateY(-5px);
-		box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-		border-color: rgba(251, 191, 36, 0.6);
-		background: rgba(255, 255, 255, 1);
+	.about-card:hover {
+		transform: translateY(-8px) scale(1.02);
+		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
 	}
 
-	.quienes-somos-text {
-		position: relative;
-		z-index: 2;
+	.mission-card:hover {
+		border-color: rgba(249, 115, 22, 0.4);
 	}
 
-	.quienes-somos-left {
-		margin-left: 0;
-		margin-right: 20%;
+	.vision-card:hover {
+		border-color: rgba(59, 130, 246, 0.4);
+	}
+
+
+	.card-icon {
+		width: 60px;
+		height: 60px;
+		border-radius: 1rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 1.5rem;
+		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+		transition: all 0.3s ease;
+	}
+
+	.mission-card .card-icon {
+		background: linear-gradient(135deg, #f97316 0%, #fbbf24 100%);
+	}
+
+	.vision-card .card-icon {
+		background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+	}
+
+
+	.card-icon svg {
+		width: 30px;
+		height: 30px;
+		color: white;
+	}
+
+	.about-card:hover .card-icon {
+		transform: scale(1.1) rotate(-5deg);
+		box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+	}
+
+	.card-title {
+		font-size: 1.4rem;
+		font-weight: 700;
+		color: #1f2937;
+		margin-bottom: 1rem;
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	.card-description {
+		font-size: 0.95rem;
+		line-height: 1.6;
+		color: #4b5563;
+		margin: 0;
+		text-align: left;
+	}
+
+	/* Controles del carrusel */
+	.about-carousel-controls {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 1.5rem;
+		margin-top: 1.5rem;
+		opacity: 0.8;
+	}
+
+	.about-prev-btn,
+	.about-next-btn {
+		width: 40px;
+		height: 40px;
+		background: linear-gradient(135deg, rgba(59, 130, 246, 0.8) 0%, rgba(139, 92, 246, 0.8) 100%);
+		border: none;
+		border-radius: 50%;
+		color: white;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.3s ease;
+		box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+	}
+
+	.about-prev-btn:hover,
+	.about-next-btn:hover {
+		transform: scale(1.05);
+		background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+		box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+	}
+
+	.about-prev-btn svg,
+	.about-next-btn svg {
+		width: 16px;
+		height: 16px;
+	}
+
+	.about-dots {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	.about-dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		border: none;
+		background: rgba(255, 255, 255, 0.4);
+		cursor: pointer;
+		transition: all 0.3s ease;
+	}
+
+	.about-dot.active {
+		background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+		transform: scale(1.3);
+		box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
+	}
+
+	.about-dot:hover {
+		background: rgba(255, 255, 255, 0.7);
+		transform: scale(1.1);
 	}
 
 	.main-text {
@@ -2970,30 +3091,136 @@
 	}
 
 	/* Responsive para Quiénes Somos */
+	@media (max-width: 1024px) {
+		.about-carousel-container {
+			max-width: 1200px;
+		}
+	}
+
 	@media (max-width: 768px) {
 		.quienes-somos-section {
-			padding: 4rem 0;
+			padding: 3rem 0;
 		}
 
-		.quienes-somos-content {
+		.about-carousel-container {
+			max-width: 100%;
+			margin: 0 1rem;
+		}
+
+		.about-slide {
+			padding: 0 1rem;
+		}
+
+		.about-main-card {
 			padding: 3rem 2rem;
 		}
 
-		.main-text {
-			font-size: 1.1rem;
-			line-height: 1.7;
-			text-align: left;
+		.card-header {
+			flex-direction: column;
+			text-align: center;
+			gap: 1rem;
+		}
+
+		.icon-wrapper {
+			width: 60px;
+			height: 60px;
+		}
+
+		.icon-wrapper svg {
+			width: 30px;
+			height: 30px;
+		}
+
+		.main-description {
+			font-size: 1rem;
+			text-align: center;
+		}
+
+		.about-card {
+			padding: 1.5rem;
+		}
+
+		.card-title {
+			font-size: 1.3rem;
+		}
+
+		.card-description {
+			font-size: 0.9rem;
+			text-align: center;
+		}
+
+		.about-carousel-controls {
+			gap: 1.5rem;
+		}
+
+		.about-prev-btn,
+		.about-next-btn {
+			width: 45px;
+			height: 45px;
 		}
 	}
 
 	@media (max-width: 480px) {
-		.quienes-somos-content {
+		.quienes-somos-section {
+			padding: 2rem 0;
+		}
+
+		.about-carousel-container {
+			margin: 0 0.5rem;
+		}
+
+		.about-main-card {
 			padding: 2.5rem 1.5rem;
 		}
 
-		.main-text {
-			font-size: 1rem;
-			line-height: 1.6;
+		.about-card {
+			padding: 2rem 1.5rem;
+		}
+
+		.card-icon {
+			width: 50px;
+			height: 50px;
+			margin-bottom: 1rem;
+		}
+
+		.card-icon svg {
+			width: 25px;
+			height: 25px;
+		}
+
+		.card-title {
+		font-size: 1.2rem;
+			margin-bottom: 0.8rem;
+		}
+
+		.card-description {
+			font-size: 0.85rem;
+			line-height: 1.5;
+		}
+
+		.main-description {
+			font-size: 0.95rem;
+		}
+
+		.about-carousel-controls {
+			gap: 1rem;
+		}
+
+		.about-prev-btn,
+		.about-next-btn {
+			width: 40px;
+			height: 40px;
+		}
+
+		.about-prev-btn svg,
+		.about-next-btn svg {
+			width: 16px;
+			height: 16px;
+		}
+
+		.about-dot {
+			width: 10px;
+			height: 10px;
 		}
 	}
 
