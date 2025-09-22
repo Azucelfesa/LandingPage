@@ -82,7 +82,7 @@
 		right: 0;
 		background: #290040;
 		backdrop-filter: blur(20px);
-		border-bottom: 2px solid rgba(251, 191, 36, 0.3);
+		border-bottom: 2px solid rgba(96, 165, 250, 0.3);
 		z-index: 1000;
 		transition: all 0.3s ease;
 		box-shadow: 0 8px 30px rgba(41, 0, 64, 0.4);
@@ -177,11 +177,11 @@
 	}
 
 	.nav-link:hover {
-		color: #fbbf24;
-		background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(251, 191, 36, 0.1) 100%);
+		color: #60a5fa;
+		background: linear-gradient(135deg, rgba(96, 165, 250, 0.2) 0%, rgba(96, 165, 250, 0.1) 100%);
 		transform: translateY(-2px);
-		text-shadow: 0 0 12px rgba(251, 191, 36, 0.8);
-		box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+		text-shadow: 0 0 12px rgba(96, 165, 250, 0.8);
+		box-shadow: 0 4px 15px rgba(96, 165, 250, 0.3);
 	}
 
 	.nav-link::after {
@@ -192,7 +192,7 @@
 		transform: translateX(-50%);
 		width: 0;
 		height: 3px;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+		background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #3b82f6 100%);
 		transition: width 0.3s ease;
 		border-radius: 2px;
 	}
@@ -225,13 +225,13 @@
 	}
 
 	.mobile-menu-btn:hover {
-		background: rgba(251, 191, 36, 0.2);
+		background: rgba(96, 165, 250, 0.2);
 		transform: scale(1.1);
 	}
 
 	.hamburger-icon, .close-icon {
 		font-size: 24px;
-		color: #fbbf24;
+		color: #60a5fa;
 		font-weight: bold;
 		transition: all 0.3s ease;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -294,7 +294,7 @@
 			right: 0;
 			background: #290040;
 			backdrop-filter: blur(20px);
-			border-bottom: 2px solid rgba(251, 191, 36, 0.3);
+			border-bottom: 2px solid rgba(96, 165, 250, 0.3);
 			transform: translateY(-100%);
 			opacity: 0;
 			visibility: hidden;
@@ -317,7 +317,7 @@
 
 		.nav-item {
 			width: 100%;
-			border-bottom: 1px solid rgba(251, 191, 36, 0.1);
+			border-bottom: 1px solid rgba(96, 165, 250, 0.1);
 		}
 
 		.nav-item:last-child {
@@ -400,7 +400,7 @@
 	}
 
 	.btn-primary {
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 100%);
+		background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
 		color: #ffffff;
 		font-weight: 700;
 		border-radius: 2rem;
@@ -408,7 +408,7 @@
 		overflow: hidden;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
-		box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
+		box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 		padding: 0.75rem 1.5rem;
 		font-size: 0.9rem;
@@ -417,9 +417,9 @@
 	}
 
 	.btn-primary:hover {
-		background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+		background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%);
 		transform: translateY(-3px);
-		box-shadow: 0 8px 25px rgba(249, 115, 22, 0.6);
+		box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
 		text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 	}
 

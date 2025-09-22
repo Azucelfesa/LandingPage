@@ -133,7 +133,7 @@
 		color: white;
 		padding: 0;
 		margin-top: 0;
-		border-top: 2px solid rgba(251, 191, 36, 0.3);
+		border-top: 2px solid rgba(96, 165, 250, 0.3);
 		box-shadow: 0 -8px 30px rgba(41, 0, 64, 0.4);
 		min-height: 300px;
 	}
@@ -174,7 +174,7 @@
 	}
 
 	.logo-text {
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #3b82f6 100%);
+		background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #3b82f6 100%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
@@ -204,7 +204,7 @@
 	.contact-icon {
 		width: 20px;
 		height: 20px;
-		color: #fbbf24;
+		color: #60a5fa;
 		flex-shrink: 0;
 	}
 
@@ -333,7 +333,7 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.5rem;
-		background: linear-gradient(135deg, #f97316 0%, #fbbf24 50%, #f59e0b 100%);
+		background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #2563eb 100%);
 		color: #ffffff;
 		padding: 0.75rem 1.5rem;
 		border: none;
@@ -344,14 +344,14 @@
 		transition: all 0.3s ease;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
-		box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+		box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
 
 	.footer-cta-btn:hover {
-		background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+		background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%);
 		transform: translateY(-2px);
-		box-shadow: 0 8px 25px rgba(249, 115, 22, 0.6);
+		box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
 		text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 	}
 
@@ -373,7 +373,7 @@
 		left: 0;
 		right: 0;
 		height: 2px;
-		background: rgba(251, 191, 36, 0.3);
+		background: rgba(96, 165, 250, 0.3);
 		width: 100vw;
 		margin-left: calc(-50vw + 50%);
 	}
