@@ -347,10 +347,10 @@
 		}
 
 		.nav-link:hover {
-			background: linear-gradient(135deg, rgba(249, 115, 22, 0.3) 0%, rgba(251, 191, 36, 0.2) 100%);
+			background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(96, 165, 250, 0.2) 100%);
 			transform: none;
-			text-shadow: 0 0 12px rgba(249, 115, 22, 0.8);
-			box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+			text-shadow: 0 0 12px rgba(59, 130, 246, 0.8);
+			box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
 		}
 
 		.header-cta {
