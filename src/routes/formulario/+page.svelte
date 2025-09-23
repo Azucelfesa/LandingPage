@@ -304,9 +304,12 @@
 								bind:value={formData.email}
 								on:input={handleInputChange}
 								required 
-								placeholder="tu@email.com"
+								placeholder="tu@email.mx"
 							>
+					
 						</div>
+				
+					
 						
 						<!-- Indicador de progreso -->
 						<div class="form-progress">

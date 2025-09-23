@@ -40,7 +40,7 @@
 						<a href="/" class="nav-link" on:click={closeMenu}>Inicio</a>
 					</li>
 					<li class="nav-item">
-						<a href="/#quienes-somos" class="nav-link" on:click={closeMenu}>Quiénes Somos</a>
+						<a href="/#quienes-somos" class="nav-link" on:click={closeMenu}>¿Quienes somos?</a>
 					</li>
 					<li class="nav-item">
 						<a href="/#quienes-somos" class="nav-link" on:click={closeMenu}>Misión y Visión</a>
@@ -56,7 +56,7 @@
 					</li>
 					<li class="nav-item mobile-cta">
 						<button class="btn btn-primary mobile-cta-btn" on:click={closeMenu}>
-							Empezar ahora
+							Inscribirme ahora
 						</button>
 					</li>
 				</ul>
@@ -65,7 +65,7 @@
 			<!-- CTA Button -->
 			<div class="header-cta">
 				<a href="/formulario" class="btn btn-primary">
-					EMPEZAR AHORA
+					Inscribirme ahora
 				</a>
 			</div>
 		</div>
@@ -400,15 +400,15 @@
 	}
 
 	.btn-primary {
-		background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
-		color: #ffffff;
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+		color: #000000;
 		font-weight: 700;
 		border-radius: 2rem;
 		position: relative;
 		overflow: hidden;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
-		box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+		box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 		padding: 0.75rem 1.5rem;
 		font-size: 0.9rem;
@@ -417,10 +417,10 @@
 	}
 
 	.btn-primary:hover {
-		background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%);
+		background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
 		transform: translateY(-3px);
-		box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
-		text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+		box-shadow: 0 8px 25px rgba(251, 191, 36, 0.6);
+		text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 	}
 
 

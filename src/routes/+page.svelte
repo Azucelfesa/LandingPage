@@ -37,6 +37,8 @@
 	let redirectTimer: number | null = null;
 	let showMoreCursos = false;
 	let youtubeVideoUrl = 'https://www.youtube.com/embed/NsE4zkiyFZ8'; // Video de YouTube
+	let showYouTubeModal = false;
+	let youtubeEmbedUrl = 'https://www.youtube.com/embed/CtFYhpJIgeo';
 
 	// Contador regresivo
 	let timeLeft = {
@@ -600,6 +602,17 @@
 		showMoreCursos = !showMoreCursos;
 	}
 
+	// Funciones para controlar el modal de YouTube
+	function openYouTubeModal() {
+		showYouTubeModal = true;
+		document.body.style.overflow = 'hidden'; // Prevenir scroll del body
+	}
+
+	function closeYouTubeModal() {
+		showYouTubeModal = false;
+		document.body.style.overflow = 'auto'; // Restaurar scroll del body
+	}
+
 
 	
 	onMount(() => {
@@ -783,13 +796,13 @@
 					<!-- Texto a la izquierda -->
 					<div class="hero-text">
 					<h1 class="hero-title text-glow text-zoom-ultra" bind:this={heroTitle}>
-						La guía que todo padre necesita para que su hijo ingrese a la prepa de sus sueños
+						“Tu futuro empieza aquí: aprueba tu examen e ingresa a la escuela de tus sueños.”
 					</h1>
 					<h2 class="hero-subtitle text-zoom-smooth" bind:this={heroSubtitle}>
-						Regístrate <strong>GRATIS</strong> y recibe en tu WhatsApp consejos, guías y recordatorios clave del proceso de admisión <strong>ECOEMS 2026</strong>.
+						“Con Adned te preparamos paso a paso con clases claras, ejercicios prácticos y asesoría personalizada para que llegues seguro al examen.”
 					</h2>
 					
-					<!-- Botón para ir al formulario -->
+					<!-- Botón CTA -->
 					<div class="cta-container">
 						<button class="btn btn-whatsapp floating-button" on:click={scrollToForm}>
 							<span class="whatsapp-icon">📱</span>
@@ -797,7 +810,7 @@
 						</button>
 					</div>
 
-						<!-- Contenedor horizontal para temporizador y mensaje promocional -->
+						<!-- Contenedor horizontal para temporizador y video -->
 						<div class="countdown-promo-container">
 						<!-- Contador regresivo -->
 						<div class="countdown-container">
@@ -822,16 +835,23 @@
 								</div>
 							</div>
 
-							<!-- Mensaje promocional -->
-							<div class="promotional-message">
-								<div class="promo-icon">💰</div>
-								<p class="promo-text">
-									<strong>No lo dejes pasar:</strong> al inscribirte ahora obtienes un costo más accesible y la posibilidad de pagar con facilidades diseñadas para ti. <strong>Actúa hoy mismo y asegura el futuro académico de tu hijo.</strong>
-								</p>
+							<!-- Video de YouTube embebido -->
+							<div class="hero-video-container">
+								<div class="video-container">
+									<div class="video-frame">
+										<iframe 
+											src={youtubeEmbedUrl} 
+											title="Video de YouTube"
+											frameborder="0" 
+											allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+											allowfullscreen>
+										</iframe>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-					
+
 					<!-- Video a la derecha -->
 					<div class="hero-video">
 						<div class="video-container">
@@ -857,7 +877,7 @@
 	<section id="quienes-somos" class="quienes-somos-section">
 		<div class="container">
 			<div class="section-header">
-				<h2 class="section-title text-glow text-zoom-rotate">Quiénes Somos</h2>
+				<h2 class="section-title text-glow text-zoom-rotate">¿Quiénes somos?</h2>
 				<p class="section-subtitle text-zoom-smooth">
 					Conoce nuestra misión, visión y el equipo que te acompaña
 				</p>
@@ -899,7 +919,7 @@
 							<div class="card-content">
 								<h3 class="card-title">Misión</h3>
 								<p class="card-description">
-									Ofrecer cursos innovadores, accesibles y de calidad que preparen a los estudiantes para superar los exámenes de admisión al bachillerato y la universidad, brindándoles confianza, motivación y herramientas modernas que los acerquen a lograr sus sueños académicos.
+									En Adned preparamos a los estudiantes con las herramientas, el conocimiento y la confianza necesarios para aprobar su examen de admisión e ingresar a la preparatoria o universidad de sus sueños. Nuestro compromiso es acompañarlos de una forma divertida paso a paso con una enseñanza práctica, jovial sobre todo efectiva.
 							</p>
 						</div>
 						</div>
@@ -917,7 +937,7 @@
 							<div class="card-content">
 								<h3 class="card-title">Visión</h3>
 								<p class="card-description">
-									Convertirse en la comunidad educativa líder en México para la preparación de exámenes de admisión, reconocida por su enfoque futurista, juvenil y motivador, que acompaña a cada alumno en su camino al éxito académico.
+									Ser la comunidad educativa  líder en preparación para exámenes de admisión en México, que con su enfoque futurista, juvenil y motivador sea reconocida por transformar el esfuerzo de los estudiantes en logros académicos, abriendo las puertas a nuevas oportunidades y construyendo futuros exitosos.
 								</p>
 					</div>
 				</div>
@@ -943,6 +963,7 @@
 					</button>
 				</div>
 			</div>
+
 		</div>
 	</section>
 
@@ -952,7 +973,7 @@
 			<div class="section-header">
 				<h2 class="section-title text-glow text-zoom-rotate">Nuestros Cursos</h2>
 				<p class="section-subtitle text-zoom-smooth">
-					Descubre los cursos especializados que tenemos para ti
+					Descubre cómo transformamos el ADN de la educación  
 				</p>
 			</div>
 
@@ -979,7 +1000,7 @@
 							<div class="icon-glow"></div>
 						</div>
 						
-						<h3 class="curso-title text-reveal">Nuestra Comunidad Educativa</h3>
+						<h3 class="curso-title text-reveal" style="color: #000000; transition: color 0.3s ease !important; transform: none !important;">Nuestra Comunidad Educativa</h3>
 						<p class="curso-text text-reveal">
 						ADNED es una comunidad educativa creada para transformar la manera en que los estudiantes se preparan rumbo a los exámenes de admisión más importantes de su vida académica. Nuestro propósito va más allá de enseñar; buscamos inspirar y acompañar a cada alumno en un proceso que suele estar lleno de nervios, dudas e incertidumbre.
 						</p>
@@ -1002,13 +1023,15 @@
 								<div class="stat-icon">⭐</div>
 							</div>
 							<div class="stat-card" class:animate={isStatsVisible}>
-								<div class="stat-number">{animatedStats.courses}+</div>
-								<div class="stat-label">Cursos</div>
-								<div class="stat-icon">📚</div>
+								<button class="btn btn-community-small" on:click={scrollToForm}>
+									<span class="community-icon">👥</span>
+									Unirme a la comunidad
+								</button>
 							</div>
 						</div>
 					</div>
 							</div>
+
 
 				<!-- Botón Ver Más -->
 				<div class="ver-mas-container">
@@ -1032,11 +1055,8 @@
 					<div class="curso-section curso-beneficios interactive-benefits">
 						<div class="curso-icon animated-icon">
 							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<path d="M9 12l2 2 4-4"/>
-								<path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
-								<path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
-								<path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
-								<path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
+								<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+								<path d="M8 12l2 2 4-4"/>
 							</svg>
 							<div class="icon-glow"></div>
 						</div>
@@ -1059,7 +1079,12 @@
 							<div class="beneficio-item interactive-card" data-benefit="simulacros">
 								<div class="beneficio-icon">
 									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-										<path d="M9 11H5a2 2 0 0 0-2 2v3c0 1.1.9 2 2 2h4m0-7v7m0-7h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H9m0-7V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>
+										<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+										<polyline points="14,2 14,8 20,8"/>
+										<line x1="16" y1="13" x2="8" y2="13"/>
+										<line x1="16" y1="17" x2="8" y2="17"/>
+										<polyline points="10,9 9,9 8,9"/>
+										<circle cx="12" cy="6" r="1"/>
 									</svg>
 									<div class="icon-pulse"></div>
 							</div>
@@ -1071,11 +1096,9 @@
 							<div class="beneficio-item interactive-card" data-benefit="banco">
 								<div class="beneficio-icon">
 									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-										<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-										<polyline points="14,2 14,8 20,8"/>
-										<line x1="16" y1="13" x2="8" y2="13"/>
-										<line x1="16" y1="17" x2="8" y2="17"/>
-										<polyline points="10,9 9,9 8,9"/>
+										<circle cx="12" cy="12" r="10"/>
+										<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+										<line x1="12" y1="17" x2="12.01" y2="17"/>
 									</svg>
 									<div class="icon-pulse"></div>
 						</div>
@@ -1095,7 +1118,7 @@
 									<div class="icon-pulse"></div>
 							</div>
 								<h4 class="beneficio-title">Acompañamiento</h4>
-								<p class="beneficio-desc">Soporte personalizado durante todo el proceso</p>
+								<p class="beneficio-desc">Orientación personalizada durante todo el proceso</p>
 								<div class="benefit-highlight">🤝</div>
 							</div>
 						</div>
@@ -1111,7 +1134,7 @@
 							</svg>
 							</div>
 						<h3 class="curso-title">Nuestros Cursos en Acción</h3>
-						<p class="curso-text">
+						<p class="curso-text" style="color: #ffffff;">
 							Descubre cómo son nuestras clases y el ambiente de aprendizaje que creamos para nuestros estudiantes.
 						</p>
 						<!-- Grid Responsive con Diferentes Tamaños -->
@@ -1351,7 +1374,7 @@
 					Descubre lo que dicen nuestros estudiantes sobre su experiencia con ADNED
 				</p>
 				<div class="reinforcement-phrase">
-					<p class="reinforcement-text">
+					<p class="reinforcement-text" style="color: #ffffff;">
 						Más de <span class="highlight-number">1,200</span> estudiantes y familias ya forman parte de ADNED
 					</p>
 				</div>
@@ -1792,6 +1815,24 @@
 		</div>
 	{/if}
 
+<!-- Modal de YouTube -->
+{#if showYouTubeModal}
+	<div class="youtube-modal" on:click={closeYouTubeModal}>
+		<div class="youtube-modal-content" on:click|stopPropagation>
+			<button class="youtube-close-btn" on:click={closeYouTubeModal}>×</button>
+			<div class="youtube-iframe-container">
+				<iframe 
+					src={youtubeEmbedUrl} 
+					title="Video de YouTube"
+					frameborder="0" 
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+					allowfullscreen>
+				</iframe>
+			</div>
+		</div>
+	</div>
+{/if}
+
 </main>
 
 <style>
@@ -1880,6 +1921,63 @@
 		margin: 0 auto;
 		position: relative;
 		z-index: 2;
+	}
+
+	/* Contenedor del video embebido */
+	.hero-video-container {
+		margin: 0;
+		max-width: 100%;
+		width: 100%;
+		animation: slideInFromBottom 1s ease 1s both;
+		flex: 1;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.hero-video-container .video-container {
+		position: relative;
+		width: 400px;
+		height: 400px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.hero-video-container .video-frame {
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+		overflow: hidden;
+		position: relative;
+		background: linear-gradient(135deg, #290040 0%, #3d0060 50%, #290040 100%);
+		box-shadow: 
+			0 20px 40px rgba(0, 0, 0, 0.3),
+			0 0 0 4px rgba(251, 191, 36, 0.3),
+			inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+		transition: all 0.3s ease;
+		animation: rotate 10s linear infinite;
+	}
+
+	.hero-video-container .video-frame:hover {
+		transform: scale(1.05);
+		animation: rotate 5s linear infinite;
+		box-shadow: 
+			0 25px 50px rgba(0, 0, 0, 0.4),
+			0 0 0 4px rgba(251, 191, 36, 0.5),
+			inset 0 0 0 2px rgba(255, 255, 255, 0.2);
+	}
+
+	.hero-video-container .video-frame iframe {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 120%;
+		height: 120%;
+		transform: translate(-50%, -50%);
+		border: none;
+		border-radius: 50%;
+		object-fit: cover;
 	}
 
 	.hero-text {
@@ -2038,16 +2136,16 @@
 		line-height: 1.1;
 		margin-bottom: 1rem;
 		color: var(--bg-white);
-		background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 25%, #60a5fa 50%, #3b82f6 75%, #3b82f6 100%);
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 25%, #f59e0b 50%, #fbbf24 75%, #fbbf24 100%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
 		text-shadow: 
-			0 0 10px rgba(234, 179, 8, 0.3),
-			0 0 20px rgba(96, 165, 250, 0.2),
-			0 0 30px rgba(59, 130, 246, 0.2),
+			0 0 10px rgba(251, 191, 36, 0.3),
+			0 0 20px rgba(245, 158, 11, 0.2),
+			0 0 30px rgba(251, 191, 36, 0.2),
 			0 2px 8px rgba(0, 0, 0, 0.5);
-		filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.3));
+		filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.3));
 		animation: titleFloat 3s ease-in-out infinite;
 		transition: all 0.3s ease;
 		cursor: pointer;
@@ -2060,7 +2158,7 @@
 		font-size: 1.1rem;
 		line-height: 1.4;
 		margin-bottom: 1.5rem;
-		color: #ffffff;
+		color: #000000;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 		opacity: 1;
 		visibility: visible;
@@ -2090,7 +2188,7 @@
 	}
 
 	.countdown-title {
-		color: #ffffff;
+		color: #000000;
 		font-size: 1.2rem;
 		font-weight: 600;
 		margin-bottom: 1.5rem;
@@ -2185,7 +2283,7 @@
 	}
 
 	.promo-text {
-		color: #ffffff;
+		color: #000000;
 		font-size: 1.2rem;
 		line-height: 1.6;
 		margin: 0;
@@ -2221,7 +2319,7 @@
 	.countdown-number {
 		font-size: 2.2rem;
 		font-weight: 800;
-		color: #ffffff;
+		color: #000000;
 		line-height: 1;
 		margin-bottom: 0.5rem;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -2248,7 +2346,7 @@
 	.countdown-label {
 		font-size: 0.7rem;
 		font-weight: 700;
-		color: #ffffff;
+		color: #000000;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
 		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -2279,17 +2377,17 @@
 	.hero-title:hover {
 		transform: scale(1.05) translateY(-5px);
 		text-shadow: 
-			0 0 20px rgba(234, 179, 8, 0.6),
-			0 0 30px rgba(234, 179, 8, 0.4),
-			0 0 40px rgba(59, 130, 246, 0.4),
+			0 0 20px rgba(251, 191, 36, 0.6),
+			0 0 30px rgba(251, 191, 36, 0.4),
+			0 0 40px rgba(245, 158, 11, 0.4),
 			0 4px 12px rgba(0, 0, 0, 0.7);
-		filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.5));
+		filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.5));
 	}
 
 	/* Animación de escritura */
 	.typewriter {
 		overflow: hidden;
-		border-right: 3px solid #3b82f6;
+		border-right: 3px solid #fbbf24;
 		white-space: nowrap;
 		animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
 		opacity: 1;
@@ -2303,7 +2401,7 @@
 
 	@keyframes blink-caret {
 		from, to { border-color: transparent; }
-		50% { border-color: #3b82f6; }
+		50% { border-color: #fbbf24; }
 	}
 
 	/* Animación de revelado palabra por palabra */
@@ -2333,6 +2431,12 @@
 	h1:hover, h2:hover, h3:hover {
 		transform: scale(1.05) translateY(-2px);
 		/* text-shadow: 0 0 20px rgba(234, 179, 8, 0.6); */
+	}
+
+	/* Estilo específico para el título de comunidad educativa */
+	.curso-title[style*="color: #000000"]:hover {
+		color: #374151 !important;
+		transform: none !important;
 	}
 
 	/* Animación de ondas en texto */
@@ -2618,7 +2722,7 @@
 		font-size: 1.1rem;
 		line-height: 1.4;
 		margin-bottom: 1.5rem;
-		color: #ffffff;
+		color: #000000;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 		opacity: 1;
 		visibility: visible;
@@ -3207,7 +3311,7 @@
 	}
 
 	.btn-whatsapp {
-		background: linear-gradient(135deg, #60a5fa 0%, #2563eb 50%, #3b82f6 100%);
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
 		color: #000000;
 		width: 100%;
 		padding: 1rem 1.5rem;
@@ -3307,23 +3411,23 @@
 	.btn-whatsapp:hover {
 		transform: translateY(-3px);
 		box-shadow: 
-			0 15px 40px rgba(96, 165, 250, 0.5),
-			0 0 30px rgba(234, 179, 8, 0.3);
+			0 15px 40px rgba(251, 191, 36, 0.5),
+			0 0 30px rgba(245, 158, 11, 0.3);
 	}
 
 	.btn-whatsapp:active {
 		transform: translateY(-1px);
 		box-shadow: 
-			0 8px 20px rgba(234, 179, 8, 0.4),
-			0 0 15px rgba(96, 165, 250, 0.2);
+			0 8px 20px rgba(251, 191, 36, 0.4),
+			0 0 15px rgba(245, 158, 11, 0.2);
 	}
 
 	.btn-whatsapp:hover {
-		background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #1d4ed8 100%);
+		background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
 		transform: translateY(-4px);
 		box-shadow: 
-			0 15px 40px rgba(96, 165, 250, 0.5),
-			0 0 30px rgba(234, 179, 8, 0.3);
+			0 15px 40px rgba(251, 191, 36, 0.5),
+			0 0 30px rgba(245, 158, 11, 0.3);
 	}
 
 	.btn-whatsapp:disabled {
@@ -3356,6 +3460,156 @@
 		display: none;
 	}
 
+	/* Botón de YouTube */
+	.btn-youtube {
+		background: linear-gradient(135deg, #ff0000 0%, #cc0000 50%, #990000 100%);
+		color: #000000;
+		width: 100%;
+		padding: 1rem 1.5rem;
+		font-size: 1.1rem;
+		font-weight: 800;
+		border-radius: 1rem;
+		position: relative;
+		overflow: hidden;
+		box-shadow: 
+			0 8px 25px rgba(255, 0, 0, 0.3),
+			0 4px 15px rgba(0, 0, 0, 0.2);
+		border: none;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		margin-top: 1rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+	}
+
+	.btn-youtube:hover {
+		background: linear-gradient(135deg, #cc0000 0%, #990000 50%, #660000 100%);
+		transform: translateY(-4px);
+		box-shadow: 
+			0 15px 40px rgba(255, 0, 0, 0.5),
+			0 0 30px rgba(255, 0, 0, 0.3);
+	}
+
+	.btn-youtube:active {
+		transform: translateY(-1px);
+		box-shadow: 
+			0 8px 20px rgba(255, 0, 0, 0.4),
+			0 0 15px rgba(255, 0, 0, 0.2);
+	}
+
+	.youtube-icon {
+		font-size: 1.2rem;
+	}
+
+	/* Botón de comunidad */
+	.community-cta {
+		display: flex;
+		justify-content: center;
+		margin-top: 3rem;
+		padding: 2rem 0;
+	}
+
+	.btn-community {
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+		color: #000000;
+		padding: 1.25rem 2.5rem;
+		font-size: 1.2rem;
+		font-weight: 800;
+		border-radius: 1rem;
+		position: relative;
+		overflow: hidden;
+		box-shadow: 
+			0 10px 30px rgba(251, 191, 36, 0.3),
+			0 4px 15px rgba(0, 0, 0, 0.2);
+		border: none;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+	}
+
+	.btn-community:hover {
+		background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+		transform: translateY(-4px);
+		box-shadow: 
+			0 15px 40px rgba(251, 191, 36, 0.5),
+			0 0 30px rgba(245, 158, 11, 0.3);
+	}
+
+	.btn-community:active {
+		transform: translateY(-1px);
+		box-shadow: 
+			0 8px 20px rgba(251, 191, 36, 0.4),
+			0 0 15px rgba(245, 158, 11, 0.2);
+	}
+
+	.community-icon {
+		font-size: 1.3rem;
+		animation: pulse 2s ease-in-out infinite;
+	}
+
+	@keyframes pulse {
+		0%, 100% { 
+			transform: scale(1);
+		}
+		50% { 
+			transform: scale(1.1);
+		}
+	}
+
+	/* Botón de comunidad pequeño dentro de la tarjeta */
+	.btn-community-small {
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+		color: #000000;
+		padding: 1rem 1.5rem;
+		font-size: 0.9rem;
+		font-weight: 700;
+		border-radius: 0.75rem;
+		position: relative;
+		overflow: hidden;
+		box-shadow: 
+			0 6px 20px rgba(251, 191, 36, 0.3),
+			0 3px 10px rgba(0, 0, 0, 0.2);
+		border: none;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		text-transform: uppercase;
+		letter-spacing: 0.4px;
+		width: 100%;
+		height: 100%;
+		min-height: 80px;
+	}
+
+	.btn-community-small:hover {
+		background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+		transform: translateY(-2px);
+		box-shadow: 
+			0 6px 20px rgba(251, 191, 36, 0.4),
+			0 0 15px rgba(245, 158, 11, 0.3);
+	}
+
+	.btn-community-small:active {
+		transform: translateY(-1px);
+		box-shadow: 
+			0 3px 10px rgba(251, 191, 36, 0.3),
+			0 0 8px rgba(245, 158, 11, 0.2);
+	}
+
+	.btn-community-small .community-icon {
+		font-size: 1.1rem;
+		animation: pulse 2s ease-in-out infinite;
+	}
+
 
 	.whatsapp-icon {
 		font-size: 1.2em;
@@ -3379,7 +3633,7 @@
 	/* Efectos de hover mejorados */
 	.btn-whatsapp:hover {
 		transform: translateY(-2px) scale(1.02);
-		box-shadow: 0 15px 30px rgba(234, 179, 8, 0.4);
+		box-shadow: 0 15px 30px rgba(251, 191, 36, 0.4);
 	}
 
 	.registration-form:hover {
@@ -3421,8 +3675,8 @@
 	}
 
 	.btn-home {
-		background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%);
-		color: #ffffff;
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+		color: #000000;
 		width: 100%;
 		max-width: 300px;
 		padding: 1rem 1.5rem;
@@ -3623,6 +3877,16 @@
 			font-size: 1rem;
 		}
 
+		.hero-video-container {
+			margin: 0;
+			max-width: 100%;
+		}
+
+		.hero-video-container .video-container {
+			width: 350px;
+			height: 350px;
+		}
+
 		.video-frame {
 			width: 350px;
 			height: 350px;
@@ -3695,6 +3959,16 @@
 
 		.hero-subtitle {
 			font-size: 0.9rem;
+		}
+
+		.hero-video-container {
+			margin: 0;
+			max-width: 100%;
+		}
+
+		.hero-video-container .video-container {
+			width: 300px;
+			height: 300px;
 		}
 
 		.video-frame {
@@ -3814,14 +4088,14 @@
 	.section-title {
 		font-size: 2.5rem;
 		font-weight: 800;
-		color: #ffffff;
+		color: #000000;
 		margin-bottom: 1rem;
-		background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 25%, #60a5fa 50%, #3b82f6 75%, #3b82f6 100%);
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 25%, #f59e0b 50%, #fbbf24 75%, #fbbf24 100%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
-		text-shadow: 0 4px 20px rgba(234, 179, 8, 0.5);
-		filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.3));
+		text-shadow: 0 4px 20px rgba(251, 191, 36, 0.5);
+		filter: drop-shadow(0 0 30px rgba(251, 191, 36, 0.3));
 	}
 
 	.section-subtitle {
@@ -4396,9 +4670,9 @@
 	.curso-title {
 		font-size: 1.8rem;
 		font-weight: 700;
-		color: #290040;
+		color: #000000;
 		margin-bottom: 1.5rem;
-		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
 
 	.curso-pending .curso-title {
@@ -4615,8 +4889,8 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 0.75rem;
-		background: linear-gradient(135deg, #3b82f6 0%, #3b82f6 50%, #3b82f6 100%);
-		color: #ffffff;
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+		color: #000000;
 		padding: 1rem 2rem;
 		border: none;
 		border-radius: 2rem;
@@ -4652,10 +4926,10 @@
 	}
 
 	.btn-ver-mas:hover {
-		background: linear-gradient(135deg, #1d4ed8 0%, #dbeafe 50%, #2563eb 100%);
+		background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
 		transform: translateY(-3px);
-		box-shadow: 0 12px 35px rgba(139, 92, 246, 0.6);
-		text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+		box-shadow: 0 12px 35px rgba(251, 191, 36, 0.6);
+		text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 	}
 
 	.btn-ver-mas:active {
@@ -4891,11 +5165,11 @@
 	.reinforcement-text {
 		font-size: 1.2rem;
 		font-weight: 600;
-		color: #ffffff;
-		background: linear-gradient(135deg, rgba(96, 165, 250, 0.9) 0%, rgba(37, 99, 235, 0.9) 50%, rgba(59, 130, 246, 0.9) 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
+		color: #ffffff !important;
+		background: none;
+		-webkit-background-clip: unset;
+		-webkit-text-fill-color: unset;
+		background-clip: unset;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 		margin: 0;
 		padding: 1rem 2rem;
@@ -4994,7 +5268,7 @@
 	}
 
 	.carousel-title {
-		color: #60a5fa;
+		color: #000000;
 		font-size: 1.2rem;
 		font-weight: 700;
 		text-align: center;
@@ -5008,11 +5282,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #87ceeb 100%);
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
 		border: none;
 		border-radius: 50px;
 		padding: 0.6rem 1.2rem;
-		box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+		box-shadow: 0 8px 25px rgba(251, 191, 36, 0.3);
 		transition: all 0.3s ease;
 		position: relative;
 		overflow: hidden;
@@ -5040,7 +5314,7 @@
 
 	.expand-button:hover {
 		transform: translateY(-3px);
-		box-shadow: 0 12px 35px rgba(255, 107, 53, 0.4);
+		box-shadow: 0 12px 35px rgba(251, 191, 36, 0.4);
 	}
 
 	.expand-button:hover::before {
@@ -5067,7 +5341,7 @@
 	.expand-icon svg {
 		width: 16px;
 		height: 16px;
-		color: white;
+		color: #000000;
 		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 		transition: transform 0.3s ease;
 	}
@@ -5081,7 +5355,7 @@
 	}
 
 	.expand-title {
-		color: white;
+		color: #000000;
 		font-size: 0.9rem;
 		font-weight: 700;
 		margin: 0;
@@ -5504,7 +5778,7 @@
 		background: rgba(255, 255, 255, 0.1);
 		backdrop-filter: blur(10px);
 		border: 2px solid rgba(255, 255, 255, 0.3);
-		color: #ffffff;
+		color: #000000;
 		padding: 0.75rem 1.5rem;
 		border-radius: 2rem;
 		font-size: 0.9rem;
@@ -6247,8 +6521,8 @@
 	}
 
 	.btn-formulario {
-		background: linear-gradient(135deg, #3b82f6 0%, #3b82f6 50%, #3b82f6 100%);
-		color: #ffffff;
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+		color: #000000;
 		padding: 1.25rem 2.5rem;
 		border: none;
 		border-radius: 2rem;
@@ -6288,10 +6562,10 @@
 	}
 
 	.btn-formulario:hover {
-		background: linear-gradient(135deg, #1d4ed8 0%, #dbeafe 50%, #2563eb 100%);
+		background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
 		transform: translateY(-3px);
-		box-shadow: 0 15px 40px rgba(139, 92, 246, 0.6);
-		text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+		box-shadow: 0 15px 40px rgba(251, 191, 36, 0.6);
+		text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 	}
 
 	.btn-formulario:active {
@@ -6497,8 +6771,8 @@
 	}
 
 	.btn-home {
-		background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%);
-		color: #ffffff;
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+		color: #000000;
 		width: 100%;
 		max-width: 300px;
 		padding: 1rem 1.5rem;
@@ -6655,6 +6929,139 @@
 		.btn-formulario {
 			padding: 0.875rem 1.75rem;
 			font-size: 1rem;
+		}
+
+		.btn-community {
+			padding: 1rem 2rem;
+			font-size: 1.1rem;
+		}
+
+		.btn-community-small {
+			padding: 0.8rem 1.2rem;
+			font-size: 0.8rem;
+			min-height: 70px;
+		}
+	}
+
+	/* Modal de YouTube */
+	.youtube-modal {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.9);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 10000;
+		backdrop-filter: blur(10px);
+		animation: fadeIn 0.3s ease;
+	}
+
+	.youtube-modal-content {
+		position: relative;
+		width: 90%;
+		max-width: 900px;
+		height: 80%;
+		max-height: 600px;
+		background: #000;
+		border-radius: 1rem;
+		overflow: hidden;
+		box-shadow: 
+			0 25px 50px rgba(0, 0, 0, 0.5),
+			0 0 0 1px rgba(255, 255, 255, 0.1);
+		animation: slideIn 0.3s ease;
+	}
+
+	.youtube-close-btn {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		background: rgba(0, 0, 0, 0.7);
+		color: white;
+		border: none;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		font-size: 1.5rem;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 10001;
+		transition: all 0.3s ease;
+		backdrop-filter: blur(10px);
+	}
+
+	.youtube-close-btn:hover {
+		background: rgba(255, 0, 0, 0.8);
+		transform: scale(1.1);
+	}
+
+	.youtube-iframe-container {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		padding-bottom: 56.25%; /* 16:9 aspect ratio */
+	}
+
+	.youtube-iframe-container iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border: none;
+	}
+
+	@keyframes fadeIn {
+		from { opacity: 0; }
+		to { opacity: 1; }
+	}
+
+	@keyframes slideIn {
+		from { 
+			opacity: 0;
+			transform: scale(0.8) translateY(-50px);
+		}
+		to { 
+			opacity: 1;
+			transform: scale(1) translateY(0);
+		}
+	}
+
+	@keyframes rotate {
+		from { 
+			transform: rotate(0deg);
+		}
+		to { 
+			transform: rotate(360deg);
+		}
+	}
+
+	/* Responsive para el modal de YouTube */
+	@media (max-width: 768px) {
+		.youtube-modal-content {
+			width: 95%;
+			height: 70%;
+			max-height: 400px;
+		}
+
+		.youtube-close-btn {
+			top: 0.5rem;
+			right: 0.5rem;
+			width: 35px;
+			height: 35px;
+			font-size: 1.2rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.youtube-modal-content {
+			width: 98%;
+			height: 60%;
+			max-height: 300px;
 		}
 	}
 
