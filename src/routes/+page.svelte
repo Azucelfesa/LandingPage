@@ -2158,7 +2158,7 @@
 		font-size: 1.1rem;
 		line-height: 1.4;
 		margin-bottom: 1.5rem;
-		color: #000000;
+		color: #ffffff;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 		opacity: 1;
 		visibility: visible;
@@ -2188,7 +2188,7 @@
 	}
 
 	.countdown-title {
-		color: #000000;
+		color: #ffffff;
 		font-size: 1.2rem;
 		font-weight: 600;
 		margin-bottom: 1.5rem;
@@ -2283,7 +2283,7 @@
 	}
 
 	.promo-text {
-		color: #000000;
+		color: #ffffff;
 		font-size: 1.2rem;
 		line-height: 1.6;
 		margin: 0;
@@ -2319,7 +2319,7 @@
 	.countdown-number {
 		font-size: 2.2rem;
 		font-weight: 800;
-		color: #000000;
+		color: #ffffff;
 		line-height: 1;
 		margin-bottom: 0.5rem;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -2346,7 +2346,7 @@
 	.countdown-label {
 		font-size: 0.7rem;
 		font-weight: 700;
-		color: #000000;
+		color: #ffffff;
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
 		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -2722,7 +2722,7 @@
 		font-size: 1.1rem;
 		line-height: 1.4;
 		margin-bottom: 1.5rem;
-		color: #000000;
+		color: #ffffff;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 		opacity: 1;
 		visibility: visible;
@@ -2789,7 +2789,7 @@
 	.form-group label {
 		display: block;
 		font-weight: 600;
-		color: #000000;
+		color: #ffffff;
 		margin-bottom: 0.5rem;
 		font-size: 0.9rem;
 		transition: all 0.3s ease;
@@ -2813,7 +2813,7 @@
 		border: 2px solid rgba(0, 0, 0, 0.1);
 		border-radius: 0.75rem;
 		font-size: 1rem;
-		color: #000000;
+		color: #ffffff;
 		transition: all 0.3s ease;
 		background: rgba(255, 255, 255, 0.95);
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -3312,7 +3312,7 @@
 
 	.btn-whatsapp {
 		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-		color: #000000;
+		color: #ffffff;
 		width: 100%;
 		padding: 1rem 1.5rem;
 		font-size: 1.1rem;
@@ -3463,7 +3463,7 @@
 	/* Botón de YouTube */
 	.btn-youtube {
 		background: linear-gradient(135deg, #ff0000 0%, #cc0000 50%, #990000 100%);
-		color: #000000;
+		color: #ffffff;
 		width: 100%;
 		padding: 1rem 1.5rem;
 		font-size: 1.1rem;
@@ -3513,7 +3513,7 @@
 
 	.btn-community {
 		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-		color: #000000;
+		color: #ffffff;
 		padding: 1.25rem 2.5rem;
 		font-size: 1.2rem;
 		font-weight: 800;
@@ -3566,7 +3566,7 @@
 	/* Botón de comunidad pequeño dentro de la tarjeta */
 	.btn-community-small {
 		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-		color: #000000;
+		color: #ffffff;
 		padding: 1rem 1.5rem;
 		font-size: 0.9rem;
 		font-weight: 700;
@@ -3676,7 +3676,7 @@
 
 	.btn-home {
 		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-		color: #000000;
+		color: #ffffff;
 		width: 100%;
 		max-width: 300px;
 		padding: 1rem 1.5rem;
@@ -4088,7 +4088,7 @@
 	.section-title {
 		font-size: 2.5rem;
 		font-weight: 800;
-		color: #000000;
+		color: #ffffff;
 		margin-bottom: 1rem;
 		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 25%, #f59e0b 50%, #fbbf24 75%, #fbbf24 100%);
 		-webkit-background-clip: text;
@@ -4670,7 +4670,7 @@
 	.curso-title {
 		font-size: 1.8rem;
 		font-weight: 700;
-		color: #000000;
+		color: #ffffff;
 		margin-bottom: 1.5rem;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 	}
@@ -4890,7 +4890,7 @@
 		align-items: center;
 		gap: 0.75rem;
 		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-		color: #000000;
+		color: #ffffff;
 		padding: 1rem 2rem;
 		border: none;
 		border-radius: 2rem;
@@ -5268,7 +5268,7 @@
 	}
 
 	.carousel-title {
-		color: #000000;
+		color: #ffffff;
 		font-size: 1.2rem;
 		font-weight: 700;
 		text-align: center;
@@ -5341,7 +5341,7 @@
 	.expand-icon svg {
 		width: 16px;
 		height: 16px;
-		color: #000000;
+		color: #ffffff;
 		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 		transition: transform 0.3s ease;
 	}
@@ -5355,7 +5355,7 @@
 	}
 
 	.expand-title {
-		color: #000000;
+		color: #ffffff;
 		font-size: 0.9rem;
 		font-weight: 700;
 		margin: 0;
@@ -5778,7 +5778,7 @@
 		background: rgba(255, 255, 255, 0.1);
 		backdrop-filter: blur(10px);
 		border: 2px solid rgba(255, 255, 255, 0.3);
-		color: #000000;
+		color: #ffffff;
 		padding: 0.75rem 1.5rem;
 		border-radius: 2rem;
 		font-size: 0.9rem;
@@ -6522,7 +6522,7 @@
 
 	.btn-formulario {
 		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-		color: #000000;
+		color: #ffffff;
 		padding: 1.25rem 2.5rem;
 		border: none;
 		border-radius: 2rem;
@@ -6593,7 +6593,7 @@
 	.form-group label {
 		display: block;
 		font-weight: 600;
-		color: #000000;
+		color: #ffffff;
 		margin-bottom: 0.5rem;
 		font-size: 0.9rem;
 		transition: all 0.3s ease;
@@ -6611,7 +6611,7 @@
 		border: 2px solid rgba(0, 0, 0, 0.1);
 		border-radius: 0.75rem;
 		font-size: 1rem;
-		color: #000000;
+		color: #ffffff;
 		transition: all 0.3s ease;
 		background: rgba(255, 255, 255, 0.95);
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -6772,7 +6772,7 @@
 
 	.btn-home {
 		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-		color: #000000;
+		color: #ffffff;
 		width: 100%;
 		max-width: 300px;
 		padding: 1rem 1.5rem;
