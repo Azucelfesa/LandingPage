@@ -1,4 +1,15 @@
 <script lang="ts">
+	// Declaraciones de tipos para reCAPTCHA
+	declare global {
+		interface Window {
+			grecaptcha: {
+				reset: () => void;
+			};
+			onCaptchaSuccess: (token: string) => void;
+			onCaptchaExpired: () => void;
+		}
+	}
+
 	import {
 	    slideInFromDirection as advancedSlideIn,
 	    createMouseFollower,
@@ -36,6 +47,8 @@
 	let isFormValid = false;
 	let redirectTimer: number | null = null;
 	let showMoreCursos = false;
+	let captchaToken = '';
+	let captchaVerified = false;
 	let youtubeVideoUrl = 'https://www.youtube.com/embed/nccwH3brDt0'; // Video de YouTube
 	let showYouTubeModal = false;
 	let youtubeEmbedUrl = 'https://www.youtube.com/embed/tGhyhgR_tBI';
@@ -450,12 +463,41 @@
 		const whatsappRegex = /^[\+]?[0-9\s\-\(\)]{10,}$/;
 		const isValidWhatsapp = whatsappRegex.test(whatsapp) && whatsapp.replace(/[^0-9]/g, '').length >= 10;
 		
-		isFormValid = hasParentName && hasStudentName && hasWhatsapp && hasEmail && isValidEmail && isValidWhatsapp;
+		isFormValid = hasParentName && hasStudentName && hasWhatsapp && hasEmail && isValidEmail && isValidWhatsapp && captchaVerified;
 	}
 
 	// Función para manejar cambios en los inputs
 	function handleInputChange() {
 		validateForm();
+	}
+
+	// Función para manejar el callback del CAPTCHA
+	function onCaptchaSuccess(token: string) {
+		captchaToken = token;
+		captchaVerified = true;
+		validateForm();
+	}
+
+	// Función para manejar la expiración del CAPTCHA
+	function onCaptchaExpired() {
+		captchaToken = '';
+		captchaVerified = false;
+		validateForm();
+	}
+
+	// Función para resetear el CAPTCHA
+	function resetCaptcha() {
+		captchaToken = '';
+		captchaVerified = false;
+		if (typeof window !== 'undefined' && window.grecaptcha) {
+			window.grecaptcha.reset();
+		}
+	}
+
+	// Hacer las funciones disponibles globalmente para reCAPTCHA
+	if (typeof window !== 'undefined') {
+		window.onCaptchaSuccess = onCaptchaSuccess;
+		window.onCaptchaExpired = onCaptchaExpired;
 	}
 
 	// Función específica para WhatsApp que solo permite números
@@ -508,6 +550,40 @@
 		if (!formData.parentName.trim() || !formData.studentName.trim() || !formData.whatsapp.trim() || !formData.email.trim()) {
 			console.error('Todos los campos son requeridos');
 			console.log('Estado del formulario:', formData);
+			return;
+		}
+
+		// Validar que el CAPTCHA esté verificado
+		if (!captchaVerified || !captchaToken) {
+			console.error('Por favor, completa el CAPTCHA');
+			alert('Por favor, completa el CAPTCHA para continuar');
+			return;
+		}
+
+		// Verificar el CAPTCHA en el servidor
+		try {
+			const captchaResponse = await fetch('/api/verify-captcha', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ captchaToken })
+			});
+
+			const captchaResult = await captchaResponse.json();
+
+			if (!captchaResult.success) {
+				console.error('CAPTCHA inválido:', captchaResult.error);
+				alert('CAPTCHA inválido. Por favor, inténtalo de nuevo.');
+				resetCaptcha();
+				return;
+			}
+
+			console.log('CAPTCHA verificado correctamente');
+		} catch (error) {
+			console.error('Error verificando CAPTCHA:', error);
+			alert('Error verificando CAPTCHA. Por favor, inténtalo de nuevo.');
+			resetCaptcha();
 			return;
 		}
 		
@@ -785,6 +861,7 @@
 	<meta name="description" content="La guía que todo padre necesita para que su hijo ingrese a la prepa de sus sueños. Regístrate GRATIS y recibe consejos, guías y recordatorios clave del proceso de admisión ECOEMS 2026." />
 	<link rel="icon" type="image/png" href="/photo_2025-09-12_15-08-29.jpg" />
 	<link rel="shortcut icon" type="image/png" href="/photo_2025-09-12_15-08-29.jpg" />
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </svelte:head>
 
 <main class="main-content">
@@ -1566,6 +1643,15 @@
 									<div class="progress-fill" style="width: {formProgress}%"></div>
 								</div>
 								<span class="progress-text">{formProgress}% completado</span>
+							</div>
+
+							<!-- Google reCAPTCHA -->
+							<div class="captcha-container">
+								<div class="g-recaptcha" 
+									 data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" 
+									 data-callback="onCaptchaSuccess"
+									 data-expired-callback="onCaptchaExpired">
+								</div>
 							</div>
 
 							<button type="submit" class="btn btn-whatsapp" disabled={isSubmitting || !isFormValid}>
@@ -5875,6 +5961,22 @@
 		50% { 
 			box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 		}
+	}
+
+	/* Estilos para el CAPTCHA */
+	.captcha-container {
+		display: flex;
+		justify-content: center;
+		margin: 1.5rem 0;
+		padding: 1rem;
+		background: rgba(248, 250, 252, 0.8);
+		border-radius: 0.75rem;
+		border: 1px solid rgba(226, 232, 240, 0.5);
+	}
+
+	.captcha-container .g-recaptcha {
+		transform: scale(0.9);
+		transform-origin: center;
 	}
 
 	/* Indicador de progreso del formulario */

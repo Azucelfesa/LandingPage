@@ -1,0 +1,17 @@
+name = "adned-landing-page"
+compatibility_date = "2024-01-01"
+
+[env.production]
+name = "adned-landing-page"
+
+[env.preview]
+name = "adned-landing-page-preview"
+
+# Build configuration
+[build]
+command = "npm run build"
+cwd = "."
+
+# Pages configuration
+[[pages_builds]]
+build_output_dir = ".svelte-kit/cloudflare"
