@@ -838,15 +838,18 @@
 							<!-- Video de YouTube embebido -->
 							<div class="hero-video-container">
 								<div class="video-container">
-									<div class="video-frame">
-										<iframe 
-											src={youtubeEmbedUrl} 
-											title="Video de YouTube"
-											frameborder="0" 
-											allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-											allowfullscreen>
-										</iframe>
-									</div>
+							<div class="video-frame">
+								<iframe 
+									src={youtubeEmbedUrl} 
+									title="Video de YouTube"
+									frameborder="0" 
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+									allowfullscreen>
+								</iframe>
+							</div>
+							<div class="video-label">
+								<span class="label-text">CLASE MUESTRA</span>
+							</div>
 								</div>
 							</div>
 						</div>
@@ -865,6 +868,9 @@
 									allowfullscreen
 									class="youtube-iframe">
 								</iframe>
+							</div>
+							<div class="video-label-intro">
+								<span class="label-text-intro">INTRODUCCIÓN</span>
 							</div>
 						</div>
 					</div>
@@ -1928,7 +1934,6 @@
 		margin: 0;
 		max-width: 100%;
 		width: 100%;
-		animation: slideInFromBottom 1s ease 1s both;
 		flex: 1;
 		display: flex;
 		justify-content: center;
@@ -1956,12 +1961,10 @@
 			0 0 0 4px rgba(251, 191, 36, 0.3),
 			inset 0 0 0 2px rgba(255, 255, 255, 0.1);
 		transition: all 0.3s ease;
-		animation: rotate 10s linear infinite;
 	}
 
 	.hero-video-container .video-frame:hover {
 		transform: scale(1.05);
-		animation: rotate 5s linear infinite;
 		box-shadow: 
 			0 25px 50px rgba(0, 0, 0, 0.4),
 			0 0 0 4px rgba(251, 191, 36, 0.5),
@@ -1978,6 +1981,50 @@
 		border: none;
 		border-radius: 50%;
 		object-fit: cover;
+	}
+
+	.video-label {
+		position: absolute;
+		top: -10px;
+		right: -10px;
+		z-index: 10;
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+		padding: 0.4rem 0.8rem;
+		border-radius: 0.8rem;
+		box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+		animation: pulse 2s ease-in-out infinite;
+	}
+
+	.label-text {
+		color: #000000;
+		font-weight: 800;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.3px;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+		white-space: nowrap;
+	}
+
+	.video-label-intro {
+		position: absolute;
+		top: -10px;
+		right: -10px;
+		z-index: 10;
+		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+		padding: 0.4rem 0.8rem;
+		border-radius: 0.8rem;
+		box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+		animation: pulse 2s ease-in-out infinite;
+	}
+
+	.label-text-intro {
+		color: #000000;
+		font-weight: 800;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.3px;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+		white-space: nowrap;
 	}
 
 	.hero-text {
@@ -2013,13 +2060,12 @@
 		overflow: hidden;
 		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 		background: #1e293b;
-		transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
 		transition: all 0.3s ease;
 		margin: 0 auto;
 	}
 
 	.video-frame:hover {
-		transform: perspective(1000px) rotateY(-2deg) rotateX(2deg) scale(1.02);
+		transform: scale(1.02);
 		box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
 	}
 
@@ -3893,6 +3939,26 @@
 			transform: none;
 		}
 
+		.video-label {
+			top: -8px;
+			right: -8px;
+			padding: 0.3rem 0.6rem;
+		}
+
+		.label-text {
+			font-size: 0.6rem;
+		}
+
+		.video-label-intro {
+			top: -8px;
+			right: -8px;
+			padding: 0.3rem 0.6rem;
+		}
+
+		.label-text-intro {
+			font-size: 0.6rem;
+		}
+
 		.hero-video {
 			min-height: 400px;
 			padding-top: 0;
@@ -3974,6 +4040,26 @@
 		.video-frame {
 			width: 250px;
 			height: 250px;
+		}
+
+		.video-label {
+			top: -6px;
+			right: -6px;
+			padding: 0.25rem 0.5rem;
+		}
+
+		.label-text {
+			font-size: 0.55rem;
+		}
+
+		.video-label-intro {
+			top: -6px;
+			right: -6px;
+			padding: 0.25rem 0.5rem;
+		}
+
+		.label-text-intro {
+			font-size: 0.55rem;
 		}
 
 		.hero-video {
