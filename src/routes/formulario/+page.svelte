@@ -5,6 +5,15 @@
 	import Header from '$lib/Header.svelte';
 	import Footer from '$lib/Footer.svelte';
 
+	// Declaraciones de tipos para reCAPTCHA
+	declare global {
+		interface Window {
+			grecaptcha: any;
+			onCaptchaSuccess: (token: string) => void;
+			onCaptchaExpired: () => void;
+		}
+	}
+
 	// Estado del formulario
 	let registrationForm: HTMLFormElement;
 	let loadingSpinner: HTMLElement;
@@ -21,6 +30,11 @@
 	let showThankYou = false;
 	let isFormValid = false;
 	let redirectTimer: number | null = null;
+
+	// reCAPTCHA variables
+	let captchaToken = '';
+	let captchaVerified = false;
+	const RECAPTCHA_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
 
 	// Función para validar el formulario
 	function validateForm() {
@@ -46,6 +60,51 @@
 	// Función para manejar cambios en los inputs
 	function handleInputChange() {
 		validateForm();
+	}
+
+	// Funciones de reCAPTCHA
+	function onCaptchaSuccess(token: string) {
+		captchaToken = token;
+		captchaVerified = true;
+		console.log('CAPTCHA verificado:', token);
+	}
+
+	function onCaptchaExpired() {
+		captchaToken = '';
+		captchaVerified = false;
+		console.log('CAPTCHA expirado');
+	}
+
+	function resetCaptcha() {
+		captchaToken = '';
+		captchaVerified = false;
+		if (typeof window !== 'undefined' && window.grecaptcha) {
+			window.grecaptcha.reset();
+		}
+	}
+
+	// Hacer las funciones disponibles globalmente para reCAPTCHA
+	if (typeof window !== 'undefined') {
+		window.onCaptchaSuccess = onCaptchaSuccess;
+		window.onCaptchaExpired = onCaptchaExpired;
+	}
+
+	// Función para ocultar el mensaje rojo del CAPTCHA
+	function hideCaptchaWarning() {
+		setTimeout(() => {
+			const captchaContainer = document.querySelector('.g-recaptcha');
+			if (captchaContainer) {
+				// Ocultar cualquier mensaje de advertencia
+				const warningElements = captchaContainer.querySelectorAll('div[style*="color: rgb(255, 0, 0)"], div[style*="color: red"]');
+				warningElements.forEach(el => {
+					el.style.display = 'none';
+					el.style.visibility = 'hidden';
+					el.style.opacity = '0';
+					el.style.height = '0';
+					el.style.overflow = 'hidden';
+				});
+			}
+		}, 1000);
 	}
 
 	// Función específica para WhatsApp que solo permite números
@@ -101,6 +160,40 @@
 			return;
 		}
 		
+		// Validar que el CAPTCHA esté verificado
+		if (!captchaVerified || !captchaToken) {
+			console.error('Por favor, completa el CAPTCHA');
+			alert('Por favor, completa el CAPTCHA para continuar');
+			return;
+		}
+
+		// Verificar el CAPTCHA en el servidor
+		try {
+			const captchaResponse = await fetch('/api/verify-captcha', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ captchaToken })
+			});
+
+			const captchaResult = await captchaResponse.json();
+
+			if (!captchaResult.success) {
+				console.error('CAPTCHA inválido:', captchaResult.error);
+				alert('CAPTCHA inválido. Por favor, inténtalo de nuevo.');
+				resetCaptcha();
+				return;
+			}
+
+			console.log('CAPTCHA verificado correctamente');
+		} catch (error) {
+			console.error('Error verificando CAPTCHA:', error);
+			alert('Error verificando CAPTCHA. Por favor, inténtalo de nuevo.');
+			resetCaptcha();
+			return;
+		}
+		
 		// Validar el número de WhatsApp
 		const whatsappNumber = parseInt(formData.whatsapp.replace(/\D/g, ''));
 		if (isNaN(whatsappNumber) || whatsappNumber <= 0) {
@@ -115,7 +208,9 @@
 				fathersName: formData.parentName.trim(),
 				childName: formData.studentName.trim(),
 				whatsappNumber: whatsappNumber,
-				email: formData.email.trim()
+				email: formData.email.trim(),
+				captchaToken: captchaToken,
+				siteKey: RECAPTCHA_SITE_KEY
 			};
 			
 			console.log('Enviando datos:', dataToSend);
@@ -167,7 +262,7 @@
 	}
 
 	onMount(() => {
-		// Asegurar que el formulario sea visible inmediatamente
+		// Asegurar que el formulario sea visibl e inmediatamente
 		if (registrationForm) {
 			registrationForm.style.opacity = '1';
 		}
@@ -211,6 +306,25 @@
 <svelte:head>
 	<title>Formulario de Registro - ADNED</title>
 	<meta name="description" content="Regístrate en ADNED y forma parte de nuestra comunidad educativa. Acceso gratuito a material de estudio y preparación para exámenes de admisión." />
+	<!-- Google reCAPTCHA -->
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+	<script>
+		// Función para ocultar texto rojo del CAPTCHA inmediatamente
+		setInterval(function() {
+			var captcha = document.querySelector('.g-recaptcha');
+			if (captcha) {
+				var redTexts = captcha.querySelectorAll('*');
+				for (var i = 0; i < redTexts.length; i++) {
+					var style = window.getComputedStyle(redTexts[i]);
+					if (style.color === 'rgb(255, 0, 0)' || style.color === 'red') {
+						redTexts[i].style.display = 'none';
+						redTexts[i].style.visibility = 'hidden';
+						redTexts[i].style.opacity = '0';
+					}
+				}
+			}
+		}, 500);
+	</script>
 </svelte:head>
 
 <Header />
@@ -319,7 +433,16 @@
 							<span class="progress-text">{formProgress}% completado</span>
 						</div>
 
-						<button type="submit" class="btn btn-whatsapp" disabled={isSubmitting || !isFormValid}>
+						<!-- Google reCAPTCHA -->
+						<div class="captcha-container">
+							<div class="g-recaptcha" 
+								 data-sitekey={RECAPTCHA_SITE_KEY} 
+								 data-callback="onCaptchaSuccess"
+								 data-expired-callback="onCaptchaExpired">
+							</div>
+						</div>
+
+						<button type="submit" class="btn btn-whatsapp" disabled={isSubmitting || !isFormValid || !captchaVerified}>
 							{#if isSubmitting}
 								<span class="loading-spinner" bind:this={loadingSpinner}></span>
 								Registrando...
@@ -1333,5 +1456,82 @@
 			padding: 0.875rem 1.5rem;
 			font-size: 1rem;
 		}
+	}
+
+	/* reCAPTCHA Styles */
+	.captcha-container {
+		display: flex;
+		justify-content: center;
+		margin: 1.5rem 0;
+		padding: 1rem;
+		background: rgba(255, 255, 255, 0.05);
+		border-radius: 0.75rem;
+		backdrop-filter: blur(10px);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.captcha-container .g-recaptcha {
+		transform: scale(0.9);
+		position: relative;
+		z-index: 2;
+	}
+
+	/* Ocultar completamente el mensaje rojo de reCAPTCHA */
+	.g-recaptcha > div > div:first-child,
+	.g-recaptcha > div > div:first-child > div,
+	.g-recaptcha iframe[src*="recaptcha"][src*="anchor"],
+	.g-recaptcha iframe[src*="recaptcha"][src*="bframe"] {
+		display: none !important;
+		visibility: hidden !important;
+		opacity: 0 !important;
+		height: 0 !important;
+		width: 0 !important;
+		position: absolute !important;
+		left: -9999px !important;
+		top: -9999px !important;
+	}
+
+	/* Ocultar cualquier texto rojo que aparezca */
+	.captcha-container::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 30px;
+		background: rgba(255, 255, 255, 0.05);
+		z-index: 3;
+		backdrop-filter: blur(5px);
+	}
+
+	/* Asegurar que solo se vea el checkbox */
+	.g-recaptcha > div > div:last-child {
+		display: block !important;
+		visibility: visible !important;
+		opacity: 1 !important;
+	}
+
+	/* Solución más agresiva para ocultar texto rojo */
+	.g-recaptcha * {
+		color: transparent !important;
+	}
+
+	.g-recaptcha iframe {
+		clip: rect(0, 0, 0, 0) !important;
+		position: absolute !important;
+		width: 1px !important;
+		height: 1px !important;
+		margin: -1px !important;
+		padding: 0 !important;
+		border: 0 !important;
+		overflow: hidden !important;
+	}
+
+	/* Solo mostrar el checkbox principal */
+	.g-recaptcha .recaptcha-checkbox-border {
+		display: block !important;
+		visibility: visible !important;
 	}
 </style>

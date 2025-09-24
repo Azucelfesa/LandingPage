@@ -1,6 +1,11 @@
 name = "adned-landing-page"
 compatibility_date = "2024-01-01"
 
+# Tu API Token de Cloudflare
+# Obtén tu token en: https://dash.cloudflare.com/profile/api-tokens
+# Crea un token con permisos de "Cloudflare Pages:Edit"
+# api_token = "tu_api_token_aqui"
+
 [env.production]
 name = "adned-landing-page"
 
