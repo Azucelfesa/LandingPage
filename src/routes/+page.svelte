@@ -1937,8 +1937,8 @@
 
 	.hero-video-container .video-container {
 		position: relative;
-		width: 400px;
-		height: 400px;
+		width: 300px;
+		height: 300px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -3719,16 +3719,16 @@
 	.btn-home:hover {
 		transform: translateY(-3px);
 		box-shadow: 
-			0 15px 40px rgba(59, 130, 246, 0.5),
-			0 0 30px rgba(59, 130, 246, 0.3);
-		background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 50%, #1e3a8a 100%);
+			0 15px 40px rgba(251, 191, 36, 0.5),
+			0 0 30px rgba(251, 191, 36, 0.3);
+		background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
 	}
 
 	.btn-home:active {
 		transform: translateY(-1px);
 		box-shadow: 
-			0 8px 20px rgba(59, 130, 246, 0.4),
-			0 0 15px rgba(59, 130, 246, 0.2);
+			0 8px 20px rgba(251, 191, 36, 0.4),
+			0 0 15px rgba(251, 191, 36, 0.2);
 	}
 
 	.home-icon {
@@ -3883,13 +3883,13 @@
 		}
 
 		.hero-video-container .video-container {
-			width: 350px;
-			height: 350px;
+			width: 280px;
+			height: 280px;
 		}
 
 		.video-frame {
-			width: 350px;
-			height: 350px;
+			width: 280px;
+			height: 280px;
 			transform: none;
 		}
 
@@ -3967,13 +3967,13 @@
 		}
 
 		.hero-video-container .video-container {
-			width: 300px;
-			height: 300px;
+			width: 250px;
+			height: 250px;
 		}
 
 		.video-frame {
-			width: 300px;
-			height: 300px;
+			width: 250px;
+			height: 250px;
 		}
 
 		.hero-video {
@@ -6815,16 +6815,16 @@
 	.btn-home:hover {
 		transform: translateY(-3px);
 		box-shadow: 
-			0 15px 40px rgba(59, 130, 246, 0.5),
-			0 0 30px rgba(59, 130, 246, 0.3);
-		background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 50%, #1e3a8a 100%);
+			0 15px 40px rgba(251, 191, 36, 0.5),
+			0 0 30px rgba(251, 191, 36, 0.3);
+		background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
 	}
 
 	.btn-home:active {
 		transform: translateY(-1px);
 		box-shadow: 
-			0 8px 20px rgba(59, 130, 246, 0.4),
-			0 0 15px rgba(59, 130, 246, 0.2);
+			0 8px 20px rgba(251, 191, 36, 0.4),
+			0 0 15px rgba(251, 191, 36, 0.2);
 	}
 
 	.home-icon {
