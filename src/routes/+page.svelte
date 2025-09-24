@@ -36,9 +36,9 @@
 	let isFormValid = false;
 	let redirectTimer: number | null = null;
 	let showMoreCursos = false;
-	let youtubeVideoUrl = 'https://www.youtube.com/embed/NsE4zkiyFZ8'; // Video de YouTube
+	let youtubeVideoUrl = 'https://www.youtube.com/embed/nccwH3brDt0'; // Video de YouTube
 	let showYouTubeModal = false;
-	let youtubeEmbedUrl = 'https://www.youtube.com/embed/CtFYhpJIgeo';
+	let youtubeEmbedUrl = 'https://www.youtube.com/embed/tGhyhgR_tBI';
 
 	// Contador regresivo
 	let timeLeft = {
@@ -3312,7 +3312,7 @@
 
 	.btn-whatsapp {
 		background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-		color: #ffffff;
+		color: #000000;
 		width: 100%;
 		padding: 1rem 1.5rem;
 		font-size: 1.1rem;
