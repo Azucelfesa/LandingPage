@@ -47,9 +47,9 @@
 	let showMoreCursos = false;
 	let captchaToken = '';
 	let captchaVerified = false;
-	let youtubeVideoUrl = 'https://www.youtube.com/embed/nccwH3brDt0'; // Video de YouTube
+	let youtubeVideoUrl = 'https://www.youtube.com/embed/nccwH3brDt0?rel=0&loop=1&playlist=nccwH3brDt0&modestbranding=1&showinfo=0&controls=1&autoplay=0'; // Video de YouTube
 	let showYouTubeModal = false;
-	let youtubeEmbedUrl = 'https://www.youtube.com/embed/tGhyhgR_tBI';
+	let youtubeEmbedUrl = 'https://www.youtube.com/embed/tGhyhgR_tBI?rel=0&loop=1&playlist=tGhyhgR_tBI&modestbranding=1&showinfo=0&controls=1&autoplay=0';
 
 	// Contador regresivo
 	let timeLeft = {
