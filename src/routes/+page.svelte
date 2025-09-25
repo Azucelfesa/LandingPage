@@ -2264,7 +2264,7 @@
 	}
 
 	.hero-subtitle {
-		font-size: 1.1rem;
+		font-size: 1.8rem;
 		line-height: 1.4;
 		margin-bottom: 1.5rem;
 		color: #ffffff;
@@ -2298,7 +2298,7 @@
 
 	.countdown-title {
 		color: #ffffff;
-		font-size: 1.2rem;
+		font-size: 2rem;
 		font-weight: 600;
 		margin-bottom: 1.5rem;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -2828,7 +2828,7 @@
 
 
 	.hero-subtitle {
-		font-size: 1.1rem;
+		font-size: 1.8rem;
 		line-height: 1.4;
 		margin-bottom: 1.5rem;
 		color: #ffffff;
@@ -3983,7 +3983,7 @@
 		}
 
 		.hero-subtitle {
-			font-size: 1rem;
+			font-size: 1.4rem;
 		}
 
 		.hero-video-container {
@@ -4059,7 +4059,7 @@
 		}
 
 		.countdown-title {
-			font-size: 1.1rem;
+			font-size: 1.6rem;
 		}
 
 		.countdown-timer {
@@ -4087,7 +4087,7 @@
 		}
 
 		.hero-subtitle {
-			font-size: 0.9rem;
+			font-size: 1.2rem;
 		}
 
 		.hero-video-container {
@@ -4235,7 +4235,7 @@
 	}
 
 	.section-title {
-		font-size: 2.5rem;
+		font-size: 3.2rem;
 		font-weight: 800;
 		color: #ffffff;
 		margin-bottom: 1rem;
@@ -4248,7 +4248,7 @@
 	}
 
 	.section-subtitle {
-		font-size: 1.2rem;
+		font-size: 1.6rem;
 		color: rgba(255, 255, 255, 0.9);
 		max-width: 600px;
 		margin: 0 auto;
@@ -4374,9 +4374,9 @@
 	}
 
 	.main-description {
-		font-size: 1.1rem;
-		line-height: 1.8;
-		color: #374151;
+		font-size: 2rem;
+		line-height: 1.6;
+		color: #4b5563;
 		margin: 0;
 		text-align: left;
 	}
@@ -4455,7 +4455,7 @@
 	}
 
 	.card-title {
-		font-size: 1.4rem;
+		font-size: 3rem;
 		font-weight: 700;
 		color: #1f2937;
 		margin-bottom: 1rem;
@@ -4463,7 +4463,7 @@
 	}
 
 	.card-description {
-		font-size: 0.95rem;
+		font-size: 2rem;
 		line-height: 1.6;
 		color: #4b5563;
 		margin: 0;
@@ -4587,7 +4587,7 @@
 		}
 
 		.main-description {
-			font-size: 1rem;
+			font-size: 1.8rem;
 			text-align: center;
 		}
 
@@ -4596,11 +4596,11 @@
 		}
 
 		.card-title {
-			font-size: 1.3rem;
+			font-size: 2.5rem;
 		}
 
 		.card-description {
-			font-size: 0.9rem;
+			font-size: 1.8rem;
 			text-align: center;
 		}
 
@@ -4644,17 +4644,17 @@
 		}
 
 		.card-title {
-		font-size: 1.2rem;
+		font-size: 2.2rem;
 			margin-bottom: 0.8rem;
 		}
 
 		.card-description {
-			font-size: 0.85rem;
+			font-size: 1.6rem;
 			line-height: 1.5;
 		}
 
 		.main-description {
-			font-size: 0.95rem;
+			font-size: 1.6rem;
 		}
 
 		.about-carousel-controls {
@@ -4817,7 +4817,7 @@
 	}
 
 	.curso-title {
-		font-size: 1.8rem;
+		font-size: 2.5rem;
 		font-weight: 700;
 		color: #ffffff;
 		margin-bottom: 1.5rem;
@@ -4829,7 +4829,7 @@
 	}
 
 	.curso-text {
-		font-size: 1.1rem;
+		font-size: 1.6rem;
 		color: #4a5568;
 		line-height: 1.7;
 		margin: 0;
@@ -5171,11 +5171,11 @@
 		}
 
 		.curso-title {
-			font-size: 1.6rem;
+			font-size: 2.2rem;
 		}
 
 		.curso-text {
-			font-size: 1rem;
+			font-size: 1.4rem;
 			text-align: left;
 		}
 
@@ -5277,11 +5277,11 @@
 		}
 
 		.curso-title {
-			font-size: 1.4rem;
+			font-size: 1.8rem;
 		}
 
 		.curso-text {
-			font-size: 0.95rem;
+			font-size: 1.2rem;
 		}
 
 		.beneficios-grid {
@@ -5394,7 +5394,7 @@
 	}
 
 	.reinforcement-text {
-		font-size: 1.2rem;
+		font-size: 1.6rem;
 		font-weight: 600;
 		color: #ffffff !important;
 		background: none;
@@ -5426,7 +5426,7 @@
 	}
 
 	.highlight-number {
-		font-size: 1.4rem;
+		font-size: 1.8rem;
 		font-weight: 800;
 		background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 50%, #3b82f6 100%);
 		-webkit-background-clip: text;
@@ -5792,12 +5792,12 @@
 		}
 
 		.reinforcement-text {
-			font-size: 1.1rem;
+			font-size: 1.4rem;
 			padding: 0.875rem 1.5rem;
 		}
 
 		.highlight-number {
-			font-size: 1.3rem;
+			font-size: 1.6rem;
 		}
 
 		.carousels-grid {
@@ -5877,12 +5877,12 @@
 
 	@media (max-width: 480px) {
 		.reinforcement-text {
-			font-size: 1rem;
+			font-size: 1.2rem;
 			padding: 0.75rem 1.25rem;
 		}
 
 		.highlight-number {
-			font-size: 1.2rem;
+			font-size: 1.4rem;
 		}
 
 		.carousels-grid {
