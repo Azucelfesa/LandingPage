@@ -492,10 +492,47 @@
 		}
 	}
 
-	// Hacer las funciones disponibles globalmente para reCAPTCHA
+	// Función para ajustar el reCAPTCHA según el tamaño de pantalla
+	function adjustRecaptchaSize() {
+		if (typeof window === 'undefined') return;
+		
+		const recaptchaElement = document.querySelector('.g-recaptcha');
+		if (!recaptchaElement) return;
+		
+		const screenWidth = window.innerWidth;
+		let scale = 0.9;
+		
+		if (screenWidth <= 320) {
+			scale = 0.65;
+		} else if (screenWidth <= 360) {
+			scale = 0.7;
+		} else if (screenWidth <= 480) {
+			scale = 0.75;
+		} else if (screenWidth <= 768) {
+			scale = 0.85;
+		}
+		
+		(recaptchaElement as HTMLElement).style.transform = `scale(${scale})`;
+		(recaptchaElement as HTMLElement).style.transformOrigin = 'center';
+	}
+
+	// Ajustar el reCAPTCHA cuando se carga la página y cuando cambia el tamaño
 	if (typeof window !== 'undefined') {
 		window.onCaptchaSuccess = onCaptchaSuccess;
 		window.onCaptchaExpired = onCaptchaExpired;
+		
+		// Ajustar cuando se carga la página
+		window.addEventListener('load', () => {
+			setTimeout(adjustRecaptchaSize, 1000); // Esperar a que se cargue el reCAPTCHA
+		});
+		
+		// Ajustar cuando cambia el tamaño de la ventana
+		window.addEventListener('resize', adjustRecaptchaSize);
+		
+		// Ajustar cuando se orienta el dispositivo
+		window.addEventListener('orientationchange', () => {
+			setTimeout(adjustRecaptchaSize, 500);
+		});
 	}
 
 	// Función específica para WhatsApp que solo permite números
@@ -1658,10 +1695,12 @@
 
 							<!-- Google reCAPTCHA -->
 							<div class="captcha-container">
-								<div class="g-recaptcha" 
-									 data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" 
-									 data-callback="onCaptchaSuccess"
-									 data-expired-callback="onCaptchaExpired">
+								<div class="captcha-wrapper">
+									<div class="g-recaptcha" 
+										 data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" 
+										 data-callback="onCaptchaSuccess"
+										 data-expired-callback="onCaptchaExpired">
+									</div>
 								</div>
 							</div>
 
@@ -6060,16 +6099,158 @@
 	.captcha-container {
 		display: flex;
 		justify-content: center;
+		align-items: center;
 		margin: 1.5rem 0;
 		padding: 1rem;
 		background: rgba(248, 250, 252, 0.8);
 		border-radius: 0.75rem;
 		border: 1px solid rgba(226, 232, 240, 0.5);
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.captcha-wrapper {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		max-width: 100%;
+		overflow: hidden;
+		position: relative;
 	}
 
 	.captcha-container .g-recaptcha {
 		transform: scale(0.9);
 		transform-origin: center;
+		max-width: 100%;
+		overflow: hidden;
+	}
+
+	/* Estilos específicos para el iframe del reCAPTCHA */
+	.captcha-container .g-recaptcha iframe {
+		max-width: 100% !important;
+		width: 100% !important;
+		overflow: hidden !important;
+	}
+
+	/* Responsive para reCAPTCHA - Solución más robusta */
+	@media (max-width: 768px) {
+		.captcha-container {
+			padding: 0.75rem;
+			margin: 1rem 0;
+			width: 100%;
+		}
+		
+		.captcha-wrapper {
+			width: 100%;
+			max-width: 100%;
+			overflow: hidden;
+		}
+		
+		.captcha-container .g-recaptcha {
+			transform: scale(0.85);
+			transform-origin: center;
+			max-width: 100%;
+			overflow: hidden;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.captcha-container {
+			padding: 0.5rem;
+			margin: 0.75rem 0;
+			width: 100%;
+		}
+		
+		.captcha-wrapper {
+			width: 100%;
+			max-width: 100%;
+			overflow: hidden;
+		}
+		
+		.captcha-container .g-recaptcha {
+			transform: scale(0.8);
+			transform-origin: center;
+			max-width: 100%;
+			overflow: hidden;
+		}
+	}
+
+	@media (max-width: 360px) {
+		.captcha-container {
+			padding: 0.25rem;
+			margin: 0.5rem 0;
+			width: 100%;
+		}
+		
+		.captcha-wrapper {
+			width: 100%;
+			max-width: 100%;
+			overflow: hidden;
+		}
+		
+		.captcha-container .g-recaptcha {
+			transform: scale(0.75);
+			transform-origin: center;
+			max-width: 100%;
+			overflow: hidden;
+		}
+	}
+
+	/* Solución adicional para pantallas muy pequeñas */
+	@media (max-width: 320px) {
+		.captcha-container {
+			padding: 0.125rem;
+			margin: 0.5rem 0;
+			width: 100%;
+		}
+		
+		.captcha-wrapper {
+			width: 100%;
+			max-width: 100%;
+			overflow: hidden;
+		}
+		
+		.captcha-container .g-recaptcha {
+			transform: scale(0.7);
+			transform-origin: center;
+			max-width: 100%;
+			overflow: hidden;
+		}
+		
+		.captcha-container .g-recaptcha iframe {
+			max-width: 100% !important;
+			width: 100% !important;
+			overflow: hidden !important;
+		}
+	}
+
+	/* Solución de emergencia para pantallas extremadamente pequeñas */
+	@media (max-width: 280px) {
+		.captcha-container {
+			padding: 0.0625rem;
+			margin: 0.25rem 0;
+			width: 100%;
+		}
+		
+		.captcha-wrapper {
+			width: 100%;
+			max-width: 100%;
+			overflow: hidden;
+		}
+		
+		.captcha-container .g-recaptcha {
+			transform: scale(0.6);
+			transform-origin: center;
+			max-width: 100%;
+			overflow: hidden;
+		}
+		
+		.captcha-container .g-recaptcha iframe {
+			max-width: 100% !important;
+			width: 100% !important;
+			overflow: hidden !important;
+		}
 	}
 
 	/* Indicador de progreso del formulario */
