@@ -47,6 +47,11 @@
 	let showMoreCursos = false;
 	let captchaToken = '';
 	let captchaVerified = false;
+	// Clave de reCAPTCHA para el frontend (Site Key)
+	const RECAPTCHA_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
+	
+	// Debug: Verificar que la clave se carga
+	console.log('reCAPTCHA Site Key:', RECAPTCHA_SITE_KEY);
 	let youtubeVideoUrl = 'https://www.youtube.com/embed/nccwH3brDt0?rel=0&loop=1&playlist=nccwH3brDt0&modestbranding=1&showinfo=0&controls=1&autoplay=0'; // Video de YouTube
 	let showYouTubeModal = false;
 	let youtubeEmbedUrl = 'https://www.youtube.com/embed/tGhyhgR_tBI?rel=0&loop=1&playlist=tGhyhgR_tBI&modestbranding=1&showinfo=0&controls=1&autoplay=0';
@@ -897,6 +902,39 @@
 	<link rel="icon" type="image/png" href="/photo_2025-09-12_15-08-29.jpg" />
 	<link rel="shortcut icon" type="image/png" href="/photo_2025-09-12_15-08-29.jpg" />
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+	<script>
+		// Verificar que reCAPTCHA se carga
+		window.addEventListener('load', function() {
+			console.log('Página cargada, verificando reCAPTCHA...');
+			if (typeof grecaptcha !== 'undefined') {
+				console.log('reCAPTCHA cargado correctamente');
+				// Forzar renderización del reCAPTCHA
+				setTimeout(function() {
+					const recaptchaElement = document.querySelector('.g-recaptcha');
+					if (recaptchaElement && !recaptchaElement.hasChildNodes()) {
+						console.log('Renderizando reCAPTCHA...');
+						grecaptcha.render(recaptchaElement, {
+							'sitekey': '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
+							'callback': function(token) {
+								console.log('reCAPTCHA completado:', token);
+								if (window.onCaptchaSuccess) {
+									window.onCaptchaSuccess(token);
+								}
+							},
+							'expired-callback': function() {
+								console.log('reCAPTCHA expirado');
+								if (window.onCaptchaExpired) {
+									window.onCaptchaExpired();
+								}
+							}
+						});
+					}
+				}, 1000);
+			} else {
+				console.error('reCAPTCHA no se cargó');
+			}
+		});
+	</script>
 </svelte:head>
 
 <main class="main-content">
@@ -1294,16 +1332,16 @@
 							</div>
 							
 								<div class="grid-item small">
-									<img src="/mentor/3.jpg" alt="Material de estudios" class="grid-image">
+									<img src="/mentor/3.jpg" alt="Nuestras Técnicas de enseñanza" class="grid-image">
 									<div class="grid-overlay">
 										<div class="grid-content">
-											<h4 class="grid-title">Material de estudios</h4>
+											<h4 class="grid-title">Nuestras Técnicas de enseñanza</h4>
 											<p class="grid-desc">Recursos especializados</p>
 										</div>
 									</div>
 									<!-- Social Media Links -->
 									<div class="social-overlay">
-										<a href="https://www.tiktok.com/@adneduca/video/7508952723459427591?is_from_webapp=1&sender_device=pc&web_id=7554154146480522764" target="_blank" rel="noopener noreferrer" class="social-link-item">
+										<a href="https://vm.tiktok.com/ZMAPCJ8Bg/" target="_blank" rel="noopener noreferrer" class="social-link-item">
 											<svg viewBox="0 0 24 24" fill="currentColor">
 												<path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
 											</svg>
@@ -1603,7 +1641,7 @@
 							<h3>¿Por qué registrarte?</h3>
 							<ul class="benefits-list">
 								<li>✅ Acceso gratuito a nuestro grupo de WhatsApp</li>
-								<li>✅ Material de estudio exclusivo</li>
+								<li>✅ Nuestras Técnicas de enseñanza exclusivas</li>
 								<li>✅ Simulacros de examen</li>
 								<li>✅ Acompañamiento personalizado</li>
 								<li>✅ Comunidad de estudiantes motivados</li>
@@ -1697,9 +1735,13 @@
 							<div class="captcha-container">
 								<div class="captcha-wrapper">
 									<div class="g-recaptcha" 
-										 data-sitekey="0x4AAAAAAB3b30Y_tHlXMzuZ" 
+										 data-sitekey={RECAPTCHA_SITE_KEY} 
 										 data-callback="onCaptchaSuccess"
 										 data-expired-callback="onCaptchaExpired">
+									</div>
+									<!-- Indicador de carga -->
+									<div class="captcha-loading" style="display: none;">
+										<p>Cargando reCAPTCHA...</p>
 									</div>
 								</div>
 							</div>
@@ -6149,6 +6191,19 @@
 		max-width: 100% !important;
 		width: 100% !important;
 		overflow: hidden !important;
+	}
+
+	/* Indicador de carga del reCAPTCHA */
+	.captcha-loading {
+		text-align: center;
+		padding: 1rem;
+		color: #6b7280;
+		font-size: 0.9rem;
+	}
+
+	.captcha-loading p {
+		margin: 0;
+		animation: pulse 2s ease-in-out infinite;
 	}
 
 	/* Responsive para reCAPTCHA - Solución más robusta */

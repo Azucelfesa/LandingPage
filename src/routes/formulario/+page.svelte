@@ -34,9 +34,9 @@
 	// reCAPTCHA variables
 	let captchaToken = '';
 	let captchaVerified = false;
-	// Clave de reCAPTCHA para producción
-	// Reemplaza con tu clave real de Google reCAPTCHA
-	const RECAPTCHA_SITE_KEY = '0x4AAAAAAB3b30Y_tHlXMzuZ';
+	// Clave de reCAPTCHA para el frontend (Site Key)
+	// IMPORTANTE: Reemplaza con tu clave real de Google reCAPTCHA
+	const RECAPTCHA_SITE_KEY = '0x4AAAAAAB3lzbB5OaKGqPQL';
 
 	// Función para validar el formulario
 	function validateForm() {
@@ -169,32 +169,8 @@
 			return;
 		}
 
-		// Verificar el CAPTCHA en el servidor
-		try {
-			const captchaResponse = await fetch('/api/verify-captcha', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ captchaToken })
-			});
-
-			const captchaResult = await captchaResponse.json();
-
-			if (!captchaResult.success) {
-				console.error('CAPTCHA inválido:', captchaResult.error);
-				alert('CAPTCHA inválido. Por favor, inténtalo de nuevo.');
-				resetCaptcha();
-				return;
-			}
-
-			console.log('CAPTCHA verificado correctamente');
-		} catch (error) {
-			console.error('Error verificando CAPTCHA:', error);
-			alert('Error verificando CAPTCHA. Por favor, inténtalo de nuevo.');
-			resetCaptcha();
-			return;
-		}
+		// El CAPTCHA será verificado por tu backend
+		console.log('Token de CAPTCHA obtenido:', captchaToken);
 		
 		// Validar el número de WhatsApp
 		const whatsappNumber = parseInt(formData.whatsapp.replace(/\D/g, ''));
@@ -211,8 +187,7 @@
 				childName: formData.studentName.trim(),
 				whatsappNumber: whatsappNumber,
 				email: formData.email.trim(),
-				captchaToken: captchaToken,
-				siteKey: RECAPTCHA_SITE_KEY
+				captchaToken: captchaToken
 			};
 			
 			console.log('Enviando datos:', dataToSend);
