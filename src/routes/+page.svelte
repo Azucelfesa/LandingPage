@@ -1721,7 +1721,10 @@
 
 						<div class="form-footer">
 							<p class="privacy-text">
-								Al registrarte, aceptas nuestros términos de servicio y política de privacidad.
+								Al registrarte, aceptas nuestros 
+								<a href="#terminos" class="privacy-link">términos de servicio</a> 
+								y 
+								<a href="/privacidad/AVISO DE PRIVACIDAD ADNED.pdf" class="privacy-link" target="_blank" rel="noopener noreferrer">política de privacidad</a>.
 							</p>
 						</div>
 					</div>
@@ -2192,6 +2195,19 @@
 		margin-top: 2rem;
 		display: flex;
 		justify-content: center;
+	}
+
+	/* Reducir espaciado del botón CTA en móvil */
+	@media (max-width: 768px) {
+		.cta-container {
+			margin-top: 1.5rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.cta-container {
+			margin-top: 1rem;
+		}
 	}
 
 	/* Contenedor horizontal para temporizador y mensaje promocional */
@@ -3946,6 +3962,7 @@
 		.countdown-promo-container {
 			flex-direction: column;
 			gap: 1.5rem;
+			margin-top: 1.5rem; /* Reducir espaciado en tablets */
 		}
 
 		.video-frame:hover {
@@ -4049,8 +4066,9 @@
 		/* Contenedor horizontal responsivo */
 		.countdown-promo-container {
 			flex-direction: column;
-			gap: 1.5rem;
+			gap: 1rem; /* Reducir gap en móvil */
 			align-items: center;
+			margin-top: 1rem; /* Reducir espaciado en móvil */
 		}
 
 		/* Mensaje promocional móvil */
@@ -7012,6 +7030,18 @@
 		font-size: 0.875rem;
 		color: #6b7280;
 		line-height: 1.5;
+	}
+
+	.privacy-link {
+		color: #3b82f6;
+		text-decoration: none;
+		font-weight: 500;
+		transition: color 0.3s ease;
+	}
+
+	.privacy-link:hover {
+		color: #1d4ed8;
+		text-decoration: underline;
 	}
 
 	/* Thank You Page */

@@ -117,7 +117,7 @@
 			<div class="footer-section">
 				<h3 class="footer-title">Legal</h3>
 				<ul class="footer-links">
-					<li><a href="#privacidad" class="footer-link">Aviso de Privacidad</a></li>
+					<li><a href="/privacidad/AVISO DE PRIVACIDAD ADNED.pdf" class="footer-link" target="_blank" rel="noopener noreferrer">Aviso de Privacidad</a></li>
 					<li><a href="#terminos" class="footer-link">Términos y Condiciones</a></li>
 					<li><a href="#cookies" class="footer-link">Política de Cookies</a></li>
 				</ul>
@@ -145,7 +145,7 @@
 					© {currentYear} ADNED. Todos los derechos reservados.
 				</p>
 				<div class="footer-bottom-links">
-					<a href="#privacidad" class="footer-bottom-link">Política de privacidad</a>
+					<a href="/privacidad/AVISO DE PRIVACIDAD ADNED.pdf" class="footer-bottom-link" target="_blank" rel="noopener noreferrer">Política de privacidad</a>
 					<a href="#terminos" class="footer-bottom-link">Términos de servicio</a>
 					<a href="#cookies" class="footer-bottom-link">Cookies</a>
 				</div>
