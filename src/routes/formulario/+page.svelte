@@ -34,7 +34,9 @@
 	// reCAPTCHA variables
 	let captchaToken = '';
 	let captchaVerified = false;
-	const RECAPTCHA_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
+	// Clave de reCAPTCHA para producción
+	// Reemplaza con tu clave real de Google reCAPTCHA
+	const RECAPTCHA_SITE_KEY = '0x4AAAAAAB3b30Y_tHlXMzuZ';
 
 	// Función para validar el formulario
 	function validateForm() {

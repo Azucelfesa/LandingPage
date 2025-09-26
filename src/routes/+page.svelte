@@ -1697,7 +1697,7 @@
 							<div class="captcha-container">
 								<div class="captcha-wrapper">
 									<div class="g-recaptcha" 
-										 data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" 
+										 data-sitekey="0x4AAAAAAB3b30Y_tHlXMzuZ" 
 										 data-callback="onCaptchaSuccess"
 										 data-expired-callback="onCaptchaExpired">
 									</div>
