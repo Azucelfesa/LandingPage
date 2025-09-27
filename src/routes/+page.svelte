@@ -553,7 +553,7 @@
 			
 			console.log('Enviando datos:', dataToSend);
 			
-			const response = await trpcHttpClient.registerForm.create.mutate(dataToSend);
+			const response = await trpcHttpClient.registerForm.mutate(dataToSend);
 			
 			if (!response.success) {
 				throw new Error('Error saving form data');
