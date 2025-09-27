@@ -64,7 +64,7 @@
 
 			<!-- CTA Button -->
 			<div class="header-cta">
-				<a href="/formulario" class="btn btn-primary">
+				<a href="#formulario" class="btn btn-primary">
 					Inscribirme ahora
 				</a>
 			</div>

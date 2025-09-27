@@ -411,13 +411,13 @@
 						</div>
 
 						<!-- Google reCAPTCHA -->
-						<div class="captcha-container">
+						<!-- <div class="captcha-container">
 							<div class="g-recaptcha" 
 								 data-sitekey={RECAPTCHA_SITE_KEY} 
 								 data-callback="onCaptchaSuccess"
 								 data-expired-callback="onCaptchaExpired">
 							</div>
-						</div>
+						</div> -->
 
 						<button type="submit" class="btn btn-whatsapp" disabled={isSubmitting || !isFormValid || !captchaVerified}>
 							{#if isSubmitting}

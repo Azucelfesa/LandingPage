@@ -1,12 +1,6 @@
 <script lang="ts">
-	// Declaraciones de tipos para reCAPTCHA
-	declare global {
-		interface Window {
-			grecaptcha: any;
-			onCaptchaSuccess: (token: string) => void;
-			onCaptchaExpired: () => void;
-		}
-	}
+	// Declaraciones de tipos para reCAPTCHA removidas
+	// declare global { ... }
 
 	import {
 	    slideInFromDirection as advancedSlideIn,
@@ -45,13 +39,10 @@
 	let isFormValid = false;
 	let redirectTimer: number | null = null;
 	let showMoreCursos = false;
-	let captchaToken = '';
-	let captchaVerified = false;
-	// Clave de reCAPTCHA para el frontend (Site Key)
-	const RECAPTCHA_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
-	
-	// Debug: Verificar que la clave se carga
-	console.log('reCAPTCHA Site Key:', RECAPTCHA_SITE_KEY);
+	// Variables del CAPTCHA removidas
+	// let captchaToken = '';
+	// let captchaVerified = false;
+	// const RECAPTCHA_SITE_KEY = '0x4AAAAAAB3lzbB5OaKGqPQL';
 	let youtubeVideoUrl = 'https://www.youtube.com/embed/nccwH3brDt0?rel=0&loop=1&playlist=nccwH3brDt0&modestbranding=1&showinfo=0&controls=1&autoplay=0'; // Video de YouTube
 	let showYouTubeModal = false;
 	let youtubeEmbedUrl = 'https://www.youtube.com/embed/tGhyhgR_tBI?rel=0&loop=1&playlist=tGhyhgR_tBI&modestbranding=1&showinfo=0&controls=1&autoplay=0';
@@ -466,7 +457,7 @@
 		const whatsappRegex = /^[\+]?[0-9\s\-\(\)]{10,}$/;
 		const isValidWhatsapp = whatsappRegex.test(whatsapp) && whatsapp.replace(/[^0-9]/g, '').length >= 10;
 		
-		isFormValid = hasParentName && hasStudentName && hasWhatsapp && hasEmail && isValidEmail && isValidWhatsapp && captchaVerified;
+		isFormValid = hasParentName && hasStudentName && hasWhatsapp && hasEmail && isValidEmail && isValidWhatsapp;
 	}
 
 	// Función para manejar cambios en los inputs
@@ -474,71 +465,15 @@
 		validateForm();
 	}
 
-	// Función para manejar el callback del CAPTCHA
-	function onCaptchaSuccess(token: string) {
-		captchaToken = token;
-		captchaVerified = true;
-		validateForm();
-	}
+	// Funciones del CAPTCHA removidas
+	// function onCaptchaSuccess(token: string) { ... }
+	// function onCaptchaExpired() { ... }
+	// function resetCaptcha() { ... }
 
-	// Función para manejar la expiración del CAPTCHA
-	function onCaptchaExpired() {
-		captchaToken = '';
-		captchaVerified = false;
-		validateForm();
-	}
-
-	// Función para resetear el CAPTCHA
-	function resetCaptcha() {
-		captchaToken = '';
-		captchaVerified = false;
-		if (typeof window !== 'undefined' && window.grecaptcha) {
-			window.grecaptcha.reset();
-		}
-	}
-
-	// Función para ajustar el reCAPTCHA según el tamaño de pantalla
-	function adjustRecaptchaSize() {
-		if (typeof window === 'undefined') return;
-		
-		const recaptchaElement = document.querySelector('.g-recaptcha');
-		if (!recaptchaElement) return;
-		
-		const screenWidth = window.innerWidth;
-		let scale = 0.9;
-		
-		if (screenWidth <= 320) {
-			scale = 0.65;
-		} else if (screenWidth <= 360) {
-			scale = 0.7;
-		} else if (screenWidth <= 480) {
-			scale = 0.75;
-		} else if (screenWidth <= 768) {
-			scale = 0.85;
-		}
-		
-		(recaptchaElement as HTMLElement).style.transform = `scale(${scale})`;
-		(recaptchaElement as HTMLElement).style.transformOrigin = 'center';
-	}
-
-	// Ajustar el reCAPTCHA cuando se carga la página y cuando cambia el tamaño
-	if (typeof window !== 'undefined') {
-		window.onCaptchaSuccess = onCaptchaSuccess;
-		window.onCaptchaExpired = onCaptchaExpired;
-		
-		// Ajustar cuando se carga la página
-		window.addEventListener('load', () => {
-			setTimeout(adjustRecaptchaSize, 1000); // Esperar a que se cargue el reCAPTCHA
-		});
-		
-		// Ajustar cuando cambia el tamaño de la ventana
-		window.addEventListener('resize', adjustRecaptchaSize);
-		
-		// Ajustar cuando se orienta el dispositivo
-		window.addEventListener('orientationchange', () => {
-			setTimeout(adjustRecaptchaSize, 500);
-		});
-	}
+	// Funciones de reCAPTCHA removidas
+	// function adjustRecaptchaSize() { ... }
+	// window.onCaptchaSuccess = onCaptchaSuccess;
+	// window.onCaptchaExpired = onCaptchaExpired;
 
 	// Función específica para WhatsApp que solo permite números
 	function handleWhatsappInput(event: Event) {
@@ -593,39 +528,11 @@
 			return;
 		}
 
-		// Validar que el CAPTCHA esté verificado
-		if (!captchaVerified || !captchaToken) {
-			console.error('Por favor, completa el CAPTCHA');
-			alert('Por favor, completa el CAPTCHA para continuar');
-			return;
-		}
+		// Validación del CAPTCHA removida
+		// if (!captchaVerified || !captchaToken) { ... }
 
-		// Verificar el CAPTCHA en el servidor
-		try {
-			const captchaResponse = await fetch('/api/verify-captcha', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ captchaToken })
-			});
-
-			const captchaResult = await captchaResponse.json();
-
-			if (!captchaResult.success) {
-				console.error('CAPTCHA inválido:', captchaResult.error);
-				alert('CAPTCHA inválido. Por favor, inténtalo de nuevo.');
-				resetCaptcha();
-				return;
-			}
-
-			console.log('CAPTCHA verificado correctamente');
-		} catch (error) {
-			console.error('Error verificando CAPTCHA:', error);
-			alert('Error verificando CAPTCHA. Por favor, inténtalo de nuevo.');
-			resetCaptcha();
-			return;
-		}
+		// Verificación del CAPTCHA en el servidor removida
+		// try { ... } catch (error) { ... }
 		
 		// Validar el número de WhatsApp
 		const whatsappNumber = parseInt(formData.whatsapp.replace(/\D/g, ''));
@@ -677,7 +584,21 @@
 		}
 	}
 
-	function joinGroup() {
+	function joinGroup(event: Event) {
+		// Prevenir el comportamiento por defecto
+		event.preventDefault();
+		event.stopPropagation();
+		
+		console.log('joinGroup ejecutado');
+		console.log('Evento:', event);
+		
+		// Prevenir múltiples clics
+		if (isSubmitting) {
+			console.log('Formulario en envío, cancelando');
+			return;
+		}
+		
+		console.log('Abriendo WhatsApp...');
 		// Redirigir a WhatsApp
 		window.open('https://wa.me/5654961193', '_blank');
 	}
@@ -692,13 +613,25 @@
 		window.location.href = '/';
 	}
 
-	function scrollToForm() {
+	function scrollToForm(event: Event) {
+		// Prevenir cualquier comportamiento por defecto
+		event.preventDefault();
+		event.stopPropagation();
+		
+		console.log('scrollToForm ejecutado');
+		console.log('Evento:', event);
+		
 		const formSection = document.getElementById('formulario');
+		console.log('Sección del formulario encontrada:', formSection);
+		
 		if (formSection) {
+			console.log('Haciendo scroll al formulario...');
 			formSection.scrollIntoView({ 
 				behavior: 'smooth',
 				block: 'start'
 			});
+		} else {
+			console.error('No se encontró la sección del formulario');
 		}
 	}
 
@@ -901,40 +834,7 @@
 	<meta name="description" content="La guía que todo padre necesita para que su hijo ingrese a la prepa de sus sueños. Regístrate GRATIS y recibe consejos, guías y recordatorios clave del proceso de admisión ECOEMS 2026." />
 	<link rel="icon" type="image/png" href="/photo_2025-09-12_15-08-29.jpg" />
 	<link rel="shortcut icon" type="image/png" href="/photo_2025-09-12_15-08-29.jpg" />
-	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-	<script>
-		// Verificar que reCAPTCHA se carga
-		window.addEventListener('load', function() {
-			console.log('Página cargada, verificando reCAPTCHA...');
-			if (typeof grecaptcha !== 'undefined') {
-				console.log('reCAPTCHA cargado correctamente');
-				// Forzar renderización del reCAPTCHA
-				setTimeout(function() {
-					const recaptchaElement = document.querySelector('.g-recaptcha');
-					if (recaptchaElement && !recaptchaElement.hasChildNodes()) {
-						console.log('Renderizando reCAPTCHA...');
-						grecaptcha.render(recaptchaElement, {
-							'sitekey': '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
-							'callback': function(token) {
-								console.log('reCAPTCHA completado:', token);
-								if (window.onCaptchaSuccess) {
-									window.onCaptchaSuccess(token);
-								}
-							},
-							'expired-callback': function() {
-								console.log('reCAPTCHA expirado');
-								if (window.onCaptchaExpired) {
-									window.onCaptchaExpired();
-								}
-							}
-						});
-					}
-				}, 1000);
-			} else {
-				console.error('reCAPTCHA no se cargó');
-			}
-		});
-	</script>
+	<!-- Script de reCAPTCHA removido -->
 </svelte:head>
 
 <main class="main-content">
@@ -954,9 +854,9 @@
 					
 					<!-- Botón CTA -->
 					<div class="cta-container">
-						<button class="btn btn-whatsapp floating-button" on:click={scrollToForm}>
+						<button type="button" class="btn btn-whatsapp floating-button" on:click={scrollToForm}>
 							<span class="whatsapp-icon">📱</span>
-								Regístrate gratis
+								Inscribirme ahora
 						</button>
 					</div>
 
@@ -1732,19 +1632,7 @@
 							</div>
 
 							<!-- Google reCAPTCHA -->
-							<div class="captcha-container">
-								<div class="captcha-wrapper">
-									<div class="g-recaptcha" 
-										 data-sitekey={RECAPTCHA_SITE_KEY} 
-										 data-callback="onCaptchaSuccess"
-										 data-expired-callback="onCaptchaExpired">
-									</div>
-									<!-- Indicador de carga -->
-									<div class="captcha-loading" style="display: none;">
-										<p>Cargando reCAPTCHA...</p>
-									</div>
-								</div>
-							</div>
+							<!-- CAPTCHA removido -->
 
 							<button type="submit" class="btn btn-whatsapp" disabled={isSubmitting || !isFormValid}>
 								{#if isSubmitting}
@@ -6186,47 +6074,7 @@
 		overflow: hidden;
 	}
 
-	/* Estilos específicos para el iframe del reCAPTCHA */
-	.captcha-container .g-recaptcha iframe {
-		max-width: 100% !important;
-		width: 100% !important;
-		overflow: hidden !important;
-	}
-
-	/* Indicador de carga del reCAPTCHA */
-	.captcha-loading {
-		text-align: center;
-		padding: 1rem;
-		color: #6b7280;
-		font-size: 0.9rem;
-	}
-
-	.captcha-loading p {
-		margin: 0;
-		animation: pulse 2s ease-in-out infinite;
-	}
-
-	/* Responsive para reCAPTCHA - Solución más robusta */
-	@media (max-width: 768px) {
-		.captcha-container {
-			padding: 0.75rem;
-			margin: 1rem 0;
-			width: 100%;
-		}
-		
-		.captcha-wrapper {
-			width: 100%;
-			max-width: 100%;
-			overflow: hidden;
-		}
-		
-		.captcha-container .g-recaptcha {
-			transform: scale(0.85);
-			transform-origin: center;
-			max-width: 100%;
-			overflow: hidden;
-		}
-	}
+	/* Estilos del CAPTCHA removidos */
 
 	@media (max-width: 480px) {
 		.captcha-container {
