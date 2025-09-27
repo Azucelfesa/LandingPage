@@ -4,7 +4,7 @@ import type { HTTPRouter } from '@backend'; // Asegúrate de que la ruta es corr
 const trpcHttpClient = createTRPCProxyClient<HTTPRouter>({
   links: [
     httpBatchLink({
-      url: 'http://localhost:3000',
+      url: 'https://adnetdigital.org/trpc',
     }),
   ],
 });
