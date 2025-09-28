@@ -37,7 +37,7 @@
 	let isSubmitting = false;
 	let showThankYou = false;
 	let isFormValid = false;
-	let redirectTimer: number | null = null;
+	let redirectTimer: NodeJS.Timeout | null = null;
 	let showMoreCursos = false;
 	// Variables del CAPTCHA removidas
 	// let captchaToken = '';
@@ -54,7 +54,7 @@
 		minutes: 0,
 		seconds: 0
 	};
-	let countdownInterval: number | null = null;
+	let countdownInterval: NodeJS.Timeout | null = null;
 
 	// Fecha objetivo: 15 de enero de 2026
 	const targetDate = new Date('2026-01-15T23:59:59').getTime();
@@ -102,7 +102,7 @@
 
 	// Estado para los carruseles de reseñas
 	let currentReviewIndex = 0;
-	let reviewInterval: number;
+	let reviewInterval: NodeJS.Timeout | null;
 
 	// Estados para los 5 carruseles
 	let carousel1Index = 0;
@@ -111,14 +111,14 @@
 	let carousel4Index = 0;
 	let carousel5Index = 0;
 	let aboutCarouselIndex = 0;
-	
-	let carousel1Interval: number;
-	let carousel2Interval: number;
-	let carousel3Interval: number;
-	let carousel4Interval: number;
-	let carousel5Interval: number;
-	let aboutCarouselInterval: number;
-	
+
+	let carousel1Interval: NodeJS.Timeout | null;
+	let carousel2Interval: NodeJS.Timeout | null;
+	let carousel3Interval: NodeJS.Timeout | null;
+	let carousel4Interval: NodeJS.Timeout | null;
+	let carousel5Interval: NodeJS.Timeout | null;
+	let aboutCarouselInterval: NodeJS.Timeout | null;
+
 	// Estado para mostrar carruseles adicionales
 	let showAdditionalCarousels = false;
 
@@ -553,7 +553,7 @@
 			
 			console.log('Enviando datos:', dataToSend);
 			
-			const response = await trpcHttpClient.registerForm.mutate(dataToSend);
+			const response = await trpcHttpClient.registerForm.create.mutate(dataToSend);
 			
 			if (!response.success) {
 				throw new Error('Error saving form data');
